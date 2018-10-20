@@ -176,6 +176,24 @@ research_stations:
 #==============================================================================#
 
 #==============================================================================#
+### ROLES CONF - BEGIN ###
+
+# The allowable roles for a pawn
+roles:
+    -                           None
+    -                           Random
+    -                           Contingency Planner
+    -                           Dispatcher
+    -                           Medic
+    -                           Operations Expert
+    -                           Quarantine Specialist
+    -                           Researcher
+    -                           Scientist
+
+### ROLES CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
 ### PAWNS CONF - BEGIN ###
 
 # The maximum number of pawns that can be placed on the board
@@ -186,14 +204,22 @@ max_pawns:                      4
 # must be a non-negative Integer <= '#max_pawns'
 init_pawns:                     2
 
-# The start location for each pawn - each location must be a location in '#research_stations'
+# The start location for each pawn
 # each location must be a location in '#research_stations'
 # must be same size as '#max_pawns'
-pawn_start_locations:
+pawn_init_locations:
     -                           Atlanta
     -                           Atlanta
     -                           Atlanta
     -                           Atlanta
+
+# The initial role for each pawn - each role must be a role in '#roles'
+# must be the same size as '#max_pawns'
+pawn_init_roles:
+    -                           None
+    -                           None
+    -                           None
+    -                           None
 
 ### PAWNS CONF - END ###
 #==============================================================================#
