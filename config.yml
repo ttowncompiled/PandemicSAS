@@ -385,9 +385,30 @@ player_deck_template:
 #==============================================================================#
 
 #==============================================================================#
-### SECTION CONF - BEGIN ###
+### INFECT DECK CONF - BEGIN ###
 
-### SECTION CONF - END ###
+# The template to generate infect cards for the infect deck
+# card templates should have a 'selector', a 'name', a 'color'
+# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# '$<id>' is a variable and '#<id>' is a collection
+# 'name' should be a 'name' from '#cities', Any, or '$<id>.<prop>'
+# 'color' should be Green
+infect_card_template:
+    - selector:                 for '$city' in '#cities'
+      name:                     '$city.name'
+      color:                    Green
+
+# The template to generate the infect deck
+# each field should specity a template from config
+# set the field to 'false' to not use the template
+# set the field to 'true' to use the template once
+# set the field to 0 to not use the template
+# set the field to x to use the template x times
+# note that 'selector' None is used to create a single card
+infect_deck_template:
+    - infect_card_template:     true
+
+### INFECT DECK CONF - END ###
 #==============================================================================#
 
 #==============================================================================#
