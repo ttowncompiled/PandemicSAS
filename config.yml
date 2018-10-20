@@ -1,3 +1,28 @@
 # Project info
 name:                           PandemicSAS
 author:                         Ian Riley, grad
+# Allowable color types
+colors:
+    -                           Yellow
+    -                           Red
+    -                           Blue
+    -                           Black
+    -                           White
+# All Disease types - type must be in 'colors'
+diseases:
+    -                           Yellow
+    -                           Red
+    -                           Blue
+    -                           Black
+# All curable Disease types - type must be in 'diseases'
+curable:
+    -                           Yellow
+    -                           Red
+    -                           Blue
+    -                           Black
+# All eradicable Disease types - type must be in 'diseases'
+eradicable:
+    -                           Yellow
+    -                           Red
+    -                           Blue
+    -                           Black
