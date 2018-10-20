@@ -27,14 +27,14 @@ diseases:
     -                           Blue
     -                           Black
 
-# Curable Disease types - type must be in '#diseases'
+# Curable disease types - type must be in '#diseases'
 curable:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
 
-# Eradicable Disease types - type must be in '#diseases'
+# Eradicable disease types - type must be in '#diseases'
 eradicable:
     -                           Yellow
     -                           Red
@@ -168,7 +168,11 @@ init_outbreaks:                 0
 #==============================================================================#
 ### RESEARCH STATIONS CONF - BEGIN ###
 
-# Research Station location - each location must be a 'name' in '#cities'
+# The maximum number of research statations that can be on the board
+max_research_stations:          6
+
+# Research station location - each location must be a 'name' in '#cities'
+# must be at least 1, but no more than '#max_research_stations'
 research_stations:
     -                           Atlanta
 
