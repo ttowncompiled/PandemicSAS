@@ -8,21 +8,119 @@ colors:
     -                           Blue
     -                           Black
     -                           White
-# All Disease types - type must be in 'colors'
+# All Disease types - type must be in '#colors'
 diseases:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
-# All curable Disease types - type must be in 'diseases'
+# All curable Disease types - type must be in '#diseases'
 curable:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
-# All eradicable Disease types - type must be in 'diseases'
+# All eradicable Disease types - type must be in '#diseases'
 eradicable:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
+# Board City locations - each city must have a 'name' and a 'color' and 'color' must be in '#colors'
+cities:
+    - name:                     Los Angeles
+      color:                    Yellow
+    - name:                     Mexico City
+      color:                    Yellow
+    - name:                     Miami
+      color:                    Yellow
+    - name:                     Bogota
+      color:                    Yellow
+    - name:                     Lima
+      color:                    Yellow
+    - name:                     Santiago
+      color:                    Yellow
+    - name:                     Buenos Aires
+      color:                    Yellow
+    - name:                     Sao Paulo
+      color:                    Yellow
+    - name:                     Lagos
+      color:                    Yellow
+    - name:                     Kinshasa
+      color:                    Yellow
+    - name:                     Johannesburg
+      color:                    Yellow
+    - name:                     Khartoum
+      color:                    Yellow
+    - name:                     Beijing
+      color:                    Red
+    - name:                     Seoul
+      color:                    Red
+    - name:                     Tokyo
+      color:                    Red
+    - name:                     Shanghai
+      color:                    Red
+    - name:                     Bangkok
+      color:                    Red
+    - name:                     Hong Kong
+      color:                    Red
+    - name:                     Taipei
+      color:                    Red
+    - name:                     Osaka
+      color:                    Red
+    - name:                     Jakarta
+      color:                    Red
+    - name:                     Ho Chi Minh City
+      color:                    Red
+    - name:                     Manila
+      color:                    Red
+    - name:                     Sydney
+      color:                    Red
+    - name:                     San Francisco
+      color:                    Blue
+    - name:                     Chicago
+      color:                    Blue
+    - name:                     Atlanta
+      color:                    Blue
+    - name:                     Montreal
+      color:                    Blue
+    - name:                     Washington
+      color:                    Blue
+    - name:                     New York
+      color:                    Blue
+    - name:                     Madrid
+      color:                    Blue
+    - name:                     London
+      color:                    Blue
+    - name:                     Paris
+      color:                    Blue
+    - name:                     Essen
+      color:                    Blue
+    - name:                     Milan
+      color:                    Blue
+    - name:                     St. Petersburg
+      color:                    Blue
+    - name:                     Algiers
+      color:                    Black
+    - name:                     Istanbul
+      color:                    Black
+    - name:                     Cairo
+      color:                    Black
+    - name:                     Moscow
+      color:                    Black
+    - name:                     Baghdad
+      color:                    Black
+    - name:                     Tehran
+      color:                    Black
+    - name:                     Karachi
+      color:                    Black
+    - name:                     Riyadh
+      color:                    Black
+    - name:                     Mumbai
+      color:                    Black
+    - name:                     Delhi
+      color:                    Black
+    - name:                     Kolkata
+      color:                    Black
+    - name:                     Chennai
+      color:                    Black
