@@ -41,6 +41,30 @@ eradicable:
     -                           Blue
     -                           Black
 
+# The maximum number of disease cubes for any disease type
+# must be a positive Integer
+max_disease_cubes:              24
+
+# The minimum number of disease cubes for any disease type
+# must be a non-negative Integer
+min_disease_cubes:              0
+
+# The number of disease cubes for each disease type
+# must have 'color' and 'count'
+# each 'color' must be in '#diseases'
+# must have each type in '#diseases'
+# each 'count' must be a non-negative Integer
+# '#min_disease_cubes' <= 'count' <= '#max_disease_cubes'
+disease_cubes:
+    - color:                    Yellow
+      count:                    24
+    - color:                    Red
+      count:                    24
+    - color:                    Blue
+      count:                    24
+    - color:                    Black
+      count:                    24
+
 ### DISEASE CONF - END ###
 #==============================================================================#
 
@@ -169,20 +193,20 @@ init_outbreaks:                 0
 ### INFECTION RATE - BEGIN ###
 
 # The maximum number of infection rate intensities
-# must be a non-negative Integer
+# must be a positive Integer
 max_infection_rates:            7
 
 # The initial rate from which to choose the infection rate intensity
-# must be a non-negative Integer <= '#max_infection_rates'
+# must be a positive Integer <= '#max_infection_rates'
 init_infection_rate:            1
 
 # The maximum intensity for any infection rate
-# must be a non-negative Integer
+# must be a positive Integer
 max_infection_rate:             4
 
 # The infection rate intensities
 # must be the same size as '#max_infection_rates'
-# each intensity must be a non-negative Integer <= '#max_infection_rate'
+# each intensity must be a positive Integer <= '#max_infection_rate'
 infection_rates:
     -                           2
     -                           2
@@ -199,6 +223,7 @@ infection_rates:
 ### RESEARCH STATIONS CONF - BEGIN ###
 
 # The maximum number of research statations that can be on the board
+# must be a positive Integer
 max_research_stations:          6
 
 # Research station location - each location must be a 'name' in '#cities'
@@ -235,7 +260,7 @@ roles:
 max_pawns:                      4
 
 # The initial number of pawns to place on the board
-# must be a non-negative Integer <= '#max_pawns'
+# must be a positive Integer <= '#max_pawns'
 init_pawns:                     2
 
 # The start location for each pawn
