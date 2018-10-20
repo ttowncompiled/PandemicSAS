@@ -41,9 +41,9 @@ curable:
 max_diseases_cured:             1
 
 # The diseases that are initially cured
-# each type must be None or be in '#curable'
+# each type must be none or be in '#curable'
 init_diseases_cured:
-    -                           None
+    -                           none
 
 # Eradicable disease types - type must be in '#diseases'
 eradicable:
@@ -58,9 +58,9 @@ eradicable:
 max_diseases_eradicated:        0
 
 # The diseases that are initially eradicated
-# each type must be None or be in '#eradicable'
+# each type must be none or be in '#eradicable'
 init_diseases_eradicated:
-    -                           None
+    -                           none
 
 # The maximum number of disease cubes for any disease type
 # must be a positive Integer
@@ -271,7 +271,7 @@ roles:
     -                           Scientist
 
 # Whether each role can only be assigned to one pawn
-roles_are_unique:                    false
+roles_are_unique:               false
 
 ### ROLES CONF - END ###
 #==============================================================================#
@@ -346,7 +346,7 @@ events:
 
 # The template to generate city cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# 'selector' should be none for single or 'for $<id> in #<id>' for collection
 # '$<id>' is a variable and '#<id>' is a collection
 # 'name' should be a 'name' from '#cities', Any, or '$<id>.<prop>'
 # 'color' should be a String from '#colors', Any, or '$<id>.<prop>'
@@ -357,7 +357,7 @@ city_card_template:
 
 # The template to generate event cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# 'selector' should be none for single or 'for $<id> in #<id>' for collection
 # '$<id>' is a variable and '#<id>' is a collection
 # 'name' should be a 'name' from '#events', Any, or '$<id>.<prop>'
 # 'color' should be a String from '#colors', Any, or '$<id>.<prop>'
@@ -368,25 +368,25 @@ event_card_template:
 
 # The template to generate epidemic cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# 'selector' should be none for single or 'for $<id> in #<id>' for collection
 # '$<id>' is a variable and '#<id>' is a collection
 # 'name' should be Epidemic
 # 'color' should be Green
 epidemic_card_template:
-    - selector:                 None
+    - selector:                 none
       name:                     Epidemic
       color:                    Green
 
 # The template to generate blank cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# 'selector' should be none for single or 'for $<id> in #<id>' for collection
 # '$<id>' is a variable and '#<id>' is a collection
-# 'name' should be None
-# 'color' should be None
+# 'name' should be none
+# 'color' should be none
 blank_card_template:
-    - selector:                 None
-      name:                     None
-      color:                    None
+    - selector:                 none
+      name:                     none
+      color:                    none
 
 # The template to generate the player deck
 # each field should specity a template from config
@@ -394,7 +394,7 @@ blank_card_template:
 # set the field to 'true' to use the template once
 # set the field to 0 to not use the template
 # set the field to x to use the template x times
-# note that 'selector' None is used to create a single card
+# note that 'selector' none is used to create a single card
 player_deck_template:
     - city_card_template:       true
       event_card_template:      false
@@ -409,6 +409,14 @@ player_deck_shuffle_init:       riffle
 # must be riffle or pile
 player_deck_shuffle:            pile
 
+# The minimum number of cards in the deck before it is considered empty
+# must be a non-negative Integer
+min_player_deck_size:           0
+
+# The action to take once the player deck is considered empty
+# must be none, riffle, or pile
+player_deck_empty_do:           none
+
 ### PLAYER DECK CONF - END ###
 #==============================================================================#
 
@@ -417,7 +425,7 @@ player_deck_shuffle:            pile
 
 # The template to generate infect cards for the infect deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# 'selector' should be none for single or 'for $<id> in #<id>' for collection
 # '$<id>' is a variable and '#<id>' is a collection
 # 'name' should be a 'name' from '#cities', Any, or '$<id>.<prop>'
 # 'color' should be Green
@@ -432,13 +440,20 @@ infect_card_template:
 # set the field to 'true' to use the template once
 # set the field to 0 to not use the template
 # set the field to x to use the template x times
-# note that 'selector' None is used to create a single card
+# note that 'selector' none is used to create a single card
 infect_deck_template:
     - infect_card_template:     true
 
 # The shuffle type to use to distribute infect cards
 # must be riffle or pile
 infect_deck_shuffle:            riffle
+
+# The minimum number of cards in the deck before it is considered empty
+min_infect_deck_size:           0
+
+# The action to take once the infect deck is considered empty
+# must be none, riffle, or pile
+infect_deck_empty_do:           riffle
 
 ### INFECT DECK CONF - END ###
 #==============================================================================#
