@@ -381,6 +381,14 @@ player_deck_template:
       epidemic_card_template:   4
       blank_card_template:      8
 
+# The shuffle type to use to distribute init player cards
+# must be riffle or pile
+player_deck_shuffle_init:       riffle
+
+# The shuffle type to use to distribute player cards during play
+# must be riffle or pile
+player_deck_shuffle:            pile
+
 ### PLAYER DECK CONF - END ###
 #==============================================================================#
 
@@ -407,6 +415,10 @@ infect_card_template:
 # note that 'selector' None is used to create a single card
 infect_deck_template:
     - infect_card_template:     true
+
+# The shuffle type to use to distribute infect cards
+# must be riffle or pile
+infect_deck_shuffle:            riffle
 
 ### INFECT DECK CONF - END ###
 #==============================================================================#
