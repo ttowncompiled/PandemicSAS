@@ -1,32 +1,55 @@
+---
 # Project info
 name:                           PandemicSAS
 author:                         Ian Riley, grad
-# Allowable color types
+
+#==============================================================================#
+### COLOR CONF - BEGIN ###
+
+# The allowable color types - each color type must be a String
 colors:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
     -                           White
+
+### COLOR CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### DISEASE CONF - BEGIN ###
+
 # Disease types - type must be in '#colors'
 diseases:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
+
 # Curable Disease types - type must be in '#diseases'
 curable:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
+
 # Eradicable Disease types - type must be in '#diseases'
 eradicable:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
-# City locations - each city must have a 'name' and a 'color' and 'color' must be in '#colors'
+
+### DISEASE CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### CITY CONF - BEGIN ###
+
+# City locations - each city must have a 'name' and a 'color'
+# 'name' must be a String
+# 'color' must be in '#colors'
 cities:
     - name:                     Los Angeles
       color:                    Yellow
@@ -124,24 +147,80 @@ cities:
       color:                    Black
     - name:                     Chennai
       color:                    Black
+
+### CITY CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### OUTBREAKS CONF - BEGIN ###
+
+# The maximum allowable number of outbreaks before game loss
+# must be a positive Integer
+max_outbreaks:                  7
+
+# The initial number of outbreaks that have occurred
+# must be a non-negative Integer <= '#max_outbreaks'
+init_outbreaks:                 0
+
+### OUTBREAKS CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### RESEARCH STATIONS CONF - BEGIN ###
+
 # Research Station location - each location must be a 'name' in '#cities'
 research_stations:
     -                           Atlanta
-# The maximum number of pawns that can be placed on the board - must be greater than 0
+
+### RESEARCH STATIONS CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### PAWNS CONF - BEGIN ###
+
+# The maximum number of pawns that can be placed on the board
+# must be a positive Integer
 max_pawns:                      4
-# The number of pawns to place on the board - can't be more pawns than '#max_pawns'
-num_pawns:                      2
+
+# The initial number of pawns to place on the board
+# must be a non-negative Integer <= '#max_pawns'
+init_pawns:                     2
+
 # The start location for each pawn - each location must be a location in '#research_stations'
+# each location must be a location in '#research_stations'
 # must be same size as '#max_pawns'
 pawn_start_locations:
     -                           Atlanta
     -                           Atlanta
     -                           Atlanta
     -                           Atlanta
+
+### PAWNS CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### HAND SIZE CONF - BEGIN ###
+
+# The maximum number of cards that any pawn can have in hand at end-of-turn
+# must be a positive Integer
+max_hand_size:                  7
+
 # The starting hand size of each pawn according to '#num_pawns'
 # must be the same size as '#max_pawns'
-starting_hand_size:
+# each hand size must be a non-negative Integer <= '#max_hand_size'
+init_hand_size:
     -                           4
     -                           4
     -                           3
     -                           2
+
+### HAND SIZE CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### SECTION CONF - BEGIN ###
+
+### SECTION CONF - END ###
+#==============================================================================#
+
+...
