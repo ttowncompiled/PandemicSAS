@@ -1,4 +1,10 @@
 ---
+# This config YAML allows the use of template strings
+# Template strings use the '' notation
+# Template strings can include inject variables using $
+# Template strings can include configuration options using #
+# All configuration options are subject to mutation during execution
+#
 # Project info
 name:                           PandemicSAS
 author:                         Ian Riley, grad
@@ -352,19 +358,19 @@ events:
 # card templates should have a 'selector', a 'name', a 'color'
 # 'selector' should be none for single or 'for $<id> in #<id>' for collection
 # '$<id>' is a variable and '#<id>' is a collection
-# 'name' should be a 'name' from '#cities', Any, or '$<id>.<prop>'
-# 'color' should be a String from '#colors', Any, or '$<id>.<prop>'
+# 'name' should be a 'name' from '#cities', any, or '$<id>.<prop>'
+# 'color' should be a String from '#colors', any, or '$<id>.<prop>'
 city_card_template:
     - selector:                 for '$city' in '#cities'
-      name:                     Any
+      name:                     any
       color:                    '$city.color'
 
 # The template to generate event cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
 # 'selector' should be none for single or 'for $<id> in #<id>' for collection
 # '$<id>' is a variable and '#<id>' is a collection
-# 'name' should be a 'name' from '#events', Any, or '$<id>.<prop>'
-# 'color' should be a String from '#colors', Any, or '$<id>.<prop>'
+# 'name' should be a 'name' from '#events', any, or '$<id>.<prop>'
+# 'color' should be a String from '#colors', any, or '$<id>.<prop>'
 event_card_template:
     - selector:                 for '$event' in '#events'
       name:                     '$event'
@@ -431,7 +437,7 @@ player_deck_empty_do:           none
 # card templates should have a 'selector', a 'name', a 'color'
 # 'selector' should be none for single or 'for $<id> in #<id>' for collection
 # '$<id>' is a variable and '#<id>' is a collection
-# 'name' should be a 'name' from '#cities', Any, or '$<id>.<prop>'
+# 'name' should be a 'name' from '#cities', any, or '$<id>.<prop>'
 # 'color' should be Green
 infect_card_template:
     - selector:                 for '$city' in '#cities'
@@ -490,20 +496,50 @@ max_sys_actions:                4
 # must be a non-negative Integer
 min_sys_actions:                1
 
+# The resulting location of the 'Drive / Ferry' action
+drive_ferry_move_next:          '$neighbor in $location.neighbors'
+
+# The resulting location of the 'Direct Flight' action
+direct_flight_move_next:        '$discard_card.name'
+
+# The requirement for the 'Charter Flight' action
+charter_flight_req:             '$discard_card.name == $location.name'
+
+# The resulting location of the 'Charter Flight' action
+charter_flight_move_next:       any
+
+# The requirement for the 'Shuttle Flight' action
+shuttle_flight_req:             '$location.name in #research_stations'
+
+# The resulting location of the 'Shuttle Flight' action
+shuttle_flight_move_next:       '$research_station in #research_stations'
+
+# The requirement for the 'Build a Research Station' action
+build_research_station_req:     '$discard_card.name == $location.name'
+
+# The resulting location of the new research station
+build_research_station_next:    '$location.name'
+
 # The number of disease cubes that can be removed with a single
 # 'Treat Disease' action
 # must be a positive Integer
 treat_disease_cube_count:       1
+
+# The requirement for the 'Share Knowledge' action
+share_knowledge_req:            '$location.name == $other.location.name and $discard_card.name == $location.name'
 
 # The number of cards that can be shared with a single 'Share Knowledge'
 # action
 # must be a positive Integer
 share_knowledge_card_count:     1
 
+# The requirement for the 'Discover a Cure' action
+discover_cure_req:              '$location.name in #research_stations'
+
 # The number of cards required of the same color that are required to perform
 # the 'Discover a Cure' action
 # must be a positive Integer
-discover_a_cure_card_count:     5
+discover_cure_card_count:       5
 
 ### SYS ACTIONS CONF - END ###
 #==============================================================================#
@@ -556,9 +592,9 @@ start_infect_count:
 deal_player_card_count:         2
 
 # The number of times to call the 'Infect City' action
-# per trigger of the 'Intensify' action
+# per trigger of the 'Infect' action
 # must be a positive Integer
-intensify_infect_count:         3
+infect_count:                   3
 
 # The number of times to call the 'Infect City' action per turn
 # must be a positive integer
