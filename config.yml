@@ -249,6 +249,9 @@ roles:
     -                           Researcher
     -                           Scientist
 
+# Whether each role can only be assigned to one pawn
+roles_are_unique:                    false
+
 ### ROLES CONF - END ###
 #==============================================================================#
 
@@ -274,6 +277,7 @@ pawn_init_locations:
 
 # The initial role for each pawn - each role must be a role in '#roles'
 # must be the same size as '#max_pawns'
+# each role must be unique if '#roles_are_unique'
 pawn_init_roles:
     -                           None
     -                           None
