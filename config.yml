@@ -459,6 +459,32 @@ infect_deck_empty_do:           riffle
 #==============================================================================#
 
 #==============================================================================#
+### ACTIONS CONF - BEGIN ###
+
+# The available system player actions
+sys_actions:
+    -                           Drive / Ferry
+    -                           Direct Flight
+    -                           Charter Flight
+    -                           Shuttle Flight
+    -                           Build a Research Station
+    -                           Treat Disease
+    -                           Share Knowledge
+    -                           Discover a Cure
+    -                           Yield
+
+# The maximum number of actions a pawn can take per turn
+# must be a positive Integer
+max_sys_actions:                4
+
+# The minimum number of actions a pawn can take per turn
+# must be a non-negative Integer
+min_sys_actions:                1
+
+### ACTIONS CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
 ### SECTION CONF - BEGIN ###
 
 ### SECTION CONF - END ###
