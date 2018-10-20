@@ -459,10 +459,11 @@ infect_deck_empty_do:           riffle
 #==============================================================================#
 
 #==============================================================================#
-### ACTIONS CONF - BEGIN ###
+### SYS ACTIONS CONF - BEGIN ###
 
 # The available system player actions
 sys_actions:
+    -                           Start
     -                           Drive / Ferry
     -                           Direct Flight
     -                           Charter Flight
@@ -481,7 +482,34 @@ max_sys_actions:                4
 # must be a non-negative Integer
 min_sys_actions:                1
 
-### ACTIONS CONF - END ###
+### SYS ACTIONS CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### ENV ACTIONS CONF - BEGIN ###
+
+# The available environment player actions
+env_actions:
+    -                           Start
+    -                           Deal Player Cards
+    -                           Epidemic
+    -                           Increase
+    -                           Infect
+    -                           Intensify
+    -                           Discard Player Cards
+    -                           Infect City
+    -                           Outbreak
+    -                           Yield
+
+# The maximum number of actions the environment can take per turn
+# must be a positive Integer or none
+max_env_actions:                none
+
+# The minimum number of actions the environment can take per turn
+# must be a non-negative Integer
+min_env_actions:                3
+
+### ENV ACTIONS CONF - END ###
 #==============================================================================#
 
 #==============================================================================#
