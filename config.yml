@@ -308,6 +308,20 @@ init_hand_size:
 #==============================================================================#
 
 #==============================================================================#
+### EVENTS CONF - BEGIN ###
+
+# The names of the event cards - each name should be a String
+events:
+    -                           Airlift
+    -                           Forecast
+    -                           Government Grant
+    -                           One Quiet Night
+    -                           Resilient Population
+
+### EVENTS CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
 ### PLAYER DECK CONF - BEGIN ###
 
 # The template to generate city cards for the player deck
@@ -328,8 +342,8 @@ city_card_template:
 # 'name' should be a 'name' from '#events', Any, or '$<id>.<prop>'
 # 'color' should be a String from '#colors', Any, or '$<id>.<prop>'
 event_card_template:
-    - selector:                 None
-      name:                     Any
+    - selector:                 for '$event' in '#events'
+      name:                     '$event'
       color:                    Gold
 
 # The template to generate epidemic cards for the player deck
@@ -368,6 +382,12 @@ player_deck_template:
       blank_card_template:      8
 
 ### PLAYER DECK CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### SECTION CONF - BEGIN ###
+
+### SECTION CONF - END ###
 #==============================================================================#
 
 #==============================================================================#
