@@ -35,12 +35,32 @@ curable:
     -                           Blue
     -                           Black
 
+# The number of diseases that must be cured to win the game
+# must be a positive Integer
+# cannot be larger than the size of '#curable'
+max_diseases_cured:             1
+
+# The diseases that are initially cured
+# each type must be None or be in '#curable'
+init_diseases_cured:
+    -                           None
+
 # Eradicable disease types - type must be in '#diseases'
 eradicable:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
+
+# The number of diseases that must be eradicated to win the game
+# must be a positive Integer
+# cannot be larger than the size of '#eradicable'
+max_diseases_eradicated:        0
+
+# The diseases that are initially eradicated
+# each type must be None or be in '#eradicable'
+init_diseases_eradicated:
+    -                           None
 
 # The maximum number of disease cubes for any disease type
 # must be a positive Integer
