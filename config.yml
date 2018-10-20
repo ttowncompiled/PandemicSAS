@@ -8,25 +8,25 @@ colors:
     -                           Blue
     -                           Black
     -                           White
-# All Disease types - type must be in '#colors'
+# Disease types - type must be in '#colors'
 diseases:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
-# All curable Disease types - type must be in '#diseases'
+# Curable Disease types - type must be in '#diseases'
 curable:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
-# All eradicable Disease types - type must be in '#diseases'
+# Eradicable Disease types - type must be in '#diseases'
 eradicable:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
-# Board City locations - each city must have a 'name' and a 'color' and 'color' must be in '#colors'
+# City locations - each city must have a 'name' and a 'color' and 'color' must be in '#colors'
 cities:
     - name:                     Los Angeles
       color:                    Yellow
@@ -124,3 +124,14 @@ cities:
       color:                    Black
     - name:                     Chennai
       color:                    Black
+# Research Station location - each location must be a 'name' in '#cities'
+research_stations:
+    -                           Atlanta
+# The start location for each pawn - each location must be a location in '#research_stations'
+pawn_start_locations:
+    -                           Atlanta
+    -                           Atlanta
+    -                           Atlanta
+    -                           Atlanta
+# The number of pawns to place on the board - can't be more pawns than '#pawn_start_locations'
+num_pawns:                      2
