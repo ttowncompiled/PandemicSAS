@@ -401,7 +401,7 @@ player_deck_template:
       epidemic_card_template:   4
       blank_card_template:      8
 
-# The shuffle type to use to distribute init player cards
+# The shuffle type to use to distribute player cards before play
 # must be riffle or pile
 player_deck_shuffle_init:       riffle
 
@@ -444,7 +444,11 @@ infect_card_template:
 infect_deck_template:
     - infect_card_template:     true
 
-# The shuffle type to use to distribute infect cards
+# The shuffle type to use to distribute infect cards before play
+# must be riffle or pile
+infect_deck_shuffle_init:       riffle
+
+# The shuffle type to use to distribute player cards during play
 # must be riffle or pile
 infect_deck_shuffle:            riffle
 
@@ -491,12 +495,12 @@ min_sys_actions:                1
 # The available environment player actions
 env_actions:
     -                           Start
-    -                           Deal Player Cards
+    -                           Deal Player Card
     -                           Epidemic
     -                           Increase
     -                           Infect
     -                           Intensify
-    -                           Discard Player Cards
+    -                           Discard Player Card
     -                           Infect City
     -                           Outbreak
     -                           Yield
@@ -506,8 +510,55 @@ env_actions:
 max_env_actions:                none
 
 # The minimum number of actions the environment can take per turn
-# must be a non-negative Integer
-min_env_actions:                3
+# must be a non-negative Integer or none
+min_env_actions:                '#infection_rates[$infection_rate]' + '#deal_player_card_count' + 1
+
+# The number of cards from the infect deck used in the env start action
+# must be a positive Integer
+start_num_cards:                9
+
+# The number of times to trigger the 'Infect City' action per card
+# for the start action
+# must be same size as '#start_num_cards'
+# each count must be a non-negative Integer <= '#infect_city_max_size'
+start_infect_count:
+    -                           3
+    -                           3
+    -                           3
+    -                           2
+    -                           2
+    -                           2
+    -                           1
+    -                           1
+    -                           1
+
+# The number of times to call the 'Deal Player Card' action per turn
+# must be a positive Integer
+deal_player_card_count:         2
+
+# The number of times to call the 'Infect City' action
+# per trigger of the 'Intensify' action
+# must be a positive Integer
+intensify_infect_count:         3
+
+# The number of times to call the 'Infect City' action per turn
+# must be a positive integer
+infect_city_count:              '#infection_rates[$infection_rate]'
+
+# The number of times the 'Infect City' action can be called on a single
+# city per turn.
+# must be a positive Integer or none
+infect_city_max_count:          none
+
+# The number of infections of a single color that can be present on a single
+# city before an outbreak can be triggered
+# must be a positive Integer
+infect_city_max_size:           3
+
+# The number of times the 'Outbreak' action can be called on a single city
+# per turn.
+# must be a positive Integer or none
+outbreak_max_count:             1
 
 ### ENV ACTIONS CONF - END ###
 #==============================================================================#
