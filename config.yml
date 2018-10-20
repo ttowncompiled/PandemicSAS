@@ -12,7 +12,8 @@ colors:
     -                           Red
     -                           Blue
     -                           Black
-    -                           White
+    -                           Green
+    -                           Gold
 
 ### COLOR CONF - END ###
 #==============================================================================#
@@ -304,6 +305,69 @@ init_hand_size:
     -                           2
 
 ### HAND SIZE CONF - END ###
+#==============================================================================#
+
+#==============================================================================#
+### PLAYER DECK CONF - BEGIN ###
+
+# The template to generate city cards for the player deck
+# card templates should have a 'selector', a 'name', a 'color'
+# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# '$<id>' is a variable and '#<id>' is a collection
+# 'name' should be a 'name' from '#cities', Any, or '$<id>.<prop>'
+# 'color' should be a String from '#colors', Any, or '$<id>.<prop>'
+city_card_template:
+    - selector:                 for '$city' in '#cities'
+      name:                     Any
+      color:                    '$city.color'
+
+# The template to generate event cards for the player deck
+# card templates should have a 'selector', a 'name', a 'color'
+# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# '$<id>' is a variable and '#<id>' is a collection
+# 'name' should be a 'name' from '#events', Any, or '$<id>.<prop>'
+# 'color' should be a String from '#colors', Any, or '$<id>.<prop>'
+event_card_template:
+    - selector:                 None
+      name:                     Any
+      color:                    Gold
+
+# The template to generate epidemic cards for the player deck
+# card templates should have a 'selector', a 'name', a 'color'
+# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# '$<id>' is a variable and '#<id>' is a collection
+# 'name' should be Epidemic
+# 'color' should be Green
+epidemic_card_template:
+    - selector:                 None
+      name:                     Epidemic
+      color:                    Green
+
+# The template to generate blank cards for the player deck
+# card templates should have a 'selector', a 'name', a 'color'
+# 'selector' should be None for single or 'for $<id> in #<id>' for collection
+# '$<id>' is a variable and '#<id>' is a collection
+# 'name' should be None
+# 'color' should be None
+blank_card_template:
+    - selector:                 None
+      name:                     None
+      color:                    None
+
+# The template to generate the player deck
+# each field should specity a template from config
+# set the field to 'false' to not use the template
+# set the field to 'true' to use the template once
+# set the field to 0 to not use the template
+# set the field to x to use the template x times
+# note that 'selector' None is used to create a single card
+player_deck_template:
+    - city_card_template:       true
+      event_card_template:      false
+      epidemic_card_template:   4
+      blank_card_template:      8
+
+### PLAYER DECK CONF - END ###
 #==============================================================================#
 
 #==============================================================================#
