@@ -166,6 +166,36 @@ init_outbreaks:                 0
 #==============================================================================#
 
 #==============================================================================#
+### INFECTION RATE - BEGIN ###
+
+# The maximum number of infection rate intensities
+# must be a non-negative Integer
+max_infection_rates:            7
+
+# The initial rate from which to choose the infection rate intensity
+# must be a non-negative Integer <= '#max_infection_rates'
+init_infection_rate:            1
+
+# The maximum intensity for any infection rate
+# must be a non-negative Integer
+max_infection_rate:             4
+
+# The infection rate intensities
+# must be the same size as '#max_infection_rates'
+# each intensity must be a non-negative Integer <= '#max_infection_rate'
+infection_rates:
+    -                           2
+    -                           2
+    -                           2
+    -                           3
+    -                           3
+    -                           4
+    -                           4
+
+### INFECTION RATE - END ###
+#==============================================================================#
+
+#==============================================================================#
 ### RESEARCH STATIONS CONF - BEGIN ###
 
 # The maximum number of research statations that can be on the board
