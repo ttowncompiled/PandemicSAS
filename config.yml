@@ -127,11 +127,21 @@ cities:
 # Research Station location - each location must be a 'name' in '#cities'
 research_stations:
     -                           Atlanta
+# The maximum number of pawns that can be placed on the board - must be greater than 0
+max_pawns:                      4
+# The number of pawns to place on the board - can't be more pawns than '#max_pawns'
+num_pawns:                      2
 # The start location for each pawn - each location must be a location in '#research_stations'
+# must be same size as '#max_pawns'
 pawn_start_locations:
     -                           Atlanta
     -                           Atlanta
     -                           Atlanta
     -                           Atlanta
-# The number of pawns to place on the board - can't be more pawns than '#pawn_start_locations'
-num_pawns:                      2
+# The starting hand size of each pawn according to '#num_pawns'
+# must be the same size as '#max_pawns'
+starting_hand_size:
+    -                           4
+    -                           4
+    -                           3
+    -                           2
