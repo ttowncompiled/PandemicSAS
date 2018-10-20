@@ -36,6 +36,7 @@ curable:
     -                           Black
 
 # The number of diseases that must be cured to win the game
+# The sys player wins once '$num_diseases_cured' >= '#max_diseases_cured' and '$num_diseases_eradicated' >= '#max_diseases_eradicated'
 # must be a positive Integer
 # cannot be larger than the size of '#curable'
 max_diseases_cured:             1
@@ -53,6 +54,7 @@ eradicable:
     -                           Black
 
 # The number of diseases that must be eradicated to win the game
+# The sys player wins once '$num_diseases_cured' >= '#max_diseases_cured' and '$num_diseases_eradicated' >= '#max_diseases_eradicated'
 # must be a positive Integer
 # cannot be larger than the size of '#eradicable'
 max_diseases_eradicated:        0
@@ -67,6 +69,7 @@ init_diseases_eradicated:
 max_disease_cubes:              24
 
 # The minimum number of disease cubes for any disease type
+# The sys player loses once '#disease_cubes[any].count' < '#min_disease_cube'
 # must be a non-negative Integer
 min_disease_cubes:              0
 
@@ -200,6 +203,7 @@ cities:
 ### OUTBREAKS CONF - BEGIN ###
 
 # The maximum allowable number of outbreaks before game loss
+# The sys player loses once '$num_outbreaks' > '#max_outbreaks'
 # must be a positive Integer
 max_outbreaks:                  7
 
@@ -485,6 +489,21 @@ max_sys_actions:                4
 # The minimum number of actions a pawn can take per turn
 # must be a non-negative Integer
 min_sys_actions:                1
+
+# The number of disease cubes that can be removed with a single
+# 'Treat Disease' action
+# must be a positive Integer
+treat_disease_cube_count:       1
+
+# The number of cards that can be shared with a single 'Share Knowledge'
+# action
+# must be a positive Integer
+share_knowledge_card_count:     1
+
+# The number of cards required of the same color that are required to perform
+# the 'Discover a Cure' action
+# must be a positive Integer
+discover_a_cure_card_count:     5
 
 ### SYS ACTIONS CONF - END ###
 #==============================================================================#
