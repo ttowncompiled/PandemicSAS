@@ -1,8 +1,8 @@
 ---
 # This config YAML allows the use of template strings
-# Template strings use the '' notation
-# Template strings can include inject variables using $
-# Template strings can include configuration options using #
+# Template strings use the 'template-string' notation
+# Template strings can include injected variables using $ident
+# Template strings can define new variables using $ident
 # All configuration options are subject to mutation during execution
 #
 # Project info
@@ -20,6 +20,7 @@ colors:
     -                           Black
     -                           Green
     -                           Gold
+    -                           Blank
 
 ### COLOR CONF - END ###
 #==============================================================================#
@@ -27,14 +28,14 @@ colors:
 #==============================================================================#
 ### DISEASE CONF - BEGIN ###
 
-# Disease types - type must be in '#colors'
+# Disease types - type must be in $colors
 diseases:
     -                           Yellow
     -                           Red
     -                           Blue
     -                           Black
 
-# Curable disease types - type must be in '#diseases'
+# Curable disease types - type must be in $diseases
 curable:
     -                           Yellow
     -                           Red
@@ -42,17 +43,18 @@ curable:
     -                           Black
 
 # The number of diseases that must be cured to win the game
-# The sys player wins once '$num_diseases_cured' >= '#max_diseases_cured' and '$num_diseases_eradicated' >= '#max_diseases_eradicated'
+# The sys player wins once $num_diseases_cured >= $max_diseases_cured
+#   and $num_diseases_eradicated >= $max_diseases_eradicated
 # must be a positive Integer
-# cannot be larger than the size of '#curable'
+# cannot be larger than the size of $curable
 max_diseases_cured:             1
 
 # The diseases that are initially cured
-# each type must be none or be in '#curable'
-init_diseases_cured:
-    -                           none
+# must be nothing or each type must be in $curable
+init_diseases_cured:            nothing
 
-# Eradicable disease types - type must be in '#diseases'
+# Eradicable disease types
+# must be nothing or each type must be in $diseases
 eradicable:
     -                           Yellow
     -                           Red
@@ -60,31 +62,32 @@ eradicable:
     -                           Black
 
 # The number of diseases that must be eradicated to win the game
-# The sys player wins once '$num_diseases_cured' >= '#max_diseases_cured' and '$num_diseases_eradicated' >= '#max_diseases_eradicated'
+# The sys player wins once $num_diseases_cured >= $max_diseases_cured
+#   and $num_diseases_eradicated >= $max_diseases_eradicated
 # must be a positive Integer
-# cannot be larger than the size of '#eradicable'
+# cannot be larger than the size of $eradicable
 max_diseases_eradicated:        0
 
 # The diseases that are initially eradicated
-# each type must be none or be in '#eradicable'
-init_diseases_eradicated:
-    -                           none
+# must be nothing or each type must be in $eradicable
+init_diseases_eradicated:       nothing
 
 # The maximum number of disease cubes for any disease type
 # must be a positive Integer
 max_disease_cubes:              24
 
 # The minimum number of disease cubes for any disease type
-# The sys player loses once '#disease_cubes[any].count' < '#min_disease_cube'
+# The sys player loses once $disease_cubes[$disease].count < $min_disease_cube
+#   for some $disease in $diseases
 # must be a non-negative Integer
 min_disease_cubes:              0
 
 # The number of disease cubes for each disease type
 # must have 'color' and 'count'
-# each 'color' must be in '#diseases'
-# must have each type in '#diseases'
+# each 'color' must be in $diseases
+# must have each type in $diseases
 # each 'count' must be a non-negative Integer
-# '#min_disease_cubes' <= 'count' <= '#max_disease_cubes'
+# $min_disease_cubes <= 'count' <= $max_disease_cubes
 disease_cubes:
     - color:                    Yellow
       count:                    24
@@ -103,7 +106,7 @@ disease_cubes:
 
 # City locations - each city must have a 'name' and a 'color'
 # 'name' must be a String
-# 'color' must be in '#colors'
+# 'color' must be in $colors
 cities:
     - name:                     Los Angeles
       color:                    Yellow
@@ -209,12 +212,12 @@ cities:
 ### OUTBREAKS CONF - BEGIN ###
 
 # The maximum allowable number of outbreaks before game loss
-# The sys player loses once '$num_outbreaks' > '#max_outbreaks'
+# The sys player loses once $num_outbreaks > $max_outbreaks
 # must be a positive Integer
 max_outbreaks:                  7
 
 # The initial number of outbreaks that have occurred
-# must be a non-negative Integer <= '#max_outbreaks'
+# must be a non-negative Integer <= $max_outbreaks
 init_outbreaks:                 0
 
 ### OUTBREAKS CONF - END ###
@@ -228,7 +231,7 @@ init_outbreaks:                 0
 max_infection_rates:            7
 
 # The initial rate from which to choose the infection rate intensity
-# must be a positive Integer <= '#max_infection_rates'
+# must be a positive Integer <= $max_infection_rates
 init_infection_rate:            1
 
 # The maximum intensity for any infection rate
@@ -236,8 +239,8 @@ init_infection_rate:            1
 max_infection_rate:             4
 
 # The infection rate intensities
-# must be the same size as '#max_infection_rates'
-# each intensity must be a positive Integer <= '#max_infection_rate'
+# must be the same size as $max_infection_rates
+# each intensity must be a positive Integer <= $max_infection_rate
 infection_rates:
     -                           2
     -                           2
@@ -257,8 +260,8 @@ infection_rates:
 # must be a positive Integer
 max_research_stations:          6
 
-# Research station location - each location must be a 'name' in '#cities'
-# must be at least 1, but no more than '#max_research_stations'
+# Research station location - each location must be a 'name' in $cities
+# must be at least 1, but no more than $max_research_stations
 research_stations:
     -                           Atlanta
 
@@ -270,7 +273,7 @@ research_stations:
 
 # The allowable roles for a pawn
 roles:
-    -                           None
+    -                           Basic
     -                           Random
     -                           Contingency Planner
     -                           Dispatcher
@@ -283,6 +286,17 @@ roles:
 # Whether each role can only be assigned to one pawn
 roles_are_unique:               false
 
+# The roles that can be assigned if the Random role is chosen
+# each role must be in $roles
+random_roles:
+    -                           Contingency Planner
+    -                           Dispatcher
+    -                           Medic
+    -                           Operations Expert
+    -                           Quarantine Specialist
+    -                           Researcher
+    -                           Scientist
+
 ### ROLES CONF - END ###
 #==============================================================================#
 
@@ -294,26 +308,26 @@ roles_are_unique:               false
 max_pawns:                      4
 
 # The initial number of pawns to place on the board
-# must be a positive Integer <= '#max_pawns'
+# must be a positive Integer <= $max_pawns
 init_pawns:                     2
 
 # The start location for each pawn
-# each location must be a location in '#research_stations'
-# must be same size as '#max_pawns'
+# each location must be a location in $research_stations
+# must be same size as $max_pawns
 pawn_init_locations:
     -                           Atlanta
     -                           Atlanta
     -                           Atlanta
     -                           Atlanta
 
-# The initial role for each pawn - each role must be a role in '#roles'
-# must be the same size as '#max_pawns'
-# each role must be unique if '#roles_are_unique'
+# The initial role for each pawn - each role must be a role in $roles
+# must be the same size as $max_pawns
+# each role must be unique if $roles_are_unique
 pawn_init_roles:
-    -                           None
-    -                           None
-    -                           None
-    -                           None
+    -                           Basic
+    -                           Basic
+    -                           Basic
+    -                           Basic
 
 ### PAWNS CONF - END ###
 #==============================================================================#
@@ -325,9 +339,9 @@ pawn_init_roles:
 # must be a positive Integer
 max_hand_size:                  7
 
-# The starting hand size of each pawn according to '#num_pawns'
-# must be the same size as '#max_pawns'
-# each hand size must be a non-negative Integer <= '#max_hand_size'
+# The starting hand size of each pawn according to $num_pawns
+# must be the same size as $max_pawns
+# each hand size must be a non-negative Integer <= $max_hand_size
 init_hand_size:
     -                           4
     -                           4
@@ -356,47 +370,51 @@ events:
 
 # The template to generate city cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be none for single or 'for $<id> in #<id>' for collection
-# '$<id>' is a variable and '#<id>' is a collection
-# 'name' should be a 'name' from '#cities', any, or '$<id>.<prop>'
-# 'color' should be a String from '#colors', any, or '$<id>.<prop>'
+# 'selector' should be '' or '$<id>' for single
+#   or 'for $<id> in $<id>' for collection
+# '$<id>' is an inject variable which can be as single value or a collection
+# 'name' should be a 'name' from $cities, Any, or '$<id>.<prop>'
+# 'color' should be a String from $colors', Any, or '$<id>.<prop>'
 city_card_template:
-    - selector:                 for '$city' in '#cities'
-      name:                     any
+    - selector:                 'for $city in $cities'
+      name:                     Any
       color:                    '$city.color'
 
 # The template to generate event cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be none for single or 'for $<id> in #<id>' for collection
-# '$<id>' is a variable and '#<id>' is a collection
-# 'name' should be a 'name' from '#events', any, or '$<id>.<prop>'
-# 'color' should be a String from '#colors', any, or '$<id>.<prop>'
+# 'selector' should be '' or '$<id>' for single
+#   or 'for $<id> in $<id>' for collection
+# '$<id>' is an inject variable which can be as single value or a collection
+# 'name' should be a 'name' from $events, Any, or '$<id>.<prop>'
+# 'color' should be a String from $colors', Any, or '$<id>.<prop>'
 event_card_template:
-    - selector:                 for '$event' in '#events'
+    - selector:                 'for $event in $events'
       name:                     '$event'
       color:                    Gold
 
 # The template to generate epidemic cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be none for single or 'for $<id> in #<id>' for collection
-# '$<id>' is a variable and '#<id>' is a collection
+# 'selector' should be '' or '$<id>' for single
+#   or 'for $<id> in $<id>' for collection
+# '$<id>' is an inject variable which can be as single value or a collection
 # 'name' should be Epidemic
 # 'color' should be Green
 epidemic_card_template:
-    - selector:                 none
+    - selector:                 ''
       name:                     Epidemic
       color:                    Green
 
 # The template to generate blank cards for the player deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be none for single or 'for $<id> in #<id>' for collection
-# '$<id>' is a variable and '#<id>' is a collection
-# 'name' should be none
-# 'color' should be none
+# 'selector' should be '' or '$<id>' for single
+#   or 'for $<id> in $<id>' for collection
+# '$<id>' is an inject variable which can be as single value or a collection
+# 'name' should be Blank
+# 'color' should be Blank
 blank_card_template:
-    - selector:                 none
-      name:                     none
-      color:                    none
+    - selector:                 ''
+      name:                     Blank
+      color:                    Blank
 
 # The template to generate the player deck
 # each field should specity a template from config
@@ -435,12 +453,13 @@ player_deck_empty_do:           none
 
 # The template to generate infect cards for the infect deck
 # card templates should have a 'selector', a 'name', a 'color'
-# 'selector' should be none for single or 'for $<id> in #<id>' for collection
-# '$<id>' is a variable and '#<id>' is a collection
-# 'name' should be a 'name' from '#cities', any, or '$<id>.<prop>'
+# 'selector' should be '' or '$<id>' for single
+#   or 'for $<id> in $<id>' for collection
+# '$<id>' is an inject variable which can be as single value or a collection
+# 'name' should be a 'name' from $cities, Any, or '$<id>.<prop>'
 # 'color' should be Green
 infect_card_template:
-    - selector:                 for '$city' in '#cities'
+    - selector:                 'for $city in $cities'
       name:                     '$city.name'
       color:                    Green
 
@@ -490,56 +509,38 @@ sys_actions:
 
 # The maximum number of actions a pawn can take per turn
 # must be a positive Integer
-max_sys_actions:                4
+max_sys_actions:                5
 
 # The minimum number of actions a pawn can take per turn
 # must be a non-negative Integer
 min_sys_actions:                1
 
-# The resulting location of the 'Drive / Ferry' action
-drive_ferry_move_next:          '$neighbor in $location.neighbors'
+# A guard for the 'Start' action
+sys_start_guard:                '$sys.turn is 1 and $move.name in $research_stations'
 
-# The resulting location of the 'Direct Flight' action
-direct_flight_move_next:        '$discard_card.name'
+# A guard for the 'Drive / Ferry' action
+drive_ferry_guard:              '$move.name in $sys.location.neighbors'
 
-# The requirement for the 'Charter Flight' action
-charter_flight_req:             '$discard_card.name == $location.name'
+# A guard for the 'Direct Flight' action
+direct_flight_guard:            '$discard.name is Any or $discard.name is $move.name'
 
-# The resulting location of the 'Charter Flight' action
-charter_flight_move_next:       any
+# A guard for the 'Charter Flight' action
+charter_flight_guard:           '$discard.name is $sys.location.name'
 
-# The requirement for the 'Shuttle Flight' action
-shuttle_flight_req:             '$location.name in #research_stations'
+# A guard for the 'Shuttle Flight' action
+shuttle_flight_guard:           '$sys.location.name in $research_stations and $move.name in $research_stations'
 
-# The resulting location of the 'Shuttle Flight' action
-shuttle_flight_move_next:       '$research_station in #research_stations'
+# A guard for the 'Build a Research Station' action
+build_a_research_station_guard: '$discard.name is $sys.location.name and $station.location.name is $sys.location.name'
 
-# The requirement for the 'Build a Research Station' action
-build_research_station_req:     '$discard_card.name == $location.name'
+# A guard for the 'Treat Disease' action
+treat_disase_cube_guard:        '$treat.location.name is $sys.location.name and $treat.count is 1'
 
-# The resulting location of the new research station
-build_research_station_next:    '$location.name'
+# A guard for the 'Share Knowledge' action
+share_knowledge_guard:          '$sys.location.name is $target.location.name and $discard.name is $sys.location.name'
 
-# The number of disease cubes that can be removed with a single
-# 'Treat Disease' action
-# must be a positive Integer
-treat_disease_cube_count:       1
-
-# The requirement for the 'Share Knowledge' action
-share_knowledge_req:            '$location.name == $other.location.name and $discard_card.name == $location.name'
-
-# The number of cards that can be shared with a single 'Share Knowledge'
-# action
-# must be a positive Integer
-share_knowledge_card_count:     1
-
-# The requirement for the 'Discover a Cure' action
-discover_cure_req:              '$location.name in #research_stations'
-
-# The number of cards required of the same color that are required to perform
-# the 'Discover a Cure' action
-# must be a positive Integer
-discover_cure_card_count:       5
+# A guard for the 'Discover a Cure' action
+discover_a_cure_guard:          '$sys.location.name in $research_stations and $discards.count is 5 and $discard.color is $disease.color for $discard in $discards where $disease.color in $curable'
 
 ### SYS ACTIONS CONF - END ###
 #==============================================================================#
@@ -566,7 +567,7 @@ max_env_actions:                none
 
 # The minimum number of actions the environment can take per turn
 # must be a non-negative Integer or none
-min_env_actions:                '#infection_rates[$infection_rate]' + '#deal_player_card_count' + 1
+min_env_actions:                '$infection_rates[$infection_rate] + $deal_player_card_count + 1'
 
 # The number of cards from the infect deck used in the env start action
 # must be a positive Integer
@@ -574,8 +575,8 @@ start_num_cards:                9
 
 # The number of times to trigger the 'Infect City' action per card
 # for the start action
-# must be same size as '#start_num_cards'
-# each count must be a non-negative Integer <= '#infect_city_max_size'
+# must be same size as $start_num_cards
+# each count must be a non-negative Integer <= $infect_city_max_size
 start_infect_count:
     -                           3
     -                           3
@@ -598,7 +599,7 @@ infect_count:                   3
 
 # The number of times to call the 'Infect City' action per turn
 # must be a positive integer
-infect_city_count:              '#infection_rates[$infection_rate]'
+infect_city_count:              '$infection_rates[$infection_rate]'
 
 # The number of times the 'Infect City' action can be called on a single
 # city per turn.
