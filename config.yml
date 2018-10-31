@@ -498,49 +498,52 @@ infect_deck_empty_do:           riffle
 sys_actions:
     -                           Start
     -                           Drive / Ferry
+    -                           Discard Card
     -                           Direct Flight
     -                           Charter Flight
     -                           Shuttle Flight
     -                           Build a Research Station
     -                           Treat Disease
     -                           Share Knowledge
+    -                           Discard For Cure
     -                           Discover a Cure
     -                           Yield
 
-# The maximum number of actions a pawn can take per turn
-# must be a positive Integer
-max_sys_actions:                5
-
-# The minimum number of actions a pawn can take per turn
-# must be a non-negative Integer
-min_sys_actions:                1
-
-# A guard for the 'Start' action
-sys_start_guard:                '$sys.turn is 1 and $move.name in $research_stations'
+# A guard for the 'Start' action of the sys player
+sys_start_guard:                '$sys.round is 1 and $move.location.name in $research_stations'
 
 # A guard for the 'Drive / Ferry' action
-drive_ferry_guard:              '$move.name in $sys.location.neighbors'
+drive_ferry_guard:              'not $sys.round is 1 and $move.location.name in $sys.location.neighbors'
+
+# A guard for the 'Discard Card' action
+discard_card_action:            'not $sys.round is 1 and $sys.hand.size > 0'
 
 # A guard for the 'Direct Flight' action
-direct_flight_guard:            '$discard.name is Any or $discard.name is $move.name'
+direct_flight_guard:            'not $sys.round is 1 and $has_discarded and $discard_card.name is Any or $discard_card.name is $move.location.name'
 
 # A guard for the 'Charter Flight' action
-charter_flight_guard:           '$discard.name is $sys.location.name'
+charter_flight_guard:           'not $sys.round is 1 and $has_discarded and $discard_card.name is $sys.location.name'
 
 # A guard for the 'Shuttle Flight' action
-shuttle_flight_guard:           '$sys.location.name in $research_stations and $move.name in $research_stations'
+shuttle_flight_guard:           'not $sys.round is 1 and $has_discarded and $sys.location.name in $research_stations and $move.location.name in $research_stations'
 
 # A guard for the 'Build a Research Station' action
-build_a_research_station_guard: '$discard.name is $sys.location.name and $station.location.name is $sys.location.name'
+build_a_research_station_guard: 'not $sys.round is 1 and $has_discarded and $discard_card.name is $sys.location.name and $station.location.name is $sys.location.name'
 
 # A guard for the 'Treat Disease' action
-treat_disase_cube_guard:        '$treat.location.name is $sys.location.name and $treat.count is 1'
+treat_disase_cube_guard:        'not $sys.round is 1 and $treat.location.name is $sys.location.name and $treat.location.status[$disease] > 0 where $disease in $diseases and $treat.spread is 1'
 
 # A guard for the 'Share Knowledge' action
-share_knowledge_guard:          '$sys.location.name is $target.location.name and $discard.name is $sys.location.name'
+share_knowledge_guard:          'not $sys.round is 1 and $has_discarded and $sys.location.name is $target.location.name and $discard_card.name is $sys.location.name'
+
+# A guard for the 'Discard for Cure' action
+discard_for_cure_guard:         'not $sys.round is 1 and $sys.hand.size >= 5 and $sys.hand[$disease] >= 5-$discard_for_cure_action.count where $disease in $curable'
 
 # A guard for the 'Discover a Cure' action
-discover_a_cure_guard:          '$sys.location.name in $research_stations and $discards.count is 5 and $discard.color is $disease.color for $discard in $discards where $disease.color in $curable'
+discover_a_cure_guard:          'not $sys.round is 1 and $sys.location.name in $research_stations and $discard_for_cure_action.count is 5 and $discard_for_cure_cards[$disease] is 5 where $disease in $curable'
+
+# A guard for the 'Yield' action of the sys player
+sys_yield_guard:                'true'
 
 ### SYS ACTIONS CONF - END ###
 #==============================================================================#
@@ -551,33 +554,33 @@ discover_a_cure_guard:          '$sys.location.name in $research_stations and $d
 # The available environment player actions
 env_actions:
     -                           Start
+    -                           Draw Infect Card
+    -                           Infect City
+    -                           Outbreak
     -                           Deal Player Card
     -                           Epidemic
     -                           Increase
     -                           Infect
     -                           Intensify
     -                           Discard Player Card
-    -                           Infect City
-    -                           Outbreak
+    -                           Shuffle
     -                           Yield
 
 # The maximum number of actions the environment can take per turn
-# must be a positive Integer or none
-max_env_actions:                none
+# must be a positive Integer or nothing
+max_env_actions_count:          nothing
 
 # The minimum number of actions the environment can take per turn
 # must be a non-negative Integer or none
-min_env_actions:                '$infection_rates[$infection_rate] + $deal_player_card_count + 1'
+min_env_actions_count:          '$infection_rates[$infection_rate] + $deal_player_card_count + 1'
 
-# The number of cards from the infect deck used in the env start action
-# must be a positive Integer
-start_num_cards:                9
+# A guard for the 'Start' action of the env player
+env_start_guard:                'not $must_draw_infect_card and not $must_infect and $env.round is 1 and $env.start_action.count <= 9'
 
-# The number of times to trigger the 'Infect City' action per card
-# for the start action
-# must be same size as $start_num_cards
-# each count must be a non-negative Integer <= $infect_city_max_size
-start_infect_count:
+# The number of times to trigger the 'Draw Infect Card' action
+# and 'Infect City' action for the start action
+# each count must be a non-negative Integer <= 3
+env_start_infect_count:
     -                           3
     -                           3
     -                           3
@@ -588,33 +591,36 @@ start_infect_count:
     -                           1
     -                           1
 
-# The number of times to call the 'Deal Player Card' action per turn
-# must be a positive Integer
-deal_player_card_count:         2
 
-# The number of times to call the 'Infect City' action
-# per trigger of the 'Infect' action
-# must be a positive Integer
-infect_count:                   3
+# A guard for the 'Draw Infect Card' action
+draw_infect_card_guard:         '$must_draw_infect_card or not $env.round is 1 and not $must_shuffle and not $deal_player_card_guard and not $infect_city_guard and not $must_outbreak and not $must_epidemic and not $must_increase and not $must_intensify and $env.draw_infect_card_action.count <= $infection_rates[$infection_rate]'
 
-# The number of times to call the 'Infect City' action per turn
-# must be a positive integer
-infect_city_count:              '$infection_rates[$infection_rate]'
+# A guard for the 'Infect City' action
+infect_city_guard:              '$must_infect and $infect.location.name is $drawn_infect_card.name and $infect.spread <= 3 or $must_spread_to[$city.location.name] and not $had_outbreak_this_turn[$city.location.name] where $city in $cities'
 
-# The number of times the 'Infect City' action can be called on a single
-# city per turn.
-# must be a positive Integer or none
-infect_city_max_count:          none
+# A guard for the 'Outbreak' action
+outbreak_guard:                 '$must_outbreak'
 
-# The number of infections of a single color that can be present on a single
-# city before an outbreak can be triggered
-# must be a positive Integer
-infect_city_max_size:           3
+# A guard for the 'Epidemic' action
+epidemic_guard:                 '$must_epidemic and $dealt_player_card.name is Epidemic'
 
-# The number of times the 'Outbreak' action can be called on a single city
-# per turn.
-# must be a positive Integer or none
-outbreak_max_count:             1
+# A guard for the 'Increase' action
+increase_guard:                 '$must_increase and $dealt_player_card.name is Epidemic and $infection_rate_increase is 1'
+
+# A guard for the 'Intensify' action
+intensify_guard:                '$must_intensify and $dealt_player_card.name is Epidemic'
+
+# A guard for the 'Deal Player Card' action
+deal_player_card_guard:         'not $env.round is 1 and not $must_shuffle and not $must_infect_guard and not $must_outbreak and not $must_epidemic and not $must_increase and not $must_intensify and $deal_player_card_action.count <= 2'
+
+# A guard for the 'Discard Player Card' action
+discard_player_card_guard:      'not $env.round is 1 and $sys.hand.size > $max_hand_size'
+
+# A guard for the 'Shuffle' action
+shuffle_guard:                  '$must_shuffle'
+
+# A guard for the 'Yield' action for the env player
+env_yield_guard:                'true'
 
 ### ENV ACTIONS CONF - END ###
 #==============================================================================#
