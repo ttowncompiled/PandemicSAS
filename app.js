@@ -85,18 +85,6 @@
         });
     }
 
-    function play() {
-        return new Promise((resolve) => {
-            resolve(true);
-        });
-    }
-
-    function pause() {
-        return new Promise((resolve) => {
-            resolve(true);
-        });
-    }
-
     function stop() {
         return new Promise((resolve) => {
             axios.get('/stop')
@@ -111,18 +99,63 @@
         });
     }
 
+    function switch_active(curr_active, next_active) {
+        if (!!curr_active && curr_active.hasClass('active')) {
+            curr_active.toggleClass('btn-info');
+            curr_active.toggleClass('btn-outline-light');
+            curr_active.toggleClass('active');
+        }
+        if (!!next_active) {
+            next_active.toggleClass('btn-outline-light');
+            next_active.toggleClass('btn-info');
+            next_active.toggleClass('active');
+        }
+    }
+
+    function inc_step() {
+        if (step == 0 && backward_btn.hasClass('disabled')) {
+            backward_btn.toggleClass('disabled');
+        }
+        step++;
+        if (monitor_btn.hasClass('active')) {
+            switch_active(monitor_btn, analyze_btn);
+        } else if (analyze_btn.hasClass('active')) {
+            switch_active(analyze_btn, plan_btn);
+        } else if (plan_btn.hasClass('active')) {
+            switch_active(plan_btn, execute_btn);
+        } else if (execute_btn.hasClass('active')) {
+            switch_active(execute_btn, monitor_btn);
+        }
+    }
+
+    function dec_step() {
+        step--;
+        if (step == 0 && ! backward_btn.hasClass('disabled')) {
+            backward_btn.addClass('disabled');
+        }
+        if (monitor_btn.hasClass('active')) {
+            switch_active(monitor_btn, execute_btn);
+        } else if (analyze_btn.hasClass('active')) {
+            switch_active(analyze_btn, monitor_btn);
+        } else if (plan_btn.hasClass('active')) {
+            switch_active(plan_btn, analyze_btn);
+        } else if (execute_btn.hasClass('active')) {
+            switch_active(execute_btn, plan_btn);
+        }
+    }
+
     function next() {
-        return new Promise((resolve) => {
-            axios.get('/next')
-                .then((response) => {
-                    console.log(response);
-                    resolve(true);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    resolve(false);
-                });
-        });
+        if (monitor_btn.hasClass('active')) {
+            return analyze();
+        } else if (analyze_btn.hasClass('active')) {
+            return plan();
+        } else if (plan_btn.hasClass('active')) {
+            return execute();
+        } else if (execute_btn.hasClass('active')) {
+            return monitor();
+        } else {
+            return new Promise((resolve) => resolve(false));
+        }
     }
 
     function back() {
@@ -137,6 +170,23 @@
                     resolve(false);
                 });
         });
+    }
+
+    function play() {
+        if (! paused && ! stopped) {
+            setTimeout(() => {
+                next().then((success) => {
+                    if (! success) {
+                        if (! stopped) {
+                            hit_pause();
+                        }
+                        return;
+                    }
+                    inc_step();
+                    play();
+                });
+            }, 1000);
+        }
     }
 
     function add(from_id, to_id, node_label, edge_id, edge_label) {
@@ -162,27 +212,15 @@
         edges.clear();
     }
 
-    function switch_active(curr_active, next_active) {
-        if (!!curr_active && curr_active.hasClass('active')) {
-            curr_active.toggleClass('btn-info');
-            curr_active.toggleClass('btn-outline-light');
-            curr_active.toggleClass('active');
-        }
-        if (!!next_active) {
-            next_active.toggleClass('btn-outline-light');
-            next_active.toggleClass('btn-info');
-            next_active.toggleClass('active');
-        }
-    }
 
     function hit_play() {
-        if (step == 0) {
+        if (step == 0 && ! paused && stopped) {
             start().then((success) => {
                 if (! success) {
                     return;
                 }
-                play_or_pause_btn.toggleClass('btn-outline-warning');
                 play_or_pause_btn.toggleClass('btn-outline-success');
+                play_or_pause_btn.toggleClass('btn-outline-warning');
                 play_or_pause_btn.html($('<span class="oi oi-media-pause"></span>'));
                 if (! monitor_btn.hasClass('active')) {
                     switch_active(null, monitor_btn);
@@ -190,31 +228,35 @@
                 if (stop_btn.hasClass('disabled')) {
                     stop_btn.removeClass('disabled');
                 }
-                if (forward_btn.hasClass('disabled')) {
-                    forward_btn.removeClass('disabled');
-                }
+                stopped = false;
+                play();
             });
         } else {
-            play().then((success) => {
-                if (! success) {
-                    return;
-                }
-                play_or_pause_btn.toggleClass('btn-outline-warning');
-                play_or_pause_btn.toggleClass('btn-outline-success');
-                play_or_pause_btn.html($('<span class="oi oi-media-pause"></span>'));
-            });
+            play_or_pause_btn.toggleClass('btn-outline-primary');
+            play_or_pause_btn.toggleClass('btn-outline-warning');
+            play_or_pause_btn.html($('<span class="oi oi-media-pause"></span>'));
+            if (! backward_btn.hasClass('disabled')) {
+                backward_btn.toggleClass('disabled');
+            }
+            if (! forward_btn.hasClass('disabled')) {
+                forward_btn.toggleClass('disabled');
+            }
+            paused = false;
+            play();
         }
     }
 
     function hit_pause() {
-        pause().then((success) => {
-            if (! success) {
-                return;
-            }
-            play_or_pause_btn.toggleClass('btn-outline-warning');
-            play_or_pause_btn.toggleClass('btn-outline-success');
-            play_or_pause_btn.html($('<span class="oi oi-media-play"></span>'));
-        });
+        play_or_pause_btn.toggleClass('btn-outline-warning');
+        play_or_pause_btn.toggleClass('btn-outline-primary');
+        play_or_pause_btn.html($('<span class="oi oi-media-play"></span>'));
+        if (step > 0 && backward_btn.hasClass('disabled')) {
+            backward_btn.toggleClass('disabled');
+        }
+        if (forward_btn.hasClass('disabled')) {
+            forward_btn.toggleClass('disabled');
+        }
+        paused = true;
     }
 
     function hit_stop() {
@@ -223,9 +265,12 @@
                 return;
             }
             if (play_or_pause_btn.hasClass('btn-outline-warning')) {
-                play_or_pause_btn.removeClass('btn-outline-warning');
-                play_or_pause_btn.addClass('btn-outline-success');
+                play_or_pause_btn.toggleClass('btn-outline-warning');
+                play_or_pause_btn.toggleClass('btn-outline-success');
                 play_or_pause_btn.html($('<span class="oi oi-media-play"></span>'));
+            } else if (play_or_pause_btn.hasClass('btn-outline-primary')) {
+                play_or_pause_btn.toggleClass('btn-outline-primary');
+                play_or_pause_btn.toggleClass('btn-outline-success');
             }
             if (monitor_btn.hasClass('active')) {
                 switch_active(monitor_btn, null);
@@ -237,15 +282,17 @@
                 switch_active(execute_btn, null);
             }
             if (! stop_btn.hasClass('disabled')) {
-                stop_btn.addClass('disabled');
+                stop_btn.toggleClass('disabled');
             }
             if (! backward_btn.hasClass('disabled')) {
-                backward_btn.addClass('disabled');
+                backward_btn.toggleClass('disabled');
             }
             if (! forward_btn.hasClass('disabled')) {
-                forward_btn.addClass('disabled');
+                forward_btn.toggleClass('disabled');
             }
             step = 0;
+            paused = false;
+            stopped = true;
         });
     }
 
@@ -254,19 +301,7 @@
             if (! success) {
                 return;
             }
-            if (step == 0 && backward_btn.hasClass('disabled')) {
-                backward_btn.removeClass('disabled');
-            }
-            step++;
-            if (monitor_btn.hasClass('active')) {
-                switch_active(monitor_btn, analyze_btn);
-            } else if (analyze_btn.hasClass('active')) {
-                switch_active(analyze_btn, plan_btn);
-            } else if (plan_btn.hasClass('active')) {
-                switch_active(plan_btn, execute_btn);
-            } else if (execute_btn.hasClass('active')) {
-                switch_active(execute_btn, monitor_btn);
-            }
+            inc_step();
         });
     }
 
@@ -275,24 +310,14 @@
             if (! success) {
                 return;
             }
-            step--;
-            if (step == 0 && ! backward_btn.hasClass('disabled')) {
-                backward_btn.addClass('disabled');
-            }
-            if (monitor_btn.hasClass('active')) {
-                switch_active(monitor_btn, execute_btn);
-            } else if (analyze_btn.hasClass('active')) {
-                switch_active(analyze_btn, monitor_btn);
-            } else if (plan_btn.hasClass('active')) {
-                switch_active(plan_btn, analyze_btn);
-            } else if (execute_btn.hasClass('active')) {
-                switch_active(execute_btn, plan_btn);
-            }
+            dec_step();
         });
     }
 
     play_or_pause_btn.click(() => {
         if (play_or_pause_btn.hasClass('btn-outline-success')) {
+            hit_play();
+        } else if (play_or_pause_btn.hasClass('btn-outline-primary')) {
             hit_play();
         } else {
             hit_pause();

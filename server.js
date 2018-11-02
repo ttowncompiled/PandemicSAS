@@ -18,11 +18,23 @@ app.get('/start', (req, res) => {
     res.send();
 });
 
-app.get('/stop', (req, res) => {
+app.get('/monitor', (req, res) => {
     res.send();
 });
 
-app.get('/next', (req, res) => {
+app.get('/analyze', (req, res) => {
+    res.send();
+});
+
+app.get('/plan', (req, res) => {
+    res.send();
+});
+
+app.get('/execute', (req, res) => {
+    res.send();
+});
+
+app.get('/stop', (req, res) => {
     res.send();
 });
 
