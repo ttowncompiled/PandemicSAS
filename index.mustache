@@ -32,15 +32,15 @@
                 box-shadow:         3px 3px 5px 6px #ccc;
             }
         </style>
-        <title>PandemicSAS</title>
+        <title>{{title}}</title>
         <nav class="navbar navbar-dark bg-dark">
-            <span class="navbar-brand"><span class="oi oi-project"></span>&nbsp;PandemicSAS</span>
-            <form class="form-inline">
-                <button id="backward" class="btn btn-outline-secondary disabled mx-2 my-2 my-sm-0"><span class="oi oi-media-step-backward"></span></button>
-                <button id="run" class="btn btn-outline-success mx-2 my-2 my-sm-0"><span class="oi oi-media-play"></span></button>
-                <button id="stop" class="btn btn-outline-danger mx-2 my-2 my-sm-0 disabled"><span class="oi oi-media-stop"></span></button>
-                <button id="forward" class="btn btn-outline-secondary mx-2 my-2 my-sm-0 disabled"><span class="oi oi-media-step-forward"></span></button>
-            </form>
+            <span class="navbar-brand"><span class="oi oi-project"></span>&nbsp;{{title}} - {{author}}</span>
+            <div class="form-inline">
+                <button id="backward" class="btn btn-outline-secondary mx-2 my-2 my-sm-0 disabled" type="button"><span class="oi oi-media-step-backward"></span></button>
+                <button id="play-pause" class="btn btn-outline-success mx-2 my-2 my-sm-0" type="button"><span class="oi oi-media-play"></span></button>
+                <button id="stop" class="btn btn-outline-danger mx-2 my-2 my-sm-0 disabled" type="button"><span class="oi oi-media-stop"></span></button>
+                <button id="forward" class="btn btn-outline-secondary mx-2 my-2 my-sm-0 disabled" type="button"><span class="oi oi-media-step-forward"></span></button>
+            </div>
         </nav>
     </head>
     <body>
@@ -54,62 +54,9 @@
         <script src="/lib/js/jquery.min.js"></script>
         <script src="/lib/js/bootstrap.bundle.min.js"></script>
         <script src="/lib/js/vis.min.js"></script>
+        <script src="/lib/js/socket.io.js"></script>
+        <script src="/app/app.js"></script>
         <script>
-            const backward = $('#backward');
-            const run = $('#run');
-            const stop = $('#stop');
-            const forward = $('#forward');
-            const tree = $('#tree');
-
-            let step = 0;
-
-            run.click(() => {
-                run.toggleClass('btn-outline-success');
-                run.toggleClass('btn-outline-warning');
-                if (run.hasClass('btn-outline-success')) {
-                    run.html($('<span class="oi oi-media-play"></span>'));
-                } else {
-                    run.html($('<span class="oi oi-media-pause"></span>'));
-                    if (forward.hasClass('disabled')) {
-                        forward.removeClass('disabled');
-                    }
-                    if (stop.hasClass('disabled')) {
-                        stop.removeClass('disabled');
-                    }
-                }
-            });
-
-            stop.click(() => {
-                if (run.hasClass('btn-outline-warning')) {
-                    run.toggleClass('btn-outline-warning');
-                    run.toggleClass('btn-outline-success');
-                    run.html($('<span class="oi oi-media-play"></span>'));
-                }
-                if (! backward.hasClass('disabled')) {
-                    backward.addClass('disabled');
-                }
-                if (! forward.hasClass('disabled')) {
-                    forward.addClass('disabled');
-                }
-                if (! stop.hasClass('disabled')) {
-                    stop.addClass('disabled');
-                }
-                step = 0;
-            });
-
-            forward.click(() => {
-                if (step == 0 && backward.hasClass('disabled')) {
-                    backward.removeClass('disabled');
-                }
-                step++;
-            });
-
-            backward.click(() => {
-                step--;
-                if (step == 0 && ! backward.hasClass('disabled')) {
-                    backward.addClass('disabled');
-                }
-            });
 
             // create an array with nodes
             let nodes = new vis.DataSet([

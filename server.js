@@ -1,14 +1,15 @@
 const express = require('express');
 const app = express();
+
 const fs = require('fs');
 const yaml = require('js-yaml');
+const Mustache = require('mustache');
 
 const port = parseInt(process.argv[2]);
-const config = process.argv[3];
-const model = require('./src/model.js');
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html')
+    let config = yaml.safeLoad(fs.readFileSync('config.yml', 'utf8'));
+    res.send(Mustache.render(fs.readFileSync('index.mustache', 'utf8'), config));
 });
 
 app.get('/lib/js/jquery.min.js', (req, res) => {
@@ -47,18 +48,12 @@ app.get('/lib/js/vis.min.js', (req, res) => {
     res.sendFile(__dirname + '/node_modules/vis/dist/vis.min.js');
 });
 
-app.get('/load', (req, res) => {
-    try {
-        let doc = yaml.safeLoad(fs.readFileSync(config, 'utf8'));
-        model.load(doc)
-             .then((game) => res.send(game))
-             .catch((e) => {
-                 console.log(e);
-                 res.send(e);
-             });
-    } catch(e) {
-        console.log(e);
-    }
+app.get('/lib/js/socket.io.js', (req, res) => {
+    res.sendFile(__dirname + '/node_modules/socket.io-client/dist/socket.io.js');
+});
+
+app.get('/app/app.js', (req, res) => {
+    res.sendFile(__dirname + '/app.js');
 });
 
 app.listen(port, () => {
