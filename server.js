@@ -1,11 +1,34 @@
 const express = require('express');
 const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 const fs = require('fs');
 const yaml = require('js-yaml');
 const Mustache = require('mustache');
 
 const port = parseInt(process.argv[2]);
+
+io.on('connection', (socket) => {
+    console.log('>>> connected!')
+    socket.on('disconnect', () => console.log('>>> disconnected!'));
+});
+
+app.get('/start', (req, res) => {
+    res.send();
+});
+
+app.get('/stop', (req, res) => {
+    res.send();
+});
+
+app.get('/next', (req, res) => {
+    res.send();
+});
+
+app.get('/back', (req, res) => {
+    res.send();
+});
 
 app.get('/', (req, res) => {
     let config = yaml.safeLoad(fs.readFileSync('config.yml', 'utf8'));
@@ -52,11 +75,15 @@ app.get('/lib/js/socket.io.js', (req, res) => {
     res.sendFile(__dirname + '/node_modules/socket.io-client/dist/socket.io.js');
 });
 
+app.get('/lib/js/axios.min.js', (req, res) => {
+    res.sendFile(__dirname + '/node_modules/axios/dist/axios.min.js');
+});
+
 app.get('/app/app.js', (req, res) => {
     res.sendFile(__dirname + '/app.js');
 });
 
-app.listen(port, () => {
+http.listen(port, () => {
     console.log('listening on localhost:' + port);
 });
 

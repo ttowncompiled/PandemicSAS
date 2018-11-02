@@ -47,14 +47,17 @@
         <div class="container py-3">
             <div class="row">
                 <div class="col">
-                    <div id="tree" class="container shadow"</div>
+                    <div id="s-tree" class="container shadow"></div>
+                </div>
+                <div class="col">
+                    <div id="d-tree" class="container shadow"></div>
                 </div>
             </div>
         </div>
         <script src="/lib/js/jquery.min.js"></script>
         <script src="/lib/js/bootstrap.bundle.min.js"></script>
         <script src="/lib/js/vis.min.js"></script>
-        <script src="/lib/js/socket.io.js"></script>
+        <script src="/lib/js/axios.min.js"></script>
         <script src="/app/app.js"></script>
         <script>
 
@@ -76,7 +79,8 @@
             ]);
 
             // create a network
-            let container = document.getElementById('tree');
+            let s_tree = document.getElementById('s-tree');
+            let d_tree = document.getElementById('d-tree');
 
             // provide the data in the vis format
             let data = {
@@ -111,7 +115,8 @@
             };
 
             // initialize your network!
-            let network = new vis.Network(container, data, options);
+            let s_network = new vis.Network(s_tree, data, options);
+            let d_network = new vis.Network(d_tree, data, options);
         </script>
     </body>
 </html>
