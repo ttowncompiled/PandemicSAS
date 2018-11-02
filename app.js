@@ -1,5 +1,7 @@
-// const axios, nodes, edges;
+// const axios, io, nodes, edges;
 (() => {
+
+    const socket                = io();
 
     const monitor_btn           = $('#monitor');
     const analyze_btn           = $('#analyze');
@@ -212,6 +214,13 @@
         edges.clear();
     }
 
+    socket.on('connect', () => {
+        console.log('>>> connected!');
+    });
+
+    socket.on('disconnect', () => {
+        console.log('>>> disconnected!');
+    });
 
     function hit_play() {
         if (step == 0 && ! paused && stopped) {

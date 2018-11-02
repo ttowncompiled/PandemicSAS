@@ -1,7 +1,9 @@
 const express = require('express');
-const body_parser = require('body-parser');
 const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
+const body_parser = require('body-parser');
 app.use(body_parser.urlencoded({ extended: false }));
 app.use(body_parser.json());
 
@@ -10,23 +12,17 @@ const yaml = require('js-yaml');
 const Mustache = require('mustache');
 
 const app_port = parseInt(process.argv[2]);
-const sock_port = parseInt(process.argv[3]);
+const main_port = parseInt(process.argv[3]);
 
-const socket = require('socket.io-client')('http://localhost:' + sock_port);
-
-socket.on('connect', () => {
+io.on('connection', (socket) => {
     console.log('>>> connected!');
-});
-
-socket.on('disconnect', () => {
-    console.log('>>> disconnected!');
+    socket.on('disconnect', () => {
+        console.log('>>> disconnected!');
+    });
 });
 
 app.get('/start', (req, res) => {
-    socket.emit('/start', '', (data) => {
-        console.log(data);
-        res.send(data);
-    });
+    res.send();
 });
 
 app.get('/monitor', (req, res) => {
@@ -110,7 +106,7 @@ app.get('/app/app.js', (req, res) => {
     res.sendFile(__dirname + '/app.js');
 });
 
-app.listen(app_port, () => {
+http.listen(app_port, () => {
     console.log('listening on localhost:' + app_port);
 });
 
