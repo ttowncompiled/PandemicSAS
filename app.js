@@ -21,7 +21,7 @@
         return new Promise((resolve) => {
             axios.get('/start')
                 .then((response) => {
-                    console.log(response);
+                    console.log(response.data);
                     resolve(true);
                 })
                 .catch((error) => {

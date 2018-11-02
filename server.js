@@ -10,6 +10,7 @@ app.use(body_parser.json());
 const fs = require('fs');
 const yaml = require('js-yaml');
 const Mustache = require('mustache');
+const axios = require('axios');
 
 const app_port = parseInt(process.argv[2]);
 const main_port = parseInt(process.argv[3]);
@@ -22,7 +23,15 @@ io.on('connection', (socket) => {
 });
 
 app.get('/start', (req, res) => {
-    res.send();
+    axios.get(`http://localhost:${main_port}/start`)
+        .then((response) => {
+            console.log(response.data);
+            res.send(response.data);
+        })
+        .catch((reasone) => {
+            console.log(reason);
+            res.send(reason);
+        });
 });
 
 app.get('/monitor', (req, res) => {

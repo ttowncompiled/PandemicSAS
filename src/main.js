@@ -1,5 +1,9 @@
-const http = require('http').createServer();
-const io = require('socket.io')(http);
+const express = require('express');
+const app = express();
+
+const body_parser = require('body-parser');
+app.use(body_parser.urlencoded({ extended: false }));
+app.use(body_parser.json());
 
 const fs = require('fs');
 const yaml = require('js-yaml');
@@ -7,26 +11,13 @@ const yaml = require('js-yaml');
 const port = parseInt(process.argv[2]);
 const config_filepath = process.argv[3];
 
-io.on('connection', (socket) => {
-    console.log('>>> connected!');
-
-    socket.on('disconnect', () => {
-        console.log('>>> disconnected!')
-    });
-
-    socket.on('/start', (_, fn) => {
-        try {
-            let config = yaml.safeLoad(fs.readFileSync(config_filepath, 'utf8'));
-            console.log(config);
-            fn(config);
-        } catch(e) {
-            console.log(e);
-            fn(1);
-        }
-    });
+app.get('/start', (req, res) => {
+    let config = yaml.safeLoad(fs.readFileSync(config_filepath, 'utf8'));
+    console.log(config);
+    res.send(config);
 });
 
-http.listen(port, () => {
+app.listen(port, () => {
     console.log('listening on localhost:' + port);
 });
 
