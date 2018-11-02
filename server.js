@@ -35,16 +35,8 @@ app.get('/', (req, res) => {
     res.send(Mustache.render(fs.readFileSync('index.mustache', 'utf8'), config));
 });
 
-app.get('/lib/js/jquery.min.js', (req, res) => {
-    res.sendFile(__dirname + '/node_modules/jquery/dist/jquery.min.js');
-});
-
 app.get('/lib/css/bootstrap.min.css', (req, res) => {
     res.sendFile(__dirname + '/node_modules/bootstrap/dist/css/bootstrap.min.css');
-});
-
-app.get('/lib/js/bootstrap.bundle.min.js', (req, res) => {
-    res.sendFile(__dirname + '/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js');
 });
 
 app.get('/lib/css/open-iconic-bootstrap.min.css', (req, res) => {
@@ -65,6 +57,18 @@ app.get('/lib/fonts/open-iconic.otf', (req, res) => {
 
 app.get('/lib/css/vis.min.css', (req, res) => {
     res.sendFile(__dirname + '/node_modules/vis/dist/vis.min.css');
+});
+
+app.get('/lib/js/jquery.min.js', (req, res) => {
+    res.sendFile(__dirname + '/node_modules/jquery/dist/jquery.min.js');
+});
+
+app.get('/lib/js/popper.min.js', (req, res) => {
+    res.sendFile(__dirname + '/node_modules/popper.js/dist/popper.min.js');
+});
+
+app.get('/lib/js/bootstrap.bundle.min.js', (req, res) => {
+    res.sendFile(__dirname + '/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js');
 });
 
 app.get('/lib/js/vis.min.js', (req, res) => {

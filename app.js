@@ -93,12 +93,30 @@ function clear() {
 
 (() => {
 
+    const monitor_btn           = $('#monitor');
+    const analyze_btn           = $('#analyze');
+    const plan_btn              = $('#plan');
+    const execute_btn           = $('#execute');
+
     const backward_btn          = $('#backward');
     const play_or_pause_btn     = $('#play-pause');
     const stop_btn              = $('#stop');
     const forward_btn           = $('#forward');
 
     let step = 0;
+
+    function switch_active(curr_active, next_active) {
+        if (!!curr_active && curr_active.hasClass('active')) {
+            curr_active.toggleClass('btn-info');
+            curr_active.toggleClass('btn-outline-light');
+            curr_active.toggleClass('active');
+        }
+        if (!!next_active) {
+            next_active.toggleClass('btn-outline-light');
+            next_active.toggleClass('btn-info');
+            next_active.toggleClass('active');
+        }
+    }
 
     function hit_play() {
         if (step == 0) {
@@ -109,6 +127,9 @@ function clear() {
                 play_or_pause_btn.toggleClass('btn-outline-warning');
                 play_or_pause_btn.toggleClass('btn-outline-success');
                 play_or_pause_btn.html($('<span class="oi oi-media-pause"></span>'));
+                if (! monitor_btn.hasClass('active')) {
+                    switch_active(null, monitor_btn);
+                }
                 if (stop_btn.hasClass('disabled')) {
                     stop_btn.removeClass('disabled');
                 }
@@ -149,6 +170,15 @@ function clear() {
                 play_or_pause_btn.addClass('btn-outline-success');
                 play_or_pause_btn.html($('<span class="oi oi-media-play"></span>'));
             }
+            if (monitor_btn.hasClass('active')) {
+                switch_active(monitor_btn, null);
+            } else if (analyze_btn.hasClass('active')) {
+                switch_active(analyze_btn, null);
+            } else if (plan_btn.hasClass('active')) {
+                switch_active(plan_btn, null);
+            } else if (execute_btn.hasClass('active')) {
+                switch_active(execute_btn, null);
+            }
             if (! stop_btn.hasClass('disabled')) {
                 stop_btn.addClass('disabled');
             }
@@ -171,6 +201,15 @@ function clear() {
                 backward_btn.removeClass('disabled');
             }
             step++;
+            if (monitor_btn.hasClass('active')) {
+                switch_active(monitor_btn, analyze_btn);
+            } else if (analyze_btn.hasClass('active')) {
+                switch_active(analyze_btn, plan_btn);
+            } else if (plan_btn.hasClass('active')) {
+                switch_active(plan_btn, execute_btn);
+            } else if (execute_btn.hasClass('active')) {
+                switch_active(execute_btn, monitor_btn);
+            }
         });
     }
 
@@ -182,6 +221,15 @@ function clear() {
             step--;
             if (step == 0 && ! backward_btn.hasClass('disabled')) {
                 backward_btn.addClass('disabled');
+            }
+            if (monitor_btn.hasClass('active')) {
+                switch_active(monitor_btn, execute_btn);
+            } else if (analyze_btn.hasClass('active')) {
+                switch_active(analyze_btn, monitor_btn);
+            } else if (plan_btn.hasClass('active')) {
+                switch_active(plan_btn, analyze_btn);
+            } else if (execute_btn.hasClass('active')) {
+                switch_active(execute_btn, plan_btn);
             }
         });
     }
