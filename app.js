@@ -1,96 +1,4 @@
 // const axios, nodes, edges;
-
-function start() {
-    return new Promise((resolve) => {
-        axios.get('/start')
-            .then((response) => {
-                console.log(response);
-                resolve(true);
-            })
-            .catch((error) => {
-                console.log(error);
-                resolve(false);
-            });
-    });
-}
-
-function play() {
-    return new Promise((resolve) => {
-        resolve(true);
-    });
-}
-
-function pause() {
-    return new Promise((resolve) => {
-        resolve(true);
-    });
-}
-
-function stop() {
-    return new Promise((resolve) => {
-        axios.get('/stop')
-            .then((response) => {
-                console.log(response);
-                resolve(true);
-            })
-            .catch((error) => {
-                console.log(error);
-                resolve(false);
-            });
-    });
-}
-
-function next() {
-    return new Promise((resolve) => {
-        axios.get('/next')
-            .then((response) => {
-                console.log(response);
-                resolve(true);
-            })
-            .catch((error) => {
-                console.log(error);
-                resolve(false);
-            });
-    });
-}
-
-function back() {
-    return new Promise((resolve) => {
-        axios.get('/back')
-            .then((response) => {
-                console.log(response);
-                resolve(true);
-            })
-            .catch((error) => {
-                console.log(error);
-                resolve(false);
-            });
-    });
-}
-
-function add(from_id, to_id, node_label, edge_id, edge_label) {
-    edges.add({
-        id: edge_id,
-        from: from_id,
-        to: to_id,
-        label: edge_Label,
-    });
-    nodes.add({
-        id: to_id,
-        label: node_label,
-    });
-}
-
-function remove(edge_id, node_id) {
-    nodes.remove(node_id);
-    edges.remove(edge_id);
-}
-
-function clear() {
-    nodes.clear();
-    edges.clear();
-}
-
 (() => {
 
     const monitor_btn           = $('#monitor');
@@ -104,6 +12,155 @@ function clear() {
     const forward_btn           = $('#forward');
 
     let step = 0;
+    let paused = false;
+    let stopped = true;
+
+    function start() {
+        return new Promise((resolve) => {
+            axios.get('/start')
+                .then((response) => {
+                    console.log(response);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    resolve(false);
+                });
+        });
+    }
+
+    function monitor() {
+        return new Promise((resolve) => {
+            axios.get('/monitor')
+                .then((response) => {
+                    console.log(response);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    resolve(false);
+                });
+        });
+    }
+
+    function analyze() {
+        return new Promise((resolve) => {
+            axios.get('/analyze')
+                .then((response) => {
+                    console.log(response);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    resolve(false);
+                });
+        });
+    }
+
+    function plan() {
+        return new Promise((resolve) => {
+            axios.get('/plan')
+                .then((response) => {
+                    console.log(response);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    resolve(false);
+                });
+        });
+    }
+
+    function execute() {
+        return new Promise((resolve) => {
+            axios.get('/execute')
+                .then((response) => {
+                    console.log(response);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    resolve(false);
+                });
+        });
+    }
+
+    function play() {
+        return new Promise((resolve) => {
+            resolve(true);
+        });
+    }
+
+    function pause() {
+        return new Promise((resolve) => {
+            resolve(true);
+        });
+    }
+
+    function stop() {
+        return new Promise((resolve) => {
+            axios.get('/stop')
+                .then((response) => {
+                    console.log(response);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    resolve(false);
+                });
+        });
+    }
+
+    function next() {
+        return new Promise((resolve) => {
+            axios.get('/next')
+                .then((response) => {
+                    console.log(response);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    resolve(false);
+                });
+        });
+    }
+
+    function back() {
+        return new Promise((resolve) => {
+            axios.get('/back')
+                .then((response) => {
+                    console.log(response);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    resolve(false);
+                });
+        });
+    }
+
+    function add(from_id, to_id, node_label, edge_id, edge_label) {
+        edges.add({
+            id: edge_id,
+            from: from_id,
+            to: to_id,
+            label: edge_Label,
+        });
+        nodes.add({
+            id: to_id,
+            label: node_label,
+        });
+    }
+
+    function remove(edge_id, node_id) {
+        nodes.remove(node_id);
+        edges.remove(edge_id);
+    }
+
+    function clear() {
+        nodes.clear();
+        edges.clear();
+    }
 
     function switch_active(curr_active, next_active) {
         if (!!curr_active && curr_active.hasClass('active')) {
