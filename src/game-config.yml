@@ -104,106 +104,345 @@ disease_cubes:
 #==============================================================================#
 ### CITY CONF - BEGIN ###
 
-# City locations - each city must have a 'name' and a 'color'
+# City locations - each city must have a 'name', a 'color', and 'neighbors'
 # 'name' must be a String
 # 'color' must be in $colors
+# 'neighbors' must a list of city names in $cities
 cities:
     - name:                     Los Angeles
       color:                    Yellow
+      neighbors:
+        - San Francisco
+        - Chicago
+        - Mexico City
+        - Lima
+        - Sydney
     - name:                     Mexico City
       color:                    Yellow
+      neighbors:
+        - Los Angeles
+        - Chicago
+        - Miami
+        - Bogota
+        - Lima
     - name:                     Miami
       color:                    Yellow
+      neighbors:
+        - Mexico City
+        - Atlanta
+        - Washington
+        - Bogota
     - name:                     Bogota
       color:                    Yellow
+      neighbors:
+        - Mexico City
+        - Miami
+        - Lima
+        - Buenos Aires
+        - Sao Paulo
     - name:                     Lima
       color:                    Yellow
+      neighbors:
+        - Los Angeles
+        - Mexico City
+        - Bogota
+        - Santiago
     - name:                     Santiago
       color:                    Yellow
+      neighbors:
+        - Lima
+        - Buenos Aires
     - name:                     Buenos Aires
       color:                    Yellow
+      neighbors:
+        - Santiago
+        - Bogota
+        - Sao Paulo
+        - Johannesburg
     - name:                     Sao Paulo
       color:                    Yellow
+      neighbors:
+        - Buenos Aires
+        - Bogota
+        - Madrid
+        - Lagos
     - name:                     Lagos
       color:                    Yellow
+      neighbors:
+        - Sao Paulo
+        - Khartoum
+        - Kinshasa
     - name:                     Kinshasa
       color:                    Yellow
+      neighbors:
+        - Lagos
+        - Khartoum
+        - Johannesburg
     - name:                     Johannesburg
       color:                    Yellow
+      neighbors:
+        - Kinshasa
+        - Khartoum
+        - Buenos Aires
     - name:                     Khartoum
       color:                    Yellow
+      neighbors:
+        - Kinshasa
+        - Lagos
+        - Cairo
+        - Johannesburg
     - name:                     Beijing
       color:                    Red
+      neighbors:
+        - Shanghai
+        - Seoul
     - name:                     Seoul
       color:                    Red
+      neighbors:
+        - Beijing
+        - Tokyo
+        - Shanghai
     - name:                     Tokyo
       color:                    Red
+      neighbors:
+        - San Francisco
+        - Seoul
+        - Shanghai
+        - Osaka
     - name:                     Shanghai
       color:                    Red
+      neighbors:
+        - Beijing
+        - Seoul
+        - Tokyo
+        - Taipei
+        - Hong Kong
     - name:                     Bangkok
       color:                    Red
+      neighbors:
+        - Kolkata
+        - Hong Kong
+        - Ho Chi Minh City
+        - Jakarta
+        - Chennai
     - name:                     Hong Kong
       color:                    Red
+      neighbors:
+        - Kolkata
+        - Shanghai
+        - Taipei
+        - Manila
+        - Ho Chi Minh City
+        - Bangkok
     - name:                     Taipei
       color:                    Red
+      neighbors:
+        - Hong Kong
+        - Shanghai
+        - Osaka
+        - Manila
     - name:                     Osaka
       color:                    Red
+      neighbors:
+        - Tokyo
+        - Taipei
     - name:                     Jakarta
       color:                    Red
+      neighbors:
+        - Chennai
+        - Bangkok
+        - Ho Chi Minh City
+        - Sydney
     - name:                     Ho Chi Minh City
       color:                    Red
+      neighbors:
+        - Jakarta
+        - Bangkok
+        - Hong Kong
+        - Manila
     - name:                     Manila
       color:                    Red
+      neighbors:
+        - Ho Chi Minh City
+        - Hong Kong
+        - Taipei
+        - San Francisco
+        - Sydney
     - name:                     Sydney
       color:                    Red
+      neighbors:
+        - Jakarta
+        - Manila
+        - Los Angeles
     - name:                     San Francisco
       color:                    Blue
+      neighbors:
+        - Chicago
+        - Los Angeles
+        - Tokyo
+        - Manila
     - name:                     Chicago
       color:                    Blue
+      neighbors:
+        - San Francisco
+        - Montreal
+        - Atlanta
+        - Mexico City
+        - Los Angeles
     - name:                     Atlanta
       color:                    Blue
+      neighbors:
+        - Chicago
+        - Washington
+        - Miami
     - name:                     Montreal
       color:                    Blue
+      neighbors:
+        - Chicago
+        - New York
+        - Washington
     - name:                     Washington
       color:                    Blue
+      neighbors:
+        - Miami
+        - Atlanta
+        - Montreal
+        - New York
     - name:                     New York
       color:                    Blue
+      neighbors:
+        - Washington
+        - Montreal
+        - London
+        - Madrid
     - name:                     Madrid
       color:                    Blue
+      neighbors:
+        - Sao Paulo
+        - New York
+        - London
+        - Paris
+        - Algiers
     - name:                     London
       color:                    Blue
+      neighbors:
+        - New York
+        - Madrid
+        - Paris
+        - Essen
     - name:                     Paris
       color:                    Blue
+      neighbors:
+        - Madrid
+        - London
+        - Essen
+        - Milan
+        - Algiers
     - name:                     Essen
       color:                    Blue
+      neighbors:
+        - London
+        - Paris
+        - Milan
+        - St. Petersburg
     - name:                     Milan
       color:                    Blue
+      neighbors:
+        - Essen
+        - Paris
+        - Istanbul
     - name:                     St. Petersburg
       color:                    Blue
+      neighbors:
+        - Essen
+        - Istanbul
+        - Moscow
     - name:                     Algiers
       color:                    Black
+      neighbors:
+        - Madrid
+        - Paris
+        - Istanbul
+        - Cairo
     - name:                     Istanbul
       color:                    Black
+      neighbors:
+        - Milan
+        - St. Petersburg
+        - Moscow
+        - Baghdad
+        - Cairo
+        - Algiers
     - name:                     Cairo
       color:                    Black
+      neighbors:
+        - Algiers
+        - Istanbul
+        - Baghdad
+        - Riyadh
+        - Khartoum
     - name:                     Moscow
       color:                    Black
+      neighbors:
+        - Istanbul
+        - St. Petersburg
+        - Tehran
     - name:                     Baghdad
       color:                    Black
+      neighbors:
+        - Istanbul
+        - Tehran
+        - Riyadh
+        - Cairo
     - name:                     Tehran
       color:                    Black
+      neighbors:
+        - Baghdad
+        - Moscow
+        - Delhi
+        - Karachi
     - name:                     Karachi
       color:                    Black
+      neighbors:
+        - Tehran
+        - Riyadh
+        - Mumbai
+        - Delhi
     - name:                     Riyadh
       color:                    Black
+      neighbors:
+        - Cairo
+        - Baghdad
+        - Karachi
     - name:                     Mumbai
       color:                    Black
+      neighbors:
+        - Karachi
+        - Delhi
+        - Chennai
     - name:                     Delhi
       color:                    Black
+      neighbors:
+        - Tehran
+        - Karachi
+        - Mumbai
+        - Chennai
+        - Kolkata
     - name:                     Kolkata
       color:                    Black
+      neighbors:
+        - Delhi
+        - Chennai
+        - Bangkok
+        - Hong Kong
     - name:                     Chennai
       color:                    Black
+      neighbors:
+        - Mumbai
+        - Delhi
+        - Kolkata
+        - Jakarta
+        - Bangkok
 
 ### CITY CONF - END ###
 #==============================================================================#

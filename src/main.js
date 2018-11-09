@@ -8,16 +8,25 @@ app.use(body_parser.json());
 const fs = require('fs');
 const yaml = require('js-yaml');
 
+const model = require('./model/model.js');
+
 const port = parseInt(process.argv[2]);
 const config_filepath = process.argv[3];
 
 app.get('/start', (req, res) => {
     let config = yaml.safeLoad(fs.readFileSync(config_filepath, 'utf8'));
-    console.log(config);
-    res.send(config);
+    model.load(config).then((game) => {
+        console.log(game);
+        res.send(game);
+    });
+});
+
+app.get('/monitor', (req, res) => {
+    model.monitor().then((game) => {
+        res.send(game);
+    });
 });
 
 app.listen(port, () => {
     console.log('listening on localhost:' + port);
 });
-
