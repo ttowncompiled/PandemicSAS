@@ -4,19 +4,36 @@ exports.validate = (config) => {
 };
 
 function validateColors(config) {
+    let valid = true;
     if (! ('colors' in config)) {
         console.error('ERROR: config does not include key: colors');
         return false;
     }
-    return true;
+    if (! isUnique(config.colors)) {
+        console.error('ERROR: colors contains duplicate colors');
+        valid = false;
+    }
+    return valid;
 };
 
 function validateDiseases(config) {
+    let valid = true;
     if (! ('diseases' in config)) {
         console.error('ERROR: config does not include key: diseases');
         return false;
     }
-    return true;
+    if (! isUnique(config.diseases)) {
+        console.error('ERROR: diseases contains duplicate colors');
+        valid = false;
+    }
+    for (let i = 0; i < config.diseases; i++) {
+        let disease = config.diseases[i];
+        if (! config.colors.includes(disease)) {
+            console.error(`ERROR: disease ${i} not in: colors`);
+            valid = false;
+        }
+    }
+    return valid;
 };
 
 function validateDiseaseCubes(config) {
@@ -33,7 +50,10 @@ function validateDiseaseCubes(config) {
         console.error('ERROR: config does not include key: disease_cubes');
         return false;
     }
-    // TODO: validate that each disease cube has a unique color
+    if (! isUnique(config.disease_cubes.map((cube) => cube.color))) {
+        console.error('ERROR: disease_cubes contains duplicate colors');
+        valid = false;
+    }
     for (let i = 0; i < config.disease_cubes; i++) {
         let cube = config.disease_cubes[i];
         if (! ('color' in cube)) {
@@ -42,7 +62,7 @@ function validateDiseaseCubes(config) {
             continue;
         }
         if (! config.diseases.includes(cube.color)) {
-            console.error(`ERROR: ${cube.color} of cube ${i} not in: 'diseases'`);
+            console.error(`ERROR: ${cube.color} of cube ${i} not in: diseases`);
             valid = false;
         }
         if (! ('count' in cube)) {
@@ -76,8 +96,11 @@ function validateCities(config) {
         console.error('ERROR: config does not include key: cities');
         return false;
     }
-    // TODO: validate that each city has a unique name
     let cityNames = config.cities.map((city) => city.name);
+    if (! isUnique(cityNames)) {
+        console.error('ERROR: cities contains duplicate city names');
+        valid = false;
+    }
     for (let i = 0; i < config.cities.length; i++) {
         let city = config.cities[i];
         if (! ('name' in city)) {
@@ -91,7 +114,7 @@ function validateCities(config) {
             continue;
         }
         if (! config.colors.includes(city.color)) {
-            console.error(`ERROR: ${city.color} of ${city.name} not in: 'colors'`);
+            console.error(`ERROR: ${city.color} of ${city.name} not in: colors`);
             valid = false;
         }
         if (! ('neighbors' in city)) {
@@ -102,7 +125,7 @@ function validateCities(config) {
         for (let j = 0; j < city.neighbors.length; j++) {
             let neighbor = city.neighbors[j];
             if (! cityNames.includes(neighbor)) {
-                console.error(`ERROR: ${neighbor} of ${city.name} not in: 'cities'`);
+                console.error(`ERROR: ${neighbor} of ${city.name} not in: cities`);
                 valid = false;
             }
             if (! config.cities[cityNames.indexOf(neighbor)].neighbors.includes(city.name)) {
@@ -112,4 +135,15 @@ function validateCities(config) {
         }
     }
     return valid;
+};
+
+function isUnique(arr) {
+    let filter = {};
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] in filter) {
+            return false;
+        }
+        filter[arr[i]] = true;
+    }
+    return true;
 };

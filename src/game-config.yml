@@ -13,6 +13,7 @@ author:                         Ian Riley, grad
 ### COLOR CONF - BEGIN ###
 
 # The allowable color types - each color type must be a String
+# each String must be unique
 colors:
     -                           Yellow
     -                           Red
@@ -29,6 +30,7 @@ colors:
 ### DISEASE CONF - BEGIN ###
 
 # Disease types - type must be in $colors
+# each type must be unique
 diseases:
     -                           Yellow
     -                           Red
@@ -85,6 +87,7 @@ min_disease_cubes:              0
 # The number of disease cubes for each disease type
 # must have 'color' and 'count'
 # each 'color' must be in $diseases
+# each 'color' must be unique
 # must have each type in $diseases
 # each 'count' must be a positive Integer >= $min_disease_cubes
 # $min_disease_cubes <= 'count' <= $max_disease_cubes
@@ -106,6 +109,7 @@ disease_cubes:
 
 # City locations - each city must have a 'name', a 'color', and 'neighbors'
 # 'name' must be a String
+# each 'name' must be unique
 # 'color' must be in $colors
 # 'neighbors' must a list of city names in $cities
 cities:
