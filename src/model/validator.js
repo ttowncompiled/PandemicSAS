@@ -2,7 +2,7 @@ exports.validate = (config) => {
     return validateColors(config) && validateDiseases(config)
         && validateDiseaseCubes(config) && validateCities(config)
         && validateResearchStations(config) && validateRoles(config)
-        && validatePawns(config);
+        && validatePawns(config) && validateHand(config);
 };
 
 function validateColors(config) {
@@ -213,7 +213,6 @@ function validateRoles(config) {
 };
 
 function validatePawns(config) {
-    // TODO: validate hand size
     let valid = true;
     if (! ('max_pawns' in config)) {
         console.error('ERROR: config does not include key: max_pawns');
@@ -276,6 +275,46 @@ function validatePawns(config) {
     if (! isUnique(config.pawn_init_roles) && config.roles_are_unique) {
         console.error('ERROR: pawn roles are not unique according to roles_are_unique');
         valid = false;
+    }
+    return valid;
+};
+
+function validateHand(config) {
+    let valid = true;
+    if (! ('max_hand_size' in config)) {
+        console.error('ERROR: config does not include key: max_hand_size');
+        return false;
+    }
+    if (! Number.isInteger(config.max_hand_size)) {
+        console.error('ERROR: max_hand_size is not an Integer');
+        valid = false;
+    }
+    if (config.max_hand_size <= 0) {
+        console.error('ERROR: max_hand_size is not positive');
+        valid = false;
+    }
+    if (! ('init_hand_size' in config)) {
+        console.error('ERROR: config does not include key: init_hand_size');
+        return false;
+    }
+    if (config.init_hand_size.length != config.max_pawns) {
+        console.error('ERROR: there is not an initial hand size for each possible pawn in init_hand_size');
+        valid = false;
+    }
+    for (let i = 0; i < config.init_hand_size; i++) {
+        let size = config.init_hand_size[i];
+        if (! Number.isInteger(size)) {
+            console.error(`ERROR: init_hand_size ${i} is not an Integer`);
+            valid = false;
+        }
+        if (size < 0) {
+            console.error(`ERROR: init_hand_size ${i} is not non-negative`);
+            valid = false;
+        }
+        if (size > config.max_hand_size) {
+            console.error(`ERROR: init_hand_size ${i} is greater than max_hand_size`);
+            valid = false;
+        }
     }
     return valid;
 };

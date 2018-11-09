@@ -4,6 +4,7 @@ exports.singletonGameFactory = (config) => {
     model.status = loadStatus(config);
     model.stations = loadResearchStations(config);
     model.pawns = loadPawns(config);
+    model.hands = loadHands(config);
     return model;
 };
 
@@ -46,4 +47,12 @@ function loadPawns(config) {
         pawns.push(pawn);
     }
     return pawns;
+};
+
+function loadHands(config) {
+    let hands = [];
+    for (let i = 0; i < config.init_pawns; i++) {
+        hands.push([]);
+    }
+    return hands;
 };
