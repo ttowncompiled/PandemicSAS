@@ -1,6 +1,7 @@
 exports.singletonGameFactory = (config) => {
     let model = {};
     model.cities = loadCities(config);
+    model.status = loadStatus(config);
     return model;
 };
 
@@ -8,10 +9,24 @@ function loadCities(config) {
     let cities = {};
     for (let i = 0; i < config.cities.length; i++) {
         let city = config.cities[i];
-        cities[city.name] = city;
-        for (let j = 0; j < config.diseases; j++) {
-
+        let status = {};
+        for (let j = 0; j < config.diseases.length; j++) {
+            status[config.diseases[j]] = 0;
         }
+        city.status = status;
+        cities[city.name] = city;
     }
     return cities;
+};
+
+function loadStatus(config) {
+    let status = {};
+    for (let i = 0; i < config.cities.length; i++) {
+        let city_status = {};
+        for (let j = 0; j < config.diseases.length; j++) {
+            city_status[config.diseases[j]] = 0;
+        }
+        status[config.cities[i].name] = city_status;
+    }
+    return status;
 };

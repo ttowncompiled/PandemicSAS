@@ -16,7 +16,6 @@ const config_filepath = process.argv[3];
 app.get('/start', (req, res) => {
     let config = yaml.safeLoad(fs.readFileSync(config_filepath, 'utf8'));
     model.load(config).then((game) => {
-        console.log(game);
         res.send(game);
     });
 });

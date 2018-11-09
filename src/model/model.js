@@ -22,6 +22,7 @@ module.exports = {
     monitor: () => {
         return new Promise((resolve, reject) => {
             // TODO: return city statuses and pawn locations
+            console.log(JSON.stringify(model, null, 2));
             resolve(model);
         });
     },

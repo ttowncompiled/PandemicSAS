@@ -54,6 +54,10 @@ function validateDiseaseCubes(config) {
         console.error('ERROR: disease_cubes contains duplicate colors');
         valid = false;
     }
+    if (config.disease_cubes.length != config.diseases.length) {
+        console.error('ERROR: disease_cubes must have each disease in: diseases');
+        valid = false;
+    }
     for (let i = 0; i < config.disease_cubes; i++) {
         let cube = config.disease_cubes[i];
         if (! ('color' in cube)) {
