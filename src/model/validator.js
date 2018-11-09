@@ -149,6 +149,14 @@ function validateResearchStations(config) {
         console.error('ERROR: config does not include key: max_research_stations');
         return false;
     }
+    if (! Number.isInteger(config.max_research_stations)) {
+        console.error('ERROR: max_research_stations is not an Integer');
+        valid = false;
+    }
+    if (config.max_research_stations <= 0) {
+        console.error('ERROR: max_research_stations is not positive');
+        valid = false;
+    }
     if (! ('research_stations' in config)) {
         console.error('ERROR: config does not include key: research_stations');
         return false;
