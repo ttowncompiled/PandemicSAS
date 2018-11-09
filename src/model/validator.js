@@ -1,7 +1,8 @@
 exports.validate = (config) => {
     return validateColors(config) && validateDiseases(config)
         && validateDiseaseCubes(config) && validateCities(config)
-        && validateResearchStations(config) && validatePawns(config);
+        && validateResearchStations(config) && validateRoles(config)
+        && validatePawns(config);
 };
 
 function validateColors(config) {
@@ -175,8 +176,43 @@ function validateResearchStations(config) {
     return valid;
 };
 
+function validateRoles(config) {
+    let valid = true;
+    if (! ('roles' in config)) {
+        console.error('ERROR: config does not include key: roles');
+        return false;
+    }
+    if (! ('roles_are_unique' in config)) {
+        console.error('ERROR: config does not include key: roles_are_unique');
+        return false;
+    }
+    if (! ('random_roles' in config)) {
+        console.error('ERROR: config does not include key: random_roles');
+        return false;
+    }
+    if (! isUnique(config.roles)) {
+        console.error('ERROR: roles contains duplicate roles');
+        valid = false;
+    }
+    if (typeof config.roles_are_unique !== 'boolean') {
+        console.error('ERROR: roles_are_unique is not a boolean');
+        valid = false;
+    }
+    if (! isUnique(config.random_roles)) {
+        console.error('ERROR: random_roles contains duplicate roles');
+        valid = false;
+    }
+    for (let i = 0; i < config.random_roles.length; i++) {
+        let role = config.random_roles[i];
+        if (! config.roles.includes(role)) {
+            console.error(`ERROR: role ${role} from random_roles is not in: roles`);
+            valid = false;
+        }
+    }
+    return valid;
+};
+
 function validatePawns(config) {
-    // TODO: validate roles
     // TODO: validate hand size
     let valid = true;
     if (! ('max_pawns' in config)) {

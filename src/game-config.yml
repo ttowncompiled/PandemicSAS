@@ -529,10 +529,12 @@ roles:
     -                           Scientist
 
 # Whether each role can only be assigned to one pawn
+# should be a boolean
 roles_are_unique:               false
 
 # The roles that can be assigned if the Random role is chosen
 # each role must be in $roles
+# each role should be unique
 random_roles:
     -                           Contingency Planner
     -                           Dispatcher
