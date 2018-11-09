@@ -516,6 +516,7 @@ research_stations:
 ### ROLES CONF - BEGIN ###
 
 # The allowable roles for a pawn
+# each role should be unique
 roles:
     -                           Basic
     -                           Random

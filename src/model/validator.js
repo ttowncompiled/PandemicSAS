@@ -1,6 +1,7 @@
 exports.validate = (config) => {
     return validateColors(config) && validateDiseases(config)
-        && validateDiseaseCubes(config) && validateCities(config);
+        && validateDiseaseCubes(config) && validateCities(config)
+        && validateResearchStations(config) && validatePawns(config);
 };
 
 function validateColors(config) {
@@ -170,6 +171,75 @@ function validateResearchStations(config) {
             console.error(`ERROR: ${station} not in cities`);
             valid = false;
         }
+    }
+    return valid;
+};
+
+function validatePawns(config) {
+    // TODO: validate roles
+    // TODO: validate hand size
+    let valid = true;
+    if (! ('max_pawns' in config)) {
+        console.error('ERROR: config does not include key: max_pawns');
+        return false;
+    }
+    if (! Number.isInteger(config.max_pawns)) {
+        console.error('ERROR: max_pawns is not an Integer');
+        valid = false;
+    }
+    if (config.max_pawns <= 0) {
+        console.error('ERROR: max_pawns is not positive');
+        valid = false;
+    }
+    if (! ('init_pawns' in config)) {
+        console.error('ERROR: config does not include key: init_pawns');
+        return false;
+    }
+    if (! Number.isInteger(config.init_pawns)) {
+        console.error('ERROR: init_pawns is not an Integer');
+        valid = false;
+    }
+    if (config.init_pawns <= 0) {
+        console.error('ERROR: init_pawns is not positive');
+        valid = false;
+    }
+    if (config.init_pawns > config.max_pawns) {
+        console.error('ERROR: init_pawns is greater than max_pawns');
+        valid = false;
+    }
+    if (! ('pawn_init_locations' in config)) {
+        console.error('ERROR: config does not include key: pawn_init_locations');
+        return false;
+    }
+    if (! ('pawn_init_roles' in config)) {
+        console.error('ERROR: config does not include key: pawn_init_roles');
+        return false;
+    }
+    if (config.pawn_init_locations.length != config.max_pawns) {
+        console.error('ERROR: there is not an initial pawn location for each possible pawn in pawn_init_locations');
+        valid = false;
+    }
+    for (let i = 0; i < config.pawn_init_locations.length; i++) {
+        let location = config.pawn_init_locations[i];
+        if (! config.research_stations.includes(location)) {
+            console.error(`ERROR: location ${location} from pawn_init_location not in: research_stations`);
+            valid = false;
+        }
+    }
+    if (config.pawn_init_roles.length != config.max_pawns) {
+        console.error('ERROR: there is not an initial role for each possible pawn in pawn_init_roles');
+        valid = false;
+    }
+    for (let i = 0; i < config.pawn_init_roles.length; i++) {
+        let role = config.pawn_init_roles[i];
+        if (! config.roles.includes(role)) {
+            console.error(`ERROR: role ${role} from pawn_init_roles not in: roles`);
+            valid = false;
+        }
+    }
+    if (! isUnique(config.pawn_init_roles) && config.roles_are_unique) {
+        console.error('ERROR: pawn roles are not unique according to roles_are_unique');
+        valid = false;
     }
     return valid;
 };

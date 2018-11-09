@@ -38,5 +38,12 @@ function loadResearchStations(config) {
 };
 
 function loadPawns(config) {
-    // TODO: with validation
+    let pawns = [];
+    for (let i = 0; i < config.init_pawns; i++) {
+        let pawn = {};
+        pawn.role = config.pawn_init_roles[i];
+        pawn.location = config.pawn_init_locations[i];
+        pawns.push(pawn);
+    }
+    return pawns;
 };
