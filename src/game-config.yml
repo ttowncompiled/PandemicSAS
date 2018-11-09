@@ -86,7 +86,7 @@ min_disease_cubes:              0
 # must have 'color' and 'count'
 # each 'color' must be in $diseases
 # must have each type in $diseases
-# each 'count' must be a non-negative Integer
+# each 'count' must be a positive Integer >= $min_disease_cubes
 # $min_disease_cubes <= 'count' <= $max_disease_cubes
 disease_cubes:
     - color:                    Yellow
