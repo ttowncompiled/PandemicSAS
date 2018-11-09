@@ -141,6 +141,39 @@ function validateCities(config) {
     return valid;
 };
 
+function validateResearchStations(config) {
+    let valid = true;
+    if (! ('max_research_stations' in config)) {
+        console.error('ERROR: config does not include key: max_research_stations');
+        return false;
+    }
+    if (! ('research_stations' in config)) {
+        console.error('ERROR: config does not include key: research_stations');
+        return false;
+    }
+    if (! isUnique(config.research_stations)) {
+        console.error('ERROR: research_stations contains duplicate stations');
+        valid = false;
+    }
+    if (config.research_stations.length <= 0) {
+        console.error('ERROR: there are no stations in research_stations');
+        valid = false;
+    }
+    if (config.research_stations.length > config.max_research_stations) {
+        console.error('ERROR: there are more stations than max_research_stations in research_stations');
+        valid = false;
+    }
+    let cityNames = config.cities.map((city) => city.name);
+    for (let i = 0; i < config.research_stations; i++) {
+        let station = config.research_stations[i];
+        if (! cityNames.includes(station)) {
+            console.error(`ERROR: ${station} not in cities`);
+            valid = false;
+        }
+    }
+    return valid;
+};
+
 function isUnique(arr) {
     let filter = {};
     for (let i = 0; i < arr.length; i++) {

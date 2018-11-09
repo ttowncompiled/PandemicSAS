@@ -504,6 +504,7 @@ infection_rates:
 max_research_stations:          6
 
 # Research station location - each location must be a 'name' in $cities
+# each location must be unique
 # must be at least 1, but no more than $max_research_stations
 research_stations:
     -                           Atlanta

@@ -2,6 +2,8 @@ exports.singletonGameFactory = (config) => {
     let model = {};
     model.cities = loadCities(config);
     model.status = loadStatus(config);
+    model.stations = loadResearchStations(config);
+    model.pawns = loadPawns(config);
     return model;
 };
 
@@ -29,4 +31,12 @@ function loadStatus(config) {
         status[config.cities[i].name] = city_status;
     }
     return status;
+};
+
+function loadResearchStations(config) {
+    return config.research_stations;
+};
+
+function loadPawns(config) {
+    // TODO: with validation
 };
