@@ -74,16 +74,6 @@ app.get('/stop', (req, res) => {
     });
 });
 
-app.get('/back', (req, res) => {
-    mape.back().then((result) => {
-        res.send(result);
-    })
-    .catch((reason) => {
-        console.log(reason);
-        res.sendStatus(500);
-    });
-});
-
 app.listen(port, () => {
     console.log('listening on localhost:' + port);
 });

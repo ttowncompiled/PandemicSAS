@@ -85,10 +85,4 @@ module.exports = {
             .catch((reason) => reject(reason));
         });
     },
-
-    back: () => {
-        return new Promise((resolve, reject) => {
-            reject(new Error('TODO'));
-        });
-    },
 };

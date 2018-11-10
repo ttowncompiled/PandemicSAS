@@ -9,7 +9,6 @@
     const plan_btn              = $('#plan');
     const execute_btn           = $('#execute');
 
-    const backward_btn          = $('#backward');
     const play_or_pause_btn     = $('#play-pause');
     const stop_btn              = $('#stop');
     const forward_btn           = $('#forward');
@@ -118,9 +117,6 @@
     }
 
     function incStep() {
-        if (step == 0 && backward_btn.hasClass('disabled')) {
-            backward_btn.toggleClass('disabled');
-        }
         step++;
         if (monitor_btn.hasClass('active')) {
             switch_active(monitor_btn, analyze_btn);
@@ -130,22 +126,6 @@
             switch_active(plan_btn, execute_btn);
         } else if (execute_btn.hasClass('active')) {
             switch_active(execute_btn, monitor_btn);
-        }
-    }
-
-    function decStep() {
-        step--;
-        if (step == 0 && ! backward_btn.hasClass('disabled')) {
-            backward_btn.addClass('disabled');
-        }
-        if (monitor_btn.hasClass('active')) {
-            switch_active(monitor_btn, execute_btn);
-        } else if (analyze_btn.hasClass('active')) {
-            switch_active(analyze_btn, monitor_btn);
-        } else if (plan_btn.hasClass('active')) {
-            switch_active(plan_btn, analyze_btn);
-        } else if (execute_btn.hasClass('active')) {
-            switch_active(execute_btn, plan_btn);
         }
     }
 
@@ -161,20 +141,6 @@
         } else {
             return new Promise((resolve) => resolve(false));
         }
-    }
-
-    function back() {
-        return new Promise((resolve) => {
-            axios.get('/back')
-                .then((response) => {
-                    console.log(response);
-                    resolve(true);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    resolve(false);
-                });
-        });
     }
 
     function play() {
@@ -206,6 +172,9 @@
                 if (stop_btn.hasClass('disabled')) {
                     stop_btn.removeClass('disabled');
                 }
+                if (forward_btn.hasClass('disabled')) {
+                    forward_btn.toggleClass('disabled');
+                }
                 stopped = false;
                 play();
             });
@@ -213,12 +182,6 @@
             play_or_pause_btn.toggleClass('btn-outline-primary');
             play_or_pause_btn.toggleClass('btn-outline-warning');
             play_or_pause_btn.html($('<span class="oi oi-media-pause"></span>'));
-            if (! backward_btn.hasClass('disabled')) {
-                backward_btn.toggleClass('disabled');
-            }
-            if (! forward_btn.hasClass('disabled')) {
-                forward_btn.toggleClass('disabled');
-            }
             paused = false;
             play();
         }
@@ -228,12 +191,6 @@
         play_or_pause_btn.toggleClass('btn-outline-warning');
         play_or_pause_btn.toggleClass('btn-outline-primary');
         play_or_pause_btn.html($('<span class="oi oi-media-play"></span>'));
-        if (step > 0 && backward_btn.hasClass('disabled')) {
-            backward_btn.toggleClass('disabled');
-        }
-        if (forward_btn.hasClass('disabled')) {
-            forward_btn.toggleClass('disabled');
-        }
         paused = true;
     }
 
@@ -262,9 +219,6 @@
             if (! stop_btn.hasClass('disabled')) {
                 stop_btn.toggleClass('disabled');
             }
-            if (! backward_btn.hasClass('disabled')) {
-                backward_btn.toggleClass('disabled');
-            }
             if (! forward_btn.hasClass('disabled')) {
                 forward_btn.toggleClass('disabled');
             }
@@ -283,15 +237,6 @@
         });
     }
 
-    function hitBackward() {
-        back().then((success) => {
-            if (! success) {
-                return;
-            }
-            decStep();
-        });
-    }
-
     play_or_pause_btn.click(() => {
         if (play_or_pause_btn.hasClass('btn-outline-success')) {
             hitPlay();
@@ -305,7 +250,5 @@
     stop_btn.click(() => hitStop());
 
     forward_btn.click(() => hitForward());
-
-    backward_btn.click(() => hitBackward());
 
 })();

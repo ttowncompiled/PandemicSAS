@@ -94,18 +94,6 @@ app.get('/stop', (req, res) => {
         });
 });
 
-app.get('/back', (req, res) => {
-    axios.get(`http://localhost:${main_port}/back`)
-        .then((response) => {
-            console.log(response.data);
-            res.send(response.data);
-        })
-        .catch((reason) => {
-            console.log(reason);
-            res.sendStatus(500);
-        });
-});
-
 app.get('/', (req, res) => {
     let config = yaml.safeLoad(fs.readFileSync('config.yml', 'utf8'));
     res.send(Mustache.render(fs.readFileSync('index.mustache', 'utf8'), config));
