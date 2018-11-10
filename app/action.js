@@ -7,9 +7,6 @@ let actionClear = null;
 (() => {
     let action = document.getElementById('action');
 
-    let lookup = {};
-    let vis_id = 1;
-
     let nodes = new vis.DataSet([]);
     let edges = new vis.DataSet([]);
     let data = {
@@ -19,7 +16,9 @@ let actionClear = null;
 
     actionInit = (tree) => {
         console.log(tree);
+        initLookup();
         actionClear();
+        initTree(tree.root);
     }
 
     actionUpdate = (tree) => {
@@ -29,24 +28,51 @@ let actionClear = null;
     actionClear = () => {
         nodes.clear();
         edges.clear();
-        lookup = {};
-        vis_id = 1;
+        initLookup();
     }
 
-    function edgeLookup(from, to) {
-        let key = `${from.name}:${to.name}`;
-        if (key in lookup) {
-            return lookup[key];
-        }
-        key = `${to.name}:${from.name}`;
-        if (key in lookup) {
-            return lookup[key];
-        }
-        return null;
+    let lookup = null;
+
+    function initLookup() {
+        let vis_id = 0;
+        lookup = () => {
+            vis_id++;
+            return vis_id;
+        };
     }
 
-    function edgeInLookup(from_city, to_city) {
-        return edgeLookup(from_city, to_city) !== null;
+    function initTree(root) {
+        let root_id = addAction(root);
+        for (let i = 0; i < root.links.length; i++) {
+            let link = root.links[i];
+            let link_id = initTree(link);
+            connectActions(root_id, link_id);
+        }
+        return root_id;
+    }
+
+    function addAction(root) {
+        let node_id = lookup();
+        setTimeout(() => {
+            nodes.add({
+                id: node_id,
+                label: root.name,
+            });
+        }, 0);
+        return node_id;
+    }
+
+    function connectActions(root_id, link_id) {
+        let edge_id = lookup();
+        setTimeout(() => {
+            edges.add({
+                id: edge_id,
+                from: root_id,
+                to: link_id,
+                arrows: 'to',
+            });
+        }, 0);
+        return edge_id;
     }
 
     let locales = {
@@ -74,6 +100,11 @@ let actionClear = null;
         locale: 'en',
         locales: locales,
         clickToUse: false,
+        layout: {
+            hierarchical: {
+                direction: 'UD',
+            },
+        },
     };
 
     let action_network = new vis.Network(action, data, options);

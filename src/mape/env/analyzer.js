@@ -1,7 +1,7 @@
 exports.analysis = (probe) => {
     let tree = {};
     tree.root = {
-        id: 'root',
+        name: 'root',
         links: [],
     };
     branchActions(probe, tree.root);
@@ -17,7 +17,7 @@ function branchStartAction(probe, root) {
         return;
     }
     let action = {
-        id: 'Start',
+        name: 'Start',
         links: [],
     };
     root.links.push(action);
@@ -46,7 +46,7 @@ function branchStartAction(probe, root) {
 
 function branchDrawInfectCard(probe, root) {
     let action = {
-        id: 'Draw Infect Card',
+        name: 'Draw Infect Card',
         links: [],
     };
     root.links.push(action);
@@ -55,7 +55,7 @@ function branchDrawInfectCard(probe, root) {
 
 function branchInfectCity(probe, root) {
     let action = {
-        id: 'Infect City',
+        name: 'Infect City',
         links: [],
     };
     root.links.push(action);
@@ -64,7 +64,7 @@ function branchInfectCity(probe, root) {
 
 function branchDealPlayerCard(probe, root) {
     let action = {
-        id: 'Deal Player Card',
+        name: 'Deal Player Card',
         links: [],
     };
     root.links.push(action);
@@ -73,7 +73,7 @@ function branchDealPlayerCard(probe, root) {
 
 function branchYield(probe, root) {
     let action = {
-        id: 'Yield',
+        name: 'Yield',
         links: [],
     };
     root.links.push(action);

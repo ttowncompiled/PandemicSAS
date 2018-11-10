@@ -5,7 +5,6 @@ let gameUpdate = null;
 let gameClear = null;
 
 (() => {
-
     let board = document.getElementById('board');
 
     let nodes = new vis.DataSet([]);
