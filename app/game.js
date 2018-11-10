@@ -45,16 +45,16 @@ let gameClear = null;
         };
     }
 
-    function edgeId(from, to) {
-        if (from.name <= to.name) {
-            return `${from.name}:${to.name}`;
-        } else {
-            return `${to.name}:${from.name}`;
-        }
-    }
-
     function nodeId(node) {
         return node.name;
+    }
+
+    function edgeId(from, to) {
+        if (from.name <= to.name) {
+            return `${nodeId(from)}:${nodeId(to)}`;
+        } else {
+            return `${nodeId(to)}:${nodeId(from)}`;
+        }
     }
 
     function initCities(cities) {

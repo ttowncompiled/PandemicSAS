@@ -1,12 +1,24 @@
 exports.analysis = (probe) => {
+    initLookup();
     let tree = {};
     tree.root = {
+        id: lookup(),
         name: 'root',
         links: [],
     };
     branchActions(probe, tree.root);
     return tree;
 };
+
+let lookup = null;
+
+function initLookup() {
+    let node_id = -1;
+    lookup = () => {
+        node_id++;
+        return node_id;
+    };
+}
 
 function branchActions(probe, root) {
     branchStartAction(probe, root);
@@ -17,6 +29,7 @@ function branchStartAction(probe, root) {
         return;
     }
     let action = {
+        id: lookup(),
         name: 'Start',
         links: [],
     };
@@ -46,6 +59,7 @@ function branchStartAction(probe, root) {
 
 function branchDrawInfectCard(probe, root) {
     let action = {
+        id: lookup(),
         name: 'Draw Infect Card',
         links: [],
     };
@@ -55,6 +69,7 @@ function branchDrawInfectCard(probe, root) {
 
 function branchInfectCity(probe, root) {
     let action = {
+        id: lookup(),
         name: 'Infect City',
         links: [],
     };
@@ -64,6 +79,7 @@ function branchInfectCity(probe, root) {
 
 function branchDealPlayerCard(probe, root) {
     let action = {
+        id: lookup(),
         name: 'Deal Player Card',
         links: [],
     };
@@ -73,6 +89,7 @@ function branchDealPlayerCard(probe, root) {
 
 function branchYield(probe, root) {
     let action = {
+        id: lookup(),
         name: 'Yield',
         links: [],
     };

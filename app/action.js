@@ -34,45 +34,52 @@ let actionClear = null;
     let lookup = null;
 
     function initLookup() {
+        let map = {};
         let vis_id = 0;
-        lookup = () => {
-            vis_id++;
-            return vis_id;
+        lookup = (lookup_id) => {
+            if (! (lookup_id in map)) {
+                vis_id++;
+                map[lookup_id] = vis_id;
+            }
+            return map[lookup_id];
         };
     }
 
+    function nodeId(node) {
+        return node.id;
+    }
+
+    function edgeId(from, to) {
+        return `${nodeId(from)}:${nodeId(to)}`;
+    }
+
     function initTree(root) {
-        let root_id = addAction(root);
+        addAction(root);
         for (let i = 0; i < root.links.length; i++) {
             let link = root.links[i];
-            let link_id = initTree(link);
-            connectActions(root_id, link_id);
+            initTree(link);
+            connectActions(root, link);
         }
-        return root_id;
     }
 
     function addAction(root) {
-        let node_id = lookup();
         setTimeout(() => {
             nodes.add({
-                id: node_id,
+                id: lookup(nodeId(root)),
                 label: root.name,
             });
         }, 0);
-        return node_id;
     }
 
-    function connectActions(root_id, link_id) {
-        let edge_id = lookup();
+    function connectActions(root, link) {
         setTimeout(() => {
             edges.add({
-                id: edge_id,
-                from: root_id,
-                to: link_id,
+                id: lookup(edgeId(root, link)),
+                from: lookup(nodeId(root)),
+                to: lookup(nodeId(link)),
                 arrows: 'to',
             });
         }, 0);
-        return edge_id;
     }
 
     let locales = {
