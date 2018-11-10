@@ -5,10 +5,8 @@ let gameUpdate = null;
 let gameClear = null;
 
 (() => {
-    let board = document.getElementById('board');
 
-    let lookup = {};
-    let vis_id = 1;
+    let board = document.getElementById('board');
 
     let nodes = new vis.DataSet([]);
     let edges = new vis.DataSet([]);
@@ -19,6 +17,7 @@ let gameClear = null;
 
     gameInit = (game) => {
         console.log(game);
+        initLookup();
         initCities(game.cities);
         initPawns(game.pawns);
     }
@@ -30,41 +29,53 @@ let gameClear = null;
     gameClear = () => {
         nodes.clear();
         edges.clear();
-        lookup = {};
-        vis_id = 1;
+        initLookup();
     }
 
-    function edgeLookup(from_city, to_city) {
-        let key = `${from_city.name}:${to_city.name}`;
-        if (key in lookup) {
-            return lookup[key];
-        }
-        key = `${to_city.name}:${from_city.name}`;
-        if (key in lookup) {
-            return lookup[key];
-        }
-        return null;
+    let lookup = null;
+
+    function initLookup() {
+        let map = {};
+        let vis_id = 1;
+        lookup = (lookup_id) => {
+            if (! (lookup_id in map)) {
+                map[lookup_id] = vis_id;
+                vis_id++;
+            }
+            return map[lookup_id];
+        };
     }
 
-    function edgeInLookup(from_city, to_city) {
-        return edgeLookup(from_city, to_city) !== null;
+    function edgeId(from, to) {
+        if (from.name <= to.name) {
+            return `${from.name}:${to.name}`;
+        } else {
+            return `${to.name}:${from.name}`;
+        }
+    }
+
+    function nodeId(node) {
+        return node.name;
     }
 
     function initCities(cities) {
         let names = Object.keys(cities);
         for (let i = 0; i < names.length; i++) {
             let city = cities[names[i]];
-            if (! (city.name in lookup)) {
-                addCity(city);
+            addCity(city);
+        }
+        let filter = {};
+        for (let i = 0; i < names.length; i++) {
+            let city = cities[names[i]];
+            if (! (city.name in filter)) {
+                filter[city.name] = true;
             }
             for (let j = 0; j < city.neighbors.length; j++) {
                 let neighbor = cities[city.neighbors[j]];
-                if (! (neighbor.name in lookup)) {
-                    addCity(city);
+                if (neighbor.name in filter) {
+                    continue;
                 }
-                if (! edgeInLookup(city, neighbor)) {
-                    connectCities(city, neighbor);
-                }
+                connectCities(city, neighbor);
             }
         }
     }
@@ -78,71 +89,58 @@ let gameClear = null;
             } else {
                 pawn.color = 'green';
             }
+            pawn.location = {
+                name: pawn.location,
+            };
             addPawn(pawn);
         }
     }
 
     function addCity(city) {
-        if (! (city.name in lookup)) {
-            lookup[city.name] = vis_id;
-            vis_id++;
-            setTimeout(() => {
-                nodes.add({
-                    id: lookup[city.name],
-                    label: city.name,
-                    color: city.color.toLowerCase(),
-                    font: {
-                        color: 'cyan',
-                    },
-                });
-            }, 0);
-        }
+        setTimeout(() => {
+            nodes.add({
+                id: lookup(nodeId(city)),
+                label: city.name,
+                color: city.color.toLowerCase(),
+                font: {
+                    color: 'cyan',
+                },
+            });
+        }, 0);
     }
 
     function connectCities(from_city, to_city) {
-        if (! edgeInLookup(from_city, to_city)) {
-            let key = `${from_city.name}:${to_city.name}`;
-            lookup[key] = vis_id;
-            vis_id++;
-            setTimeout(() => {
-                edges.add({
-                    id: lookup[key],
-                    from: lookup[from_city.name],
-                    to: lookup[to_city.name],
-                    color: {
-                        highlight: 'black',
-                    },
-                });
-            }, 0);
-        }
+        setTimeout(() => {
+            edges.add({
+                id: lookup(edgeId(from_city, to_city)),
+                from: lookup(nodeId(from_city)),
+                to: lookup(nodeId(to_city)),
+                color: {
+                    highlight: 'black',
+                },
+            });
+        }, 0);
     }
 
     function addPawn(pawn) {
-        if (! (pawn.name in lookup)) {
-            lookup[pawn.name] = vis_id;
-            vis_id++;
-            let key = `${pawn.name}:location`;
-            lookup[key] = vis_id;
-            vis_id++;
-            setTimeout(() => {
-                nodes.add({
-                    id: lookup[pawn.name],
-                    label: pawn.name,
-                    color: pawn.color,
-                    font: {
-                        color: 'cyan',
-                    },
-                });
-                edges.add({
-                    id: lookup[key],
-                    from: lookup[pawn.name],
-                    to: lookup[pawn.location],
-                    color: {
-                        highlight: 'black',
-                    },
-                });
-            }, 0);
-        }
+        setTimeout(() => {
+            nodes.add({
+                id: lookup(nodeId(pawn)),
+                label: pawn.name,
+                color: pawn.color,
+                font: {
+                    color: 'cyan',
+                },
+            });
+            edges.add({
+                id: lookup(edgeId(pawn, pawn.location)),
+                from: lookup(nodeId(pawn)),
+                to: lookup(nodeId(pawn.location)),
+                color: {
+                    highlight: 'black',
+                },
+            });
+        }, 0);
     }
 
     let locales = {
