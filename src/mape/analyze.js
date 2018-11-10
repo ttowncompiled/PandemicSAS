@@ -1,0 +1,3 @@
+exports.analyze = (monitor) => {
+    return {};
+};

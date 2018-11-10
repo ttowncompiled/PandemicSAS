@@ -4,12 +4,12 @@ const singletonGameFactory = require('./factory.js').singletonGameFactory;
 let model = null;
 
 module.exports = {
-    load: (config) => {
+    start: (config) => {
         return new Promise((resolve, reject) => {
             try {
                 if (validator.validate(config)) {
                     model = singletonGameFactory(config);
-                    resolve(module.exports.monitor());
+                    resolve(module.exports.view());
                 } else {
                     reject(new Error('validation error'));
                 }
@@ -19,11 +19,23 @@ module.exports = {
         });
     },
 
-    monitor: () => {
+    view: () => {
         return new Promise((resolve, reject) => {
-            // TODO: return city statuses and pawn locations
-            console.log(JSON.stringify(model, null, 2));
             resolve(model);
         });
     },
+
+    stop: () => {
+        return new Promise((resolve, reject) => {
+            model = null;
+            resolve(true);
+        });
+    },
+
+    undo: () => {
+        return new Promise((resolve, reject) => {
+            reject(new Error('TODO'));
+        });
+    },
+
 };

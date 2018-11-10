@@ -1,0 +1,3 @@
+exports.monitor = (game) => {
+    return {};
+};

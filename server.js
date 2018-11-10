@@ -28,34 +28,82 @@ app.get('/start', (req, res) => {
             console.log(response.data);
             res.send(response.data);
         })
-        .catch((reasone) => {
+        .catch((reason) => {
             console.log(reason);
-            res.send(reason);
+            res.sendStatus(500);
         });
 });
 
 app.get('/monitor', (req, res) => {
-    res.send();
+    axios.get(`http://localhost:${main_port}/monitor`)
+        .then((response) => {
+            console.log(response.data);
+            res.send(response.data);
+        })
+        .catch((reason) => {
+            console.log(reason);
+            res.sendStatus(500);
+        });
 });
 
 app.get('/analyze', (req, res) => {
-    res.send();
+    axios.get(`http://localhost:${main_port}/analyze`)
+        .then((response) => {
+            console.log(response.data);
+            res.send(response.data);
+        })
+        .catch((reason) => {
+            console.log(reason);
+            res.sendStatus(500);
+        });
 });
 
 app.get('/plan', (req, res) => {
-    res.send();
+    axios.get(`http://localhost:${main_port}/plan`)
+        .then((response) => {
+            console.log(response.data);
+            res.send(response.data);
+        })
+        .catch((reason) => {
+            console.log(reason);
+            res.sendStatus(500);
+        });
 });
 
 app.get('/execute', (req, res) => {
-    res.send();
+    axios.get(`http://localhost:${main_port}/execute`)
+        .then((response) => {
+            console.log(response.data);
+            res.send(response.data);
+        })
+        .catch((reason) => {
+            console.log(reason);
+            res.sendStatus(500);
+        });
 });
 
 app.get('/stop', (req, res) => {
-    res.send();
+    axios.get(`http://localhost:${main_port}/stop`)
+        .then((response) => {
+            console.log(response.data);
+            res.send(response.data);
+        })
+        .catch((reason) => {
+            console.log(reason);
+            res.sendStatus(500);
+        });
 });
 
 app.get('/back', (req, res) => {
-    res.send();
+    axios.get(`http://localhost:${main_port}/back`)
+        .then((response) => {
+            console.log(response.data);
+            res.send(response.data);
+        })
+        .catch((reason) => {
+            console.log(reason);
+            res.sendStatus(500);
+        });
 });
 
 app.get('/', (req, res) => {
