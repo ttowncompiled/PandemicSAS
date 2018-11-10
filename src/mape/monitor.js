@@ -7,5 +7,11 @@ exports.monitor = (game) => {
         probe.cities[i].status = status;
     }
     probe.pawns = game.pawns();
+    for (let i = 0; i < probe.pawns.length; i++) {
+        probe.pawns[i].hand = game.hands()[i];
+    }
+    probe.player = game.player();
+    probe.round = game.round();
+    probe.turn = game.turn();
     return probe;
 };

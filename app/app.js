@@ -21,12 +21,11 @@
         return new Promise((resolve) => {
             axios.get('/start')
                 .then((response) => {
-                    console.log(response.data);
                     gameStart(response.data);
                     resolve(true);
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((e) => {
+                    console.error(e);
                     resolve(false);
                 });
         });
@@ -36,11 +35,11 @@
         return new Promise((resolve) => {
             axios.get('/monitor')
                 .then((response) => {
-                    gameUpdate(response);
+                    gameUpdate(response.data);
                     resolve(true);
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((e) => {
+                    console.error(e);
                     resolve(false);
                 });
         });
@@ -53,8 +52,8 @@
                     console.log(response);
                     resolve(true);
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((e) => {
+                    console.error(e);
                     resolve(false);
                 });
         });
@@ -67,8 +66,8 @@
                     console.log(response);
                     resolve(true);
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((e) => {
+                    console.error(e);
                     resolve(false);
                 });
         });
@@ -81,8 +80,8 @@
                     console.log(response);
                     resolve(true);
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((e) => {
+                    console.error(e);
                     resolve(false);
                 });
         });
@@ -96,8 +95,8 @@
                     gameClear();
                     resolve(true);
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch((e) => {
+                    console.error(e);
                     resolve(false);
                 });
         });

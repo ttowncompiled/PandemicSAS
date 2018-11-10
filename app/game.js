@@ -8,12 +8,13 @@ let nodes = null;
 let edges = null;
 
 function gameStart(game) {
+    console.log(game);
     initCities(game.cities);
     initPawns(game.pawns);
 }
 
 function gameUpdate(game) {
-
+    console.log(game);
 }
 
 function gameClear() {

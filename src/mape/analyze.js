@@ -1,15 +1,10 @@
-exports.analyze = (probe, player) => {
-    if (player === 'sys') {
-        return sysAnalysis(probe);
+const env = require('./env/env.js');
+const sys = require('./sys/sys.js');
+
+exports.analyze = (probe) => {
+    if (probe.player === 'sys') {
+        return sys.sysAnalysis(probe);
     } else {
-        return envAnalysis(probe);
+        return env.envAnalysis(probe);
     }
-};
-
-function envAnalysis(probe) {
-
-};
-
-function sysAnalysis(probe) {
-
 };
