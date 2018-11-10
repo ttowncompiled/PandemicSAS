@@ -37,6 +37,10 @@ function branchStartAction(probe, root) {
         action = branchDrawInfectCard(probe, action);
         action = branchInfectCity(probe, action);
     }
+    for (let i = 0; i < 8; i++) {
+        action = branchDealPlayerCard(probe, action);
+    }
+    action = branchYield(probe, action);
     return action;
 };
 
@@ -52,6 +56,24 @@ function branchDrawInfectCard(probe, root) {
 function branchInfectCity(probe, root) {
     let action = {
         id: 'Infect City',
+        links: [],
+    };
+    root.links.push(action);
+    return action;
+};
+
+function branchDealPlayerCard(probe, root) {
+    let action = {
+        id: 'Deal Player Card',
+        links: [],
+    };
+    root.links.push(action);
+    return action;
+};
+
+function branchYield(probe, root) {
+    let action = {
+        id: 'Yield',
         links: [],
     };
     root.links.push(action);
