@@ -5,6 +5,9 @@ exports.singletonGameFactory = (config) => {
     model.stations = loadResearchStations(config);
     model.pawns = loadPawns(config);
     model.hands = loadHands(config);
+    model.player = 'env';
+    model.round = 1;
+    model.turn = 1;
     return model;
 };
 

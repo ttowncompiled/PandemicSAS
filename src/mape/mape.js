@@ -15,10 +15,11 @@ let state = '';
 module.exports = {
     start: (config) => {
         monitor_state = new Promise((resolve, reject) => {
-            model.start(config).then((game) => {
-                resolve(monitor_module.monitor(game));
-            })
-            .catch((reason) => reject(reason));
+            if (model.start(config)) {
+                resolve(monitor_module.monitor(model));
+            } else {
+                reject(new Error('could not start model'));
+            }
         });
         state = 'monitor';
         return monitor_state;
@@ -26,10 +27,7 @@ module.exports = {
 
     monitor: () => {
         monitor_state = new Promise((resolve, reject) => {
-            model.view().then((game) => {
-                resolve(monitor_module.monitor(game));
-            })
-            .catch((reason) => reject(reason));
+            resolve(monitor_module.monitor(model.view));
         });
         state = 'monitor';
         return monitor_state;
@@ -70,19 +68,16 @@ module.exports = {
 
     stop: () => {
         return new Promise((resolve, reject) => {
-            model.stop().then((ok) => {
-                if (ok) {
-                    monitor_state = null;
-                    analyze_state = null;
-                    plan_state = null;
-                    execute_state = null;
-                    state = '';
-                    resolve(true);
-                } else {
-                    reject(new Error('unable to stop model'));
-                }
-            })
-            .catch((reason) => reject(reason));
+            if (model.stop()) {
+                monitor_state = null;
+                analyze_state = null;
+                plan_state = null;
+                execute_state = null;
+                state = '';
+                resolve(true);
+            } else {
+                reject(new Error('unable to stop model'));
+            }
         });
     },
 };
