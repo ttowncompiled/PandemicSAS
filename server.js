@@ -155,6 +155,10 @@ app.get('/app/game.js', (req, res) => {
     res.sendFile(__dirname + '/app/game.js');
 });
 
+app.get('/app/action.js', (req, res) => {
+    res.sendFile(__dirname + '/app/action.js');
+});
+
 http.listen(app_port, () => {
     console.log('listening on localhost:' + app_port);
 });

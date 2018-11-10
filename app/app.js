@@ -1,5 +1,6 @@
 // const axios, io, nodes, edges;
-// gameStart
+// gameInit, gameUpdate, gameClear
+// treeInit, treeUpdate, treeClear
 (() => {
 
     const socket                = io();
@@ -21,7 +22,7 @@
         return new Promise((resolve) => {
             axios.get('/start')
                 .then((response) => {
-                    gameStart(response.data);
+                    gameInit(response.data);
                     resolve(true);
                 })
                 .catch((e) => {
@@ -49,7 +50,7 @@
         return new Promise((resolve) => {
             axios.get('/analyze')
                 .then((response) => {
-                    console.log(response);
+                    actionInit(response.data);
                     resolve(true);
                 })
                 .catch((e) => {
@@ -63,7 +64,7 @@
         return new Promise((resolve) => {
             axios.get('/plan')
                 .then((response) => {
-                    console.log(response);
+                    actionUpdate(response.data);
                     resolve(true);
                 })
                 .catch((e) => {
@@ -77,7 +78,7 @@
         return new Promise((resolve) => {
             axios.get('/execute')
                 .then((response) => {
-                    console.log(response);
+                    gameUpdate(response.data);
                     resolve(true);
                 })
                 .catch((e) => {
@@ -91,8 +92,8 @@
         return new Promise((resolve) => {
             axios.get('/stop')
                 .then((response) => {
-                    console.log(response);
                     gameClear();
+                    actionClear();
                     resolve(true);
                 })
                 .catch((e) => {
