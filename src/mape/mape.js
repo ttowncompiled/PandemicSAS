@@ -35,8 +35,8 @@ module.exports = {
 
     analyze: () => {
         analyze_state = new Promise((resolve, reject) => {
-            monitor_state.then((monitor_result) => {
-                resolve(analyze_module.analyze(monitor_result));
+            monitor_state.then((probe) => {
+                resolve(analyze_module.analyze(probe));
             })
             .catch((reason) => reject(reason));
         });
@@ -46,8 +46,11 @@ module.exports = {
 
     plan: () => {
         plan_state = new Promise((resolve, reject) => {
-            analyze_state.then((analysis_result) => {
-                resolve(plan_module.plan(analysis_result));
+            monitor_state.then((probe) => {
+                analyze_state.then((analysis) => {
+                    resolve(plan_module.plan(probe, analysis));
+                })
+                .catch((reason) => reject(reason));
             })
             .catch((reason) => reject(reason));
         });
@@ -57,8 +60,11 @@ module.exports = {
 
     execute: () => {
         execute_state = new Promise((resolve, reject) => {
-            plan_state.then((plan_result) => {
-                resolve(execute_module.execute(plan_result));
+            monitor_state.then((probe) => {
+                plan_state.then((plan) => {
+                    resolve(execute_module.execute(probe, plan));
+                })
+                .catch((reason) => reject(reason));
             })
             .catch((reason) => reject(reason));
         });

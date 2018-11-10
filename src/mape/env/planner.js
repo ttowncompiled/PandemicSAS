@@ -1,0 +1,3 @@
+exports.plan = (analysis) => {
+    return {};
+};

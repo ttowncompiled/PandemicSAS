@@ -1,0 +1,3 @@
+exports.analysis = (probe) => {
+    return {};
+};
