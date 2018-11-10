@@ -23,6 +23,7 @@ let actionClear = null;
 
     actionUpdate = (tree) => {
         console.log(tree);
+        updateTree(tree.root);
     }
 
     actionClear = () => {
@@ -62,6 +63,14 @@ let actionClear = null;
         }
     }
 
+    function updateTree(root) {
+        pickAction(root);
+        for (let i = 0; i < root.links.length; i++) {
+            let link = root.links[i];
+            updateTree(link);
+        }
+    }
+
     function addAction(root) {
         setTimeout(() => {
             nodes.add({
@@ -79,6 +88,18 @@ let actionClear = null;
                 to: lookup(nodeId(link)),
                 arrows: 'to',
             });
+        }, 0);
+    }
+
+    function pickAction(root) {
+        setTimeout(() => {
+            nodes.update({
+                id: lookup(nodeId(root)),
+                color: 'black',
+                font: {
+                    color: 'cyan',
+                },
+            })
         }, 0);
     }
 
