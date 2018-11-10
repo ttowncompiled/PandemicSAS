@@ -160,10 +160,13 @@ app.get('/lib/js/axios.min.js', (req, res) => {
 });
 
 app.get('/app/app.js', (req, res) => {
-    res.sendFile(__dirname + '/app.js');
+    res.sendFile(__dirname + '/app/app.js');
+});
+
+app.get('/app/game.js', (req, res) => {
+    res.sendFile(__dirname + '/app/game.js');
 });
 
 http.listen(app_port, () => {
     console.log('listening on localhost:' + app_port);
 });
-

@@ -14,7 +14,14 @@ let state = '';
 
 module.exports = {
     start: (config) => {
-        return model.start(config);
+        monitor_state = new Promise((resolve, reject) => {
+            model.start(config).then((game) => {
+                resolve(monitor_module.monitor(game));
+            })
+            .catch((reason) => reject(reason));
+        });
+        state = 'monitor';
+        return monitor_state;
     },
 
     monitor: () => {

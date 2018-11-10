@@ -1,4 +1,5 @@
 // const axios, io, nodes, edges;
+// gameStart
 (() => {
 
     const socket                = io();
@@ -22,6 +23,7 @@
             axios.get('/start')
                 .then((response) => {
                     console.log(response.data);
+                    gameStart(response.data);
                     resolve(true);
                 })
                 .catch((error) => {
@@ -35,7 +37,7 @@
         return new Promise((resolve) => {
             axios.get('/monitor')
                 .then((response) => {
-                    console.log(response);
+                    gameUpdate(response);
                     resolve(true);
                 })
                 .catch((error) => {
@@ -92,6 +94,7 @@
             axios.get('/stop')
                 .then((response) => {
                     console.log(response);
+                    gameClear();
                     resolve(true);
                 })
                 .catch((error) => {
@@ -114,7 +117,7 @@
         }
     }
 
-    function inc_step() {
+    function incStep() {
         if (step == 0 && backward_btn.hasClass('disabled')) {
             backward_btn.toggleClass('disabled');
         }
@@ -130,7 +133,7 @@
         }
     }
 
-    function dec_step() {
+    function decStep() {
         step--;
         if (step == 0 && ! backward_btn.hasClass('disabled')) {
             backward_btn.addClass('disabled');
@@ -176,42 +179,8 @@
 
     function play() {
         if (! paused && ! stopped) {
-            setTimeout(() => {
-                next().then((success) => {
-                    if (! success) {
-                        if (! stopped) {
-                            hit_pause();
-                        }
-                        return;
-                    }
-                    inc_step();
-                    play();
-                });
-            }, 1000);
+            // TODO: automatic inc-step
         }
-    }
-
-    function add(from_id, to_id, node_label, edge_id, edge_label) {
-        edges.add({
-            id: edge_id,
-            from: from_id,
-            to: to_id,
-            label: edge_Label,
-        });
-        nodes.add({
-            id: to_id,
-            label: node_label,
-        });
-    }
-
-    function remove(edge_id, node_id) {
-        nodes.remove(node_id);
-        edges.remove(edge_id);
-    }
-
-    function clear() {
-        nodes.clear();
-        edges.clear();
     }
 
     socket.on('connect', () => {
@@ -222,7 +191,7 @@
         console.log('>>> disconnected!');
     });
 
-    function hit_play() {
+    function hitPlay() {
         if (step == 0 && ! paused && stopped) {
             start().then((success) => {
                 if (! success) {
@@ -255,7 +224,7 @@
         }
     }
 
-    function hit_pause() {
+    function hitPause() {
         play_or_pause_btn.toggleClass('btn-outline-warning');
         play_or_pause_btn.toggleClass('btn-outline-primary');
         play_or_pause_btn.html($('<span class="oi oi-media-play"></span>'));
@@ -268,7 +237,7 @@
         paused = true;
     }
 
-    function hit_stop() {
+    function hitStop() {
         stop().then((success) => {
             if (! success) {
                 return;
@@ -305,39 +274,38 @@
         });
     }
 
-    function hit_forward() {
+    function hitForward() {
         next().then((success) => {
             if (! success) {
                 return;
             }
-            inc_step();
+            incStep();
         });
     }
 
-    function hit_backward() {
+    function hitBackward() {
         back().then((success) => {
             if (! success) {
                 return;
             }
-            dec_step();
+            decStep();
         });
     }
 
     play_or_pause_btn.click(() => {
         if (play_or_pause_btn.hasClass('btn-outline-success')) {
-            hit_play();
+            hitPlay();
         } else if (play_or_pause_btn.hasClass('btn-outline-primary')) {
-            hit_play();
+            hitPlay();
         } else {
-            hit_pause();
+            hitPause();
         }
     });
 
-    stop_btn.click(() => hit_stop());
+    stop_btn.click(() => hitStop());
 
-    forward_btn.click(() => hit_forward());
+    forward_btn.click(() => hitForward());
 
-    backward_btn.click(() => hit_backward());
+    backward_btn.click(() => hitBackward());
 
 })();
-

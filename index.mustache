@@ -54,10 +54,10 @@
         <div class="container h-100 py-3">
             <div class="row h-100">
                 <div class="col h-100">
-                    <div id="s-tree" class="container h-100 shadow"></div>
+                    <div id="board" class="container h-100 shadow"></div>
                 </div>
                 <div class="col h-100">
-                    <div id="d-tree" class="container h-100 shadow"></div>
+                    <div id="tree" class="container h-100 shadow"></div>
                 </div>
             </div>
         </div>
@@ -67,66 +67,7 @@
         <script src="/lib/js/vis.min.js"></script>
         <script src="/lib/js/socket.io.js"></script>
         <script src="/lib/js/axios.min.js"></script>
+        <script src="/app/game.js"></script>
         <script src="/app/app.js"></script>
-        <script>
-
-            // create an array with nodes
-            let nodes = new vis.DataSet([
-                {id: 1, label: 'Node 1'},
-                {id: 2, label: 'Node 2'},
-                {id: 3, label: 'Node 3'},
-                {id: 4, label: 'Node 4'},
-                {id: 5, label: 'Node 5'}
-            ]);
-
-            // create an array with edges
-            let edges = new vis.DataSet([
-                {from: 1, to: 3},
-                {from: 1, to: 2},
-                {from: 2, to: 4},
-                {from: 2, to: 5}
-            ]);
-
-            // create a network
-            let s_tree = document.getElementById('s-tree');
-            let d_tree = document.getElementById('d-tree');
-
-            // provide the data in the vis format
-            let data = {
-                nodes: nodes,
-                edges: edges
-            };
-
-            let locales = {
-                en: {
-                    edit: 'Edit',
-                    del: 'Delete selected',
-                    back: 'Back',
-                    addNode: 'Add Node',
-                    addEdge: 'Add Edge',
-                    editNode: 'Edit Node',
-                    editEdge: 'Edit Edge',
-                    addDescription: 'Click in an empty space to place a new node.',
-                    edgeDescription: 'Click on a node and drag the edge to another node to connect them.',
-                    editEdgeDescription: 'Click on the control points and drag them to a node to connect to it.',
-                    createEdgeError: 'Cannot link edges to a cluster.',
-                    deleteClusterError: 'Clusters cannot be deleted.',
-                    editClusterError: 'Clusters cannot be edited.'
-                }
-            }
-            let options = {
-                autoResize: true,
-                height: '100%',
-                width: '100%',
-                locale: 'en',
-                locales: locales,
-                clickToUse: false,
-            };
-
-            // initialize your network!
-            let s_network = new vis.Network(s_tree, data, options);
-            let d_network = new vis.Network(d_tree, data, options);
-        </script>
     </body>
 </html>
-
