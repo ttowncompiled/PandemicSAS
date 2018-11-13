@@ -11,8 +11,8 @@ exports.singletonGameFactory = (config) => {
     model.hands = loadHands(config);
     model.player = 'env';
     model.pawn = -1;
-    model.round = 1;
-    model.turn = 1;
+    model.round = 0;
+    model.turn = 0;
     return model;
 };
 
@@ -62,7 +62,7 @@ function loadInfectDeck(config) {
     for (let i = 0; i < config.cities.length; i++) {
         deck.push({
             name: config.cities[i].name,
-            color: 'Green'
+            color: config.cities[i].color,
         });
     }
     return deck;
