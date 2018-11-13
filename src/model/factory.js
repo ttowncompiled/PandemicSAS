@@ -4,12 +4,26 @@ exports.singletonGameFactory = (config) => {
     model.status = loadStatus(config);
     model.stations = loadResearchStations(config);
     model.infect_deck = loadInfectDeck(config);
+    model.infect_discards = [];
+    model.player_deck = loadPlayerDeckNoEpidemics(config);
+    model.player_discards = [];
     model.pawns = loadPawns(config);
     model.hands = loadHands(config);
     model.player = 'env';
     model.round = 1;
     model.turn = 1;
     return model;
+};
+
+exports.epidemicCards = (config) => {
+    let cards = [];
+    for (let i = 0; i < 4; i++) {
+        cards.push({
+            name: 'Epidemic',
+            color: 'Green'
+        });
+    }
+    return cards;
 };
 
 function loadCities(config) {
@@ -52,6 +66,23 @@ function loadInfectDeck(config) {
     }
     return deck;
 };
+
+function loadPlayerDeckNoEpidemics(config) {
+    let deck = [];
+    for (let i = 0; i < config.cities.length; i++) {
+        deck.push({
+            name: config.cities[i].name,
+            color: config.cities[i].color
+        });
+    }
+    for (let i = 0; i < 8; i++) {
+        deck.push({
+            name: 'Blank',
+            color: 'Blank',
+        });
+    }
+    return deck;
+}
 
 function loadPawns(config) {
     let pawns = [];
