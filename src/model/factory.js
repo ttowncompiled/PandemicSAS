@@ -14,10 +14,10 @@ exports.singletonGameFactory = (config) => {
     model.hands = loadHands(config);
     model.player = 'env';
     model.pawn = 0;
-    model.infection_rate_track = loadInfectionTrack();
-    model.infection_rate = loadInfectionRate();
-    model.max_outbreaks = loadMaxOutbreaks();
-    model.outbreaks = loadInitOutbreaks();
+    model.infection_rate_track = loadInfectionTrack(config);
+    model.infection_rate = loadInfectionRate(config);
+    model.max_outbreaks = loadMaxOutbreaks(config);
+    model.outbreaks = loadInitOutbreaks(config);
     model.round = 1;
     model.turn = 1;
     return model;

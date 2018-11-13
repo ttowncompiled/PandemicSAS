@@ -21,7 +21,7 @@ function initLookup() {
 }
 
 function branchActions(probe, root) {
-    if (probe.round < 1) {
+    if (probe.round <= 1) {
         branchStartAction(probe, root);
     }
 };
