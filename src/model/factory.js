@@ -4,17 +4,17 @@ exports.singletonGameFactory = (config) => {
     model.status = loadStatus(config);
     model.stations = loadResearchStations(config);
     model.infect_deck = loadInfectDeck(config);
-    model.infect_discards = [];
+    model.infect_pile = [];
     model.player_deck = loadPlayerDeckNoEpidemics(config);
-    model.player_discards = [];
+    model.player_pile = [];
     model.pawns = loadPawns(config);
     model.hands = loadHands(config);
     model.player = 'env';
-    model.pawn = -1;
+    model.pawn = 0;
     model.infection_rate = 2;
     model.outbreaks = 0;
-    model.round = 0;
-    model.turn = 0;
+    model.round = 1;
+    model.turn = 1;
     return model;
 };
 

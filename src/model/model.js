@@ -37,21 +37,21 @@ module.exports = {
         return model.status;
     },
 
-    infectCity: (card) => {
+    infectCity: (city, disease) => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        if (! (card.name in model.status)) {
+        if (! (city.name in model.status)) {
             console.error(new Error(`${city.name} has no status`));
             return null;
         }
-        if (! (card.color in model.status[card.name])) {
-            console.error(new Error(`${card.color} of ${city.name} has no status`));
+        if (! (disease in model.status[city.name])) {
+            console.error(new Error(`${city.name} has no status for ${disease}`));
             return null;
         }
-        model.status[card.name][card.color]++;
-        return model.status[card.name];
+        model.status[city.name][disease]++;
+        return model.status[city.name];
     },
 
     stations: () => {
@@ -70,7 +70,7 @@ module.exports = {
         return model.infect_deck;
     },
 
-    infectDeckTop: () => {
+    peekInfectDeck: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
@@ -89,28 +89,35 @@ module.exports = {
         if (model.infect_deck.length == 0) {
             return {};
         }
-        let card = model.infect_deck.pop();
-        model.infect_discards.push(card);
-        return card;
+        return model.infect_deck.pop();
     },
 
-    infectDiscards: () => {
+    discardInfectCard: (card) => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        return model.infect_discards;
+        model.infect_pile.push(card);
+        return model.infect_pile;
     },
 
-    infectDiscardsTop: () => {
+    infectPile: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        if (model.infect_discards.length == 0) {
+        return model.infect_pile;
+    },
+
+    peekInfectPile: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        if (model.infect_pile.length == 0) {
             return {};
         }
-        return model.infect_discards[model.infect_discards.length - 1];
+        return model.infect_pile[model.infect_pile.length - 1];
     },
 
     shuffleInfectDeck: () => {
@@ -127,20 +134,20 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.infect_deck.concat(model.infect_discards);
-        model.infect_discards = [];
+        model.infect_deck.concat(model.infect_pile);
+        model.infect_pile = [];
         model.infect_deck = riffleShuffle(model.infect_deck);
         return model.infect_deck;
     },
 
-    shuffleInfectDiscards: () => {
+    shuffleInfectPile: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.infect_discards = riffleShuffle(model.infect_discards);
-        model.infect_deck.concat(model.infect_discards);
-        model.infect_discards = [];
+        model.infect_pile = riffleShuffle(model.infect_pile);
+        model.infect_deck.concat(model.infect_pile);
+        model.infect_pile = [];
         return model.infect_deck;
     },
 
@@ -152,7 +159,7 @@ module.exports = {
         return model.player_deck;
     },
 
-    playerDeckTop: () => {
+    peekPlayerDeck: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
@@ -171,28 +178,26 @@ module.exports = {
         if (model.player_deck.length == 0) {
             return {};
         }
-        let card = model.player_deck.pop();
-        model.player_discards.push(card);
-        return card;
+        return model.player_deck.pop();
     },
 
-    playerDiscards: () => {
+    playerPile: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        return model.player_discards;
+        return model.player_pile;
     },
 
-    playerDiscardsTop: () => {
+    peekPlayerPile: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        if (model.player_discards.length == 0) {
+        if (model.player_pile.length == 0) {
             return {};
         }
-        return model.player_discards[model.player_discards.length - 1];
+        return model.player_pile[model.player_pile.length - 1];
     },
 
     shufflePlayerDeck: () => {
@@ -209,8 +214,8 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.player_deck.concat(model.player_discards);
-        model.player_discards = [];
+        model.player_deck.concat(model.player_pile);
+        model.player_pile = [];
         model.player_deck = riffleShuffle(model.player_deck);
         return model.player_deck;
     },
