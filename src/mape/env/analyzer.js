@@ -1,4 +1,4 @@
-exports.analysis = (probe) => {
+exports.analysis = (_model, probe) => {
     initLookup();
     let tree = {};
     tree.root = {

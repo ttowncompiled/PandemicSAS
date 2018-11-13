@@ -1,3 +1,3 @@
-exports.plan = (analysis) => {
+exports.plan = (_model, _probe, _analysis) => {
     return {};
 };

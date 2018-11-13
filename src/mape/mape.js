@@ -27,7 +27,7 @@ module.exports = {
 
     monitor: () => {
         monitor_state = new Promise((resolve, reject) => {
-            resolve(monitor_module.monitor(model.view));
+            resolve(monitor_module.monitor(model));
         });
         state = 'monitor';
         return monitor_state;
@@ -36,7 +36,7 @@ module.exports = {
     analyze: () => {
         analyze_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
-                resolve(analyze_module.analyze(probe));
+                resolve(analyze_module.analyze(model, probe));
             })
             .catch((reason) => reject(reason));
         });
@@ -48,7 +48,7 @@ module.exports = {
         plan_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 analyze_state.then((analysis) => {
-                    resolve(plan_module.plan(probe, analysis));
+                    resolve(plan_module.plan(model, probe, analysis));
                 })
                 .catch((reason) => reject(reason));
             })
@@ -62,7 +62,7 @@ module.exports = {
         execute_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 plan_state.then((plan) => {
-                    resolve(execute_module.execute(probe, plan));
+                    resolve(execute_module.execute(model, probe, plan));
                 })
                 .catch((reason) => reject(reason));
             })
