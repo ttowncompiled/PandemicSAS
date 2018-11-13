@@ -3,6 +3,7 @@ exports.singletonGameFactory = (config) => {
     model.cities = loadCities(config);
     model.status = loadStatus(config);
     model.stations = loadResearchStations(config);
+    model.infect_deck = loadInfectDeck(config);
     model.pawns = loadPawns(config);
     model.hands = loadHands(config);
     model.player = 'env';
@@ -39,6 +40,17 @@ function loadStatus(config) {
 
 function loadResearchStations(config) {
     return config.research_stations;
+};
+
+function loadInfectDeck(config) {
+    let deck = [];
+    for (let i = 0; i < config.cities.length; i++) {
+        deck.push({
+            name: config.cities[i].name,
+            color: 'Green'
+        });
+    }
+    return deck;
 };
 
 function loadPawns(config) {
