@@ -56,7 +56,7 @@ max_diseases_cured:             1
 init_diseases_cured:            nothing
 
 # Eradicable disease types
-# must be nothing or each type must be in $diseases
+# must be nothing or each type must be in $curable
 eradicable:
     -                           Yellow
     -                           Red
@@ -479,7 +479,7 @@ init_infection_rate:            1
 
 # The maximum intensity for any infection rate
 # must be a positive Integer
-max_infection_rate:             4
+max_infection_intensity:        4
 
 # The infection rate intensities
 # must be the same size as $max_infection_rates

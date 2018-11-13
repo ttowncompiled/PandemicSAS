@@ -1,5 +1,7 @@
 exports.singletonGameFactory = (config) => {
     let model = {};
+    model.curable = loadCurableDiseases(config);
+    model.eradicable = loadEradicableDiseases(config);
     model.cities = loadCities(config);
     model.status = loadStatus(config);
     model.stations = loadResearchStations(config);
@@ -7,26 +9,36 @@ exports.singletonGameFactory = (config) => {
     model.infect_pile = [];
     model.player_deck = loadPlayerDeckNoEpidemics(config);
     model.player_pile = [];
+    model.epidemic_cards = loadEpidemicCards(config);
     model.pawns = loadPawns(config);
     model.hands = loadHands(config);
     model.player = 'env';
     model.pawn = 0;
-    model.infection_rate = 2;
-    model.outbreaks = 0;
+    model.infection_rate_track = loadInfectionTrack();
+    model.infection_rate = loadInfectionRate();
+    model.max_outbreaks = loadMaxOutbreaks();
+    model.outbreaks = loadInitOutbreaks();
     model.round = 1;
     model.turn = 1;
     return model;
 };
 
-exports.epidemicCards = (config) => {
-    let cards = [];
-    for (let i = 0; i < 4; i++) {
-        cards.push({
-            name: 'Epidemic',
-            color: 'Green'
-        });
+function loadCurableDiseases(config) {
+    let curable = {};
+    for (let i = 0; i < config.curable.length; i++) {
+        let disease = config.curable[i];
+        curable[disease] = false;
     }
-    return cards;
+    return curable;
+};
+
+function loadEradicableDiseases(config) {
+    let eradicable = {};
+    for (let i = 0; i < config.eradicable.length; i++) {
+        let disease = config.eradicable[i];
+        eradicable[disease] = false;
+    }
+    return eradicable;
 };
 
 function loadCities(config) {
@@ -85,7 +97,18 @@ function loadPlayerDeckNoEpidemics(config) {
         });
     }
     return deck;
-}
+};
+
+function loadEpidemicCards(_config) {
+    let cards = [];
+    for (let i = 0; i < 4; i++) {
+        cards.push({
+            name: 'Epidemic',
+            color: 'Green'
+        });
+    }
+    return cards;
+};
 
 function loadPawns(config) {
     let pawns = [];
@@ -104,4 +127,20 @@ function loadHands(config) {
         hands.push([]);
     }
     return hands;
+};
+
+function loadInfectionTrack(config) {
+    return config.infection_rates;
+};
+
+function loadInfectionRate(config) {
+    return config.init_infection_rate;
+};
+
+function loadMaxOutbreaks(config) {
+    return config.max_outbreaks;
+};
+
+function loadInitOutbreaks(config) {
+    return config.init_outbreaks;
 };

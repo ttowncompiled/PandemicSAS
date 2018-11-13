@@ -22,7 +22,7 @@ module.exports = {
     infectCity: () => {
         let card = model.peekInfectPile();
         let city = model.cities()[card.name];
-        let status = model.infectCity(city, card.color);
+        model.infectCity(city, card.color);
     },
 
     dealPlayerCard: (is_start) => {
@@ -31,7 +31,6 @@ module.exports = {
             for (let i = 0; i < model.pawns().length-1; i++) {
                 if (model.hands()[i].length > model.hands()[i+1].length) {
                     model.hands()[i+1].push(card);
-                    console.log(JSON.stringify(model.hands()[i+1], null, 2));
                     return;
                 }
             }
@@ -49,6 +48,9 @@ module.exports = {
             if (model.activePawn() === 0) {
                 model.nextRound();
             }
+        } else {
+            model.addEpidemicCards();
+            model.shufflePlayerDeck();
         }
     }
 };

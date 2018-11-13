@@ -10,7 +10,8 @@ exports.monitor = (model) => {
     for (let i = 0; i < probe.pawns.length; i++) {
         probe.pawns[i].hand = model.hands()[i];
     }
-    probe.player = model.player();
+    probe.player = model.activePlayer();
+    probe.pawn = model.activePawn();
     probe.round = model.round();
     probe.turn = model.turn();
     return probe;

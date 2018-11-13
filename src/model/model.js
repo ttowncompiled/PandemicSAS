@@ -21,6 +21,72 @@ module.exports = {
         }
     },
 
+    curableDiseases: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return Object.keys(model.curable);
+    },
+
+    curedDiseases: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return Object.keys(model.curable).filter((key) => model.curable[key]);
+    },
+
+    uncuredDiseases: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return Object.keys(model.curable).filter((key) => ! model.curable[key]);
+    },
+
+    cureDisease: (disease) => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.curable[disease] = true;
+        return Object.keys(model.curable).filter((key) => model.curable[key]);
+    },
+
+    eradicableDiseases: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return Object.keys(model.eradicable);
+    },
+
+    eradicatedDiseases: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return Object.keys(model.eradicable).filter((key) => model.eradicable[key]);
+    },
+
+    uneradicatedDiseases: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return Object.keys(model.eradicable).filter((key) => ! model.eradicable[key]);
+    },
+
+    eradicateDisease: (disease) => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.eradicable[disease] = true;
+        return Object.keys(model.eradicable).filter((key) => model.eradicable[key]);
+    },
+
     cities: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
@@ -200,6 +266,15 @@ module.exports = {
         return model.player_pile[model.player_pile.length - 1];
     },
 
+    addEpidemicCards: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.player_deck.concat(model.epidemic_cards);
+        return model.player_deck;
+    },
+
     shufflePlayerDeck: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
@@ -264,7 +339,7 @@ module.exports = {
         return model.hands[pawn];
     },
 
-    player: () => {
+    activePlayer: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
@@ -302,12 +377,39 @@ module.exports = {
         return model.pawn;
     },
 
+    infectionRateTrack: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return model.infection_rate_track;
+    },
+
     infectionRate: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        return model.infection_rate;
+        return model.infection_rate_track[model.infection_rate-1];
+    },
+
+    increaseInfectionRate: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        if (model.infection_rate < model.infection_rate_track.length) {
+            model.infection_rate++;
+        }
+        return model.infection_rate_track[model.infection_rate-1];
+    },
+
+    maxOutbreaks: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return model.max_outbreaks;
     },
 
     outbreaks: () => {
@@ -315,6 +417,15 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
+        return model.outbreaks;
+    },
+
+    increaseOutbreaks: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.outbreaks++;
         return model.outbreaks;
     },
 

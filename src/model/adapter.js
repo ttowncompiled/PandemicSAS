@@ -1,6 +1,18 @@
 module.exports = {
     adapt: (model) => {
         return {
+            curableDiseases: () => model.curable(),
+
+            curedDiseases: () => model.curedDiseases(),
+
+            uncuredDiseases: () => model.uncuredDiseases(),
+
+            eradicableDiseases: () => model.eradicableDiseases(),
+
+            eradicatedDiseases: () => model.eradicatedDiseases(),
+
+            uneradicatedDiseases: () => model.uneradicatedDiseases(),
+
             cities: () => model.cities(),
 
             status: () => model.status(),
@@ -9,29 +21,33 @@ module.exports = {
 
             infectDeck: () => model.infectDeck(),
 
-            infectDeckTop: () => model.infectDeckTop(),
+            peekInfectDeck: () => model.peekInfectDeck(),
 
-            infectDiscards: () => model.infectDiscards(),
+            infectPile: () => model.infectPile(),
 
-            infectDiscardsTop: () => model.infectDiscardsTop(),
+            peekInfectPile: () => model.peekInfectPile(),
 
             playerDeck: () => model.playerDeck(),
 
-            playerDeckTop: () => model.playerDeckTop(),
+            peekPlayerDeck: () => model.peekPlayerDeck(),
 
-            playerDiscards: () => model.playerDiscards(),
+            playerPile: () => model.playerPile(),
 
-            playerDiscardsTop: () => model.playerDiscardsTop(),
+            peekPlayerPile: () => model.peekPlayerPile(),
 
             pawns: () => model.pawns(),
 
             hands: () => model.hands(),
 
-            player: () => model.player(),
+            activePlayer: () => model.activePlayer(),
 
             activePawn: () => model.activePawn(),
 
+            infectionRateTrack: () => model.infectionRateTrack(),
+
             infectionRate: () => model.infectionRate(),
+
+            maxOutbreaks: () => model.maxOutbreaks(),
 
             outbreaks: () => model.outbreaks(),
 

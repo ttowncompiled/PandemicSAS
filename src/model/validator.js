@@ -2,7 +2,8 @@ exports.validate = (config) => {
     return validateColors(config) && validateDiseases(config)
         && validateDiseaseCubes(config) && validateCities(config)
         && validateResearchStations(config) && validateRoles(config)
-        && validatePawns(config) && validateHand(config);
+        && validatePawns(config) && validateHand(config)
+        && validateOutbreaks(config) && validateInfectionRate(config);
 };
 
 function validateColors(config) {
@@ -32,6 +33,36 @@ function validateDiseases(config) {
         let disease = config.diseases[i];
         if (! config.colors.includes(disease)) {
             console.error(`ERROR: disease ${i} not in: colors`);
+            valid = false;
+        }
+    }
+    if (! ('curable' in config)) {
+        console.error('ERROR: config does not include key: curable');
+        return false;
+    }
+    if (! isUnique(config.curable)) {
+        console.error('ERROR: curable contains duplicate colors');
+        valid = false;
+    }
+    for (let i = 0; i < config.curable; i++) {
+        let disease = config.curable[i];
+        if (! config.diseases.includes(disease)) {
+            console.error(`ERROR: curable disease ${i} not in: diseases`);
+            valid = false;
+        }
+    }
+    if (! ('eradicable' in config)) {
+        console.error('ERROR: config does not include key: eradicable');
+        return false;
+    }
+    if (! isUnique(config.eradicable)) {
+        console.error('ERROR: eradicable contains duplicate colors');
+        valid = false;
+    }
+    for (let i = 0; i < config.eradicable; i++) {
+        let disease = config.eradicable[i];
+        if (! config.curable.includes(disease)) {
+            console.error(`ERROR: eradicable disease ${i} not in: curable`);
             valid = false;
         }
     }
@@ -321,6 +352,107 @@ function validateHand(config) {
         }
         if (size > config.max_hand_size) {
             console.error(`ERROR: init_hand_size ${i} is greater than max_hand_size`);
+            valid = false;
+        }
+    }
+    return valid;
+};
+
+function validateOutbreaks(config) {
+    let valid = true;
+    if (! ('max_outbreaks' in config)) {
+        console.error('ERROR: config does not include key: max_outbreaks');
+        return false;
+    }
+    if (! Number.isInteger(config.max_outbreaks)) {
+        console.error('ERROR: max_outbreaks is not an Integer');
+        valid = false;
+    }
+    if (config.max_outbreaks <= 0) {
+        console.error('ERROR: max_outbreaks is not positive');
+        valid = false;
+    }
+    if (! ('init_outbreaks' in config)) {
+        console.error('ERROR: config does not include key: init_outbreaks');
+        return false;
+    }
+    if (! Number.isInteger(config.init_outbreaks)) {
+        console.error('ERROR: init_outbreaks is not an Integer');
+        valid = false;
+    }
+    if (config.init_outbreaks < 0) {
+        console.error('ERROR: init_outbreaks is not non-negative');
+        valid = false;
+    }
+    if (config.init_outbreaks > config.max_outbreaks) {
+        console.error('ERROR: init_outbreaks is not smaller than max_outbreaks');
+        valid = false;
+    }
+    return valid;
+};
+
+function validateInfectionRate(config) {
+    let valid = true;
+    if (! ('max_infection_rates' in config)) {
+        console.error('ERROR: config does not include key: max_infection_rates');
+        return false;
+    }
+    if (! Number.isInteger(config.max_infection_rates)) {
+        console.error('ERROR: max_infection_rates is not an Integer');
+        valid = false;
+    }
+    if (config.max_infection_rates <= 0) {
+        console.error('ERROR: max_infection_rates is not positive');
+        valid = false;
+    }
+    if (! ('init_infection_rate' in config)) {
+        console.error('ERROR: config does not include key: init_infection_rate');
+        return false;
+    }
+    if (! Number.isInteger(config.init_infection_rate)) {
+        console.error('ERROR: init_infection_rate is not an Integer');
+        valid = false;
+    }
+    if (config.init_infection_rate <= 0) {
+        console.error('ERROR: init_infection_rate is not positive');
+        valid = false;
+    }
+    if (config.init_infection_rate > config.max_infection_rates) {
+        console.error('ERROR: init_infection_rate is not smaller than max_infection_rates');
+        valid = false;
+    }
+    if (! ('max_infection_intensity' in config)) {
+        console.error('ERROR: config does not include key: max_infection_intensity');
+        return false;
+    }
+    if (! Number.isInteger(config.max_infection_intensity)) {
+        console.error('ERROR: max_infection_intensity is not an Integer');
+        valid = false;
+    }
+    if (config.max_infection_rates <= 0) {
+        console.error('ERROR: max_infection_intensity is not positive');
+        valid = false;
+    }
+    if (! ('infection_rates' in config)) {
+        console.error('ERROR: config does not include key: infection_rates');
+        return false;
+    }
+    if (config.infection_rates.length != config.max_infection_rates) {
+        console.error('ERROR: there is not an infection rate for each possible infection rate in max_infection_rates');
+        valid = false;
+    }
+    for (let i = 0; i < config.infection_rates; i++) {
+        let rate = config.infection_rates[i];
+        if (! Number.isInteger(rate)) {
+            console.error(`ERROR: infection_rates ${i} is not an Integer`);
+            valid = false;
+        }
+        if (rate <= 0) {
+            console.error(`ERROR: infection_rates ${i} is not positive`);
+            valid = false;
+        }
+        if (rate > config.max_infection_intensity) {
+            console.error(`ERROR: infection_rates ${i} is greater than max_infection_intensity`);
             valid = false;
         }
     }
