@@ -8,6 +8,8 @@ module.exports = {
         try {
             if (validator.validate(config)) {
                 model = singletonGameFactory(config);
+                module.exports.shuffleInfectDeck();
+                module.exports.shufflePlayerDeck();
                 return true;
             } else {
                 console.error(new Error('validation error'));
@@ -33,6 +35,23 @@ module.exports = {
             return null;
         }
         return model.status;
+    },
+
+    infectCity: (card) => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        if (! (card.name in model.status)) {
+            console.error(new Error(`${city.name} has no status`));
+            return null;
+        }
+        if (! (card.color in model.status[card.name])) {
+            console.error(new Error(`${card.color} of ${city.name} has no status`));
+            return null;
+        }
+        model.status[card.name][card.color]++;
+        return model.status[card.name];
     },
 
     stations: () => {
@@ -70,7 +89,9 @@ module.exports = {
         if (model.infect_deck.length == 0) {
             return {};
         }
-        return model.infect_deck.pop();
+        let card = model.infect_deck.pop();
+        model.infect_discards.push(card);
+        return card;
     },
 
     infectDiscards: () => {
@@ -150,7 +171,9 @@ module.exports = {
         if (model.player_deck.length == 0) {
             return {};
         }
-        return model.player_deck.pop();
+        let card = model.player_deck.pop();
+        model.player_discards.push(card);
+        return card;
     },
 
     playerDiscards: () => {
@@ -200,6 +223,15 @@ module.exports = {
         return model.pawns;
     },
 
+    movePawnTo: (pawn, location) => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.pawns[pawn].location = location;
+        return model.pawns[pawn];
+    },
+
     hands: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
@@ -208,10 +240,42 @@ module.exports = {
         return model.hands;
     },
 
+    dealCardTo: (card, pawn) => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.hands[pawn].push(card);
+        return model.hands[pawn];
+    },
+
+    discardCardFrom: (card, pawn) => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.hands[pawn].splice(model.hands[pawn].map((card) => card.name).indexOf(card.name), 1);
+        model.player_discards.push(card);
+        return model.hands[pawn];
+    },
+
     player: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
+        }
+        return model.player;
+    },
+
+    nextPlayer: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        if (model.player === 'sys') {
+            model.player = 'env';
+        } else {
+            model.player = 'sys';
         }
         return model.player;
     },
@@ -224,6 +288,31 @@ module.exports = {
         return model.pawn;
     },
 
+    nextPawn: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.pawn = (model.pawn + 1) % model.pawns.length;
+        return model.pawn;
+    },
+
+    infectionRate: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return model.infection_rate;
+    },
+
+    outbreaks: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return model.outbreaks;
+    },
+
     round: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
@@ -232,11 +321,29 @@ module.exports = {
         return model.round;
     },
 
+    nextRound: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.round++;
+        return model.round;
+    },
+
     turn: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
+        return model.turn;
+    },
+
+    nextTurn: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        model.turn++;
         return model.turn;
     },
 

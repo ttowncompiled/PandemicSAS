@@ -31,6 +31,10 @@ module.exports = {
 
             activePawn: () => model.activePawn(),
 
+            infectionRate: () => model.infectionRate(),
+
+            outbreaks: () => model.outbreaks(),
+
             round: () => model.round(),
 
             turn: () => model.turn(),

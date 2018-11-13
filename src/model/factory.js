@@ -11,6 +11,8 @@ exports.singletonGameFactory = (config) => {
     model.hands = loadHands(config);
     model.player = 'env';
     model.pawn = -1;
+    model.infection_rate = 2;
+    model.outbreaks = 0;
     model.round = 0;
     model.turn = 0;
     return model;
