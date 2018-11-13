@@ -216,6 +216,14 @@ module.exports = {
         return model.player;
     },
 
+    activePawn: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return model.pawn;
+    },
+
     round: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
