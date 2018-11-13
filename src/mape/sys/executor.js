@@ -1,3 +1,3 @@
-exports.execute = (_model, _probe, _plan) => {
+exports.execute = () => {
     return {};
 };

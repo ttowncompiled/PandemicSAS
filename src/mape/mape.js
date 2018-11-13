@@ -1,4 +1,4 @@
-const model = require('../model/model.js');
+const manager = require('../model/manager.js');
 
 const monitor_module = require('./monitor.js');
 const analyze_module = require('./analyze.js');
@@ -15,8 +15,8 @@ let state = '';
 module.exports = {
     start: (config) => {
         monitor_state = new Promise((resolve, reject) => {
-            if (model.start(config)) {
-                resolve(monitor_module.monitor(model));
+            if (manager.start(config)) {
+                resolve(monitor_module.monitor(manager.view()));
             } else {
                 reject(new Error('could not start model'));
             }
@@ -27,7 +27,7 @@ module.exports = {
 
     monitor: () => {
         monitor_state = new Promise((resolve, reject) => {
-            resolve(monitor_module.monitor(model));
+            resolve(monitor_module.monitor(manager.view()));
         });
         state = 'monitor';
         return monitor_state;
@@ -36,7 +36,7 @@ module.exports = {
     analyze: () => {
         analyze_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
-                resolve(analyze_module.analyze(model, probe));
+                resolve(analyze_module.analyze(probe));
             })
             .catch((reason) => reject(reason));
         });
@@ -48,7 +48,7 @@ module.exports = {
         plan_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 analyze_state.then((analysis) => {
-                    resolve(plan_module.plan(model, probe, analysis));
+                    resolve(plan_module.plan(probe, analysis));
                 })
                 .catch((reason) => reject(reason));
             })
@@ -62,7 +62,7 @@ module.exports = {
         execute_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 plan_state.then((plan) => {
-                    resolve(execute_module.execute(model, probe, plan));
+                    resolve(execute_module.execute(probe, plan, manager));
                 })
                 .catch((reason) => reject(reason));
             })
@@ -74,7 +74,7 @@ module.exports = {
 
     stop: () => {
         return new Promise((resolve, reject) => {
-            if (model.stop()) {
+            if (manager.stop()) {
                 monitor_state = null;
                 analyze_state = null;
                 plan_state = null;

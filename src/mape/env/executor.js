@@ -1,5 +1,4 @@
-exports.execute = (_model, _probe, plan) => {
-    console.log(JSON.stringify(plan, null, 2));
+exports.execute = (plan, manager) => {
     let root = plan.root;
     while (root) {
         if (root.name === 'Draw Infect Card') {

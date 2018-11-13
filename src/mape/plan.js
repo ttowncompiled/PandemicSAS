@@ -1,10 +1,10 @@
 const env = require('./env/env.js');
 const sys = require('./sys/sys.js');
 
-exports.plan = (model, probe, analysis) => {
+exports.plan = (probe, analysis) => {
     if (probe.player === 'sys') {
-        return sys.plan(model, probe, analysis);
+        return sys.plan();
     } else {
-        return env.plan(model, probe, analysis);
+        return env.plan(analysis);
     }
 };

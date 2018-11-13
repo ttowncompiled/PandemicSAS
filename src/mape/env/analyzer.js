@@ -1,4 +1,4 @@
-exports.analysis = (_model, probe) => {
+exports.analysis = (probe) => {
     initLookup();
     let tree = {};
     tree.root = {
@@ -21,13 +21,12 @@ function initLookup() {
 }
 
 function branchActions(probe, root) {
-    branchStartAction(probe, root);
+    if (probe.round < 1) {
+        branchStartAction(probe, root);
+    }
 };
 
 function branchStartAction(probe, root) {
-    if (probe.round !== 1) {
-        return;
-    }
     let action = {
         id: lookup(),
         name: 'Start',
