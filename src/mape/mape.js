@@ -10,8 +10,6 @@ let analyze_state = null;
 let plan_state = null;
 let execute_state = null;
 
-let state = '';
-
 module.exports = {
     start: (config) => {
         monitor_state = new Promise((resolve, reject) => {
@@ -21,7 +19,6 @@ module.exports = {
                 reject(new Error('could not start model'));
             }
         });
-        state = 'monitor';
         return monitor_state;
     },
 
@@ -29,7 +26,6 @@ module.exports = {
         monitor_state = new Promise((resolve, reject) => {
             resolve(monitor_module.monitor(manager.view()));
         });
-        state = 'monitor';
         return monitor_state;
     },
 
@@ -40,7 +36,6 @@ module.exports = {
             })
             .catch((reason) => reject(reason));
         });
-        state = 'analyze';
         return analyze_state;
     },
 
@@ -54,7 +49,6 @@ module.exports = {
             })
             .catch((reason) => reject(reason));
         });
-        state = 'plan';
         return plan_state;
     },
 
@@ -68,7 +62,6 @@ module.exports = {
             })
             .catch((reason) => reject(reason));
         });
-        state = 'execute';
         return execute_state;
     },
 

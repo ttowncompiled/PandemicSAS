@@ -4,6 +4,7 @@ exports.analysis = (probe) => {
     tree.root = {
         id: lookup(),
         name: 'root',
+        action: 'root',
         links: [],
     };
     branchActions(probe, tree.root);
@@ -30,6 +31,7 @@ function branchStartAction(probe, root) {
     let action = {
         id: lookup(),
         name: 'Start',
+        action: 'Start',
         links: [],
     };
     root.links.push(action);
@@ -60,6 +62,7 @@ function branchDrawInfectCard(_, root) {
     let action = {
         id: lookup(),
         name: 'Draw Infect Card',
+        action: 'Draw Infect Card',
         links: [],
     };
     root.links.push(action);
@@ -70,6 +73,7 @@ function branchInfectCity(_, root) {
     let action = {
         id: lookup(),
         name: 'Infect City',
+        action: 'Infect City',
         links: [],
     };
     root.links.push(action);
@@ -80,6 +84,7 @@ function branchDealPlayerCard(_, root) {
     let action = {
         id: lookup(),
         name: 'Deal Player Card',
+        action: 'Deal Player Card',
         links: [],
     };
     root.links.push(action);
@@ -90,6 +95,7 @@ function branchYield(_, root) {
     let action = {
         id: lookup(),
         name: 'Yield',
+        action: 'Yield',
         links: [],
     };
     root.links.push(action);

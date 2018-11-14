@@ -4,6 +4,6 @@ const executor = require('./executor.js');
 
 module.exports = {
     analysis: (probe) => analyzer.analysis(probe),
-    plan: () => planner.plan(),
+    plan: (analysis) => planner.plan(analysis),
     execute: () => executor.execute(),
 };
