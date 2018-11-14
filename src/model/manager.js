@@ -53,6 +53,7 @@ module.exports = {
         } else {
             model.addEpidemicCards();
             model.shufflePlayerDeck();
+            model.nextTurn();
             model.nextRound();
         }
     },

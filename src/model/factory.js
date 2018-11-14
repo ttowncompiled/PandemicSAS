@@ -21,7 +21,7 @@ exports.singletonGameFactory = (config) => {
     model.outbreaks = loadInitOutbreaks(config);
     model.max_rounds = loadMaxRounds(config);
     model.round = 0;
-    model.turn = 1;
+    model.turn = 0;
     return model;
 };
 
