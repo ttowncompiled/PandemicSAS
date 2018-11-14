@@ -18,7 +18,7 @@ function initLookup() {
         node_id++;
         return node_id;
     };
-}
+};
 
 function branchActions(probe, root) {
     if (probe.round <= 1) {
@@ -56,7 +56,7 @@ function branchStartAction(probe, root) {
     return action;
 };
 
-function branchDrawInfectCard(probe, root) {
+function branchDrawInfectCard(_, root) {
     let action = {
         id: lookup(),
         name: 'Draw Infect Card',
@@ -66,7 +66,7 @@ function branchDrawInfectCard(probe, root) {
     return action;
 };
 
-function branchInfectCity(probe, root) {
+function branchInfectCity(_, root) {
     let action = {
         id: lookup(),
         name: 'Infect City',
@@ -76,7 +76,7 @@ function branchInfectCity(probe, root) {
     return action;
 };
 
-function branchDealPlayerCard(probe, root) {
+function branchDealPlayerCard(_, root) {
     let action = {
         id: lookup(),
         name: 'Deal Player Card',
@@ -86,7 +86,7 @@ function branchDealPlayerCard(probe, root) {
     return action;
 };
 
-function branchYield(probe, root) {
+function branchYield(_, root) {
     let action = {
         id: lookup(),
         name: 'Yield',

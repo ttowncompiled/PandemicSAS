@@ -42,6 +42,7 @@
                     console.log(response.data);
                     gameUpdate(response.data);
                     infoUpdate(response.data);
+                    actionClear();
                     resolve(true);
                 })
                 .catch((e) => {

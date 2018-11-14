@@ -3,7 +3,7 @@ const planner = require('./planner.js');
 const executor = require('./executor.js');
 
 module.exports = {
-    analysis: () => analyzer.analysis(),
+    analysis: (probe) => analyzer.analysis(probe),
     plan: () => planner.plan(),
     execute: () => executor.execute(),
 };
