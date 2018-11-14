@@ -318,14 +318,11 @@
             {{#cities}}
                 <hr>
                 <div class="row">
-                    <div class="col text-center"><b>{{name}}</b></div>
-                </div>
-                <hr>
-                <div class="row justify-content-center">
-                    {{#black}}<div class="col text-center">Black : {{black-count}}</div>{{/black}}
-                    {{#blue}}<div class="col text-center">Blue : {{blue-count}}</div>{{/blue}}
-                    {{#red}}<div class="col text-center">Red : {{red-count}}</div>{{/red}}
-                    {{#yellow}}<div class="col text-center">Yellow : {{yellow-count}}</div>{{/yellow}}
+                    <div class="col-md-6"><b>{{name}}</b> - </div>
+                    {{#black}}<div class="col"><font color="black">{{black-count}}</font> - </div>{{/black}}
+                    {{#blue}}<div class="col"><font color="blue">{{blue-count}}</font> - </div>{{/blue}}
+                    {{#red}}<div class="col"><font color="red">{{red-count}}</font> - </div>{{/red}}
+                    {{#yellow}}<div class="col"><font color="gold">{{yellow-count}}</font> - </div>{{/yellow}}
                 </div>
             {{/cities}}
             <hr>
