@@ -26,6 +26,13 @@ app.post('/info', (req, res) => {
     res.sendStatus(200);
 });
 
+app.post('/warn', (req, res) => {
+    let msg = req.body.msg;
+    console.warn(`>>> ${msg}`);
+    io.emit('warn', `>>> ${msg}`);
+    res.sendStatus(200);
+});
+
 app.get('/start', (_, res) => {
     axios.get(`http://localhost:${main_port}/start`)
         .then((response) => {

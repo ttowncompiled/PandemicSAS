@@ -18,6 +18,7 @@ module.exports = {
         monitor_state = new Promise((resolve, reject) => {
             if (manager.start(config)) {
                 rep = reporter.init(app_port);
+                rep.reportOutbreak({ name: 'Atlanta'}, 'Blue');
                 resolve(monitor_module.monitor(manager.view()));
             } else {
                 reject(new Error('could not start model'));

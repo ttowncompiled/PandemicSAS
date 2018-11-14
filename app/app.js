@@ -165,6 +165,10 @@
         console.log(msg);
     });
 
+    socket.on('warn', (msg) => {
+        console.warn(msg);
+    });
+
     function hitPlay() {
         if (step == 0 && ! paused && stopped) {
             start().then((success) => {
