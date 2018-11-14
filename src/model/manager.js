@@ -24,7 +24,8 @@ module.exports = {
     infectCity: () => {
         let card = model.peekInfectPile();
         let city = model.cities()[card.name];
-        model.infectCity(city, card.color);
+        increaseInfection(city, city.color);
+        hasGameBeenLost();
     },
 
     dealPlayerCard: (is_start) => {
@@ -78,4 +79,41 @@ module.exports = {
     sysYield: () => {
         model.nextPlayer();
     },
+};
+
+function increaseInfection(city, disease, ignore={}) {
+    if (city.name in ignore) {
+        return;
+    }
+    ignore[city.name] = true;
+    if (model.status()[city.name][disease] < 3) {
+        model.infectCity(city, disease);
+    } else {
+        model.increaseOutbreaks();
+        outbreak(city, disease, ignore);
+    }
+};
+
+function outbreak(city, disease, ignore) {
+    for (let i = 0; i < city.neighbors.length; i++) {
+        let neighbor = model.cities()[city.neighbors[i]];
+        increaseInfection(neighbor, disease, ignore);
+    }
+};
+
+function hasGameBeenLost() {
+    if (model.outbreaks() > model.maxOutbreaks()) {
+        return true;
+    }
+    if (model.round() > model.maxRounds()) {
+        return true;
+    }
+    let cubes = model.cubes();
+    let counts = Object.keys(cubes).map((key) => cubes[key]);
+    for (let i = 0; i < counts.length; i++) {
+        if (counts[i] <= 0) {
+            return true;
+        }
+    }
+    return false;
 };
