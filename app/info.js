@@ -1,3 +1,4 @@
+// const Mustache
 let infoInit = null;
 let infoUpdate = null;
 let infoClear = null;
@@ -10,6 +11,13 @@ let infoClear = null;
     let city_info_hand_btn = $('#city-info-btn');
     let infect_discard_pile_btn = $('#infect-discard-pile-btn');
     let player_discard_pile_btn = $('#player-discard-pile-btn');
+
+    let pawn_1_hand_list = $('#pawn-1-hand-list');
+    let pawn_2_hand_list = $('#pawn-2-hand-list');
+    let infect_discard_list = $('#infect-discard-list');
+    let player_discard_list = $('#player-discard-list');
+
+    let card_list_template = $('#card-list-template').html();
 
     let cure_black = $('#cure-black');
     let cure_blue = $('#cure-blue');
@@ -75,6 +83,10 @@ let infoClear = null;
         updateCuralbeDiseases(data);
         updateEradicableDiseases(data);
         infection_rate.html(data.infection_rate);
+        updatePawn1HandList(data);
+        updatePawn2HandList(data);
+        updateInfectDiscardList(data);
+        updatePlayerDiscardList(data);
     };
 
     function updateCuralbeDiseases(data) {
@@ -121,6 +133,27 @@ let infoClear = null;
         } else {
             eradicate_yellow.html('Yellow');
         }
+    };
+
+    function updatePawn1HandList(data) {
+        updateCardList(pawn_1_hand_list, data.pawns[0].hand);
+    };
+
+    function updatePawn2HandList(data) {
+        updateCardList(pawn_2_hand_list, data.pawns[1].hand);
+    };
+
+    function updateInfectDiscardList(data) {
+        updateCardList(infect_discard_list, data.infect_discards.reverse());
+    };
+
+    function updatePlayerDiscardList(data) {
+        updateCardList(player_discard_list, data.player_discards.reverse());
+    };
+
+    function updateCardList(ele, cards) {
+        Mustache.parse(card_list_template);
+        ele.html($(Mustache.render(card_list_template, {cards: cards})));
     };
 
 })();
