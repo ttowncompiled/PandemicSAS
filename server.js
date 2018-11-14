@@ -30,6 +30,7 @@ app.post('/warn', (req, res) => {
     let msg = req.body.msg;
     console.warn(`>>> ${msg}`);
     io.emit('warn', `>>> ${msg}`);
+    io.emit('adapt');
     res.sendStatus(200);
 });
 

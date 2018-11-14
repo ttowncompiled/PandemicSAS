@@ -19,6 +19,8 @@
     let paused = false;
     let stopped = true;
 
+    let mape_loop_active = false;
+
     function start() {
         return new Promise((resolve) => {
             axios.get('/start')
@@ -109,13 +111,17 @@
 
     function switch_active(curr_active, next_active) {
         if (!!curr_active && curr_active.hasClass('active')) {
-            curr_active.toggleClass('btn-info');
-            curr_active.toggleClass('btn-outline-light');
+            if (mape_loop_active) {
+                curr_active.toggleClass('btn-info');
+                curr_active.toggleClass('btn-outline-light');
+            }
             curr_active.toggleClass('active');
         }
         if (!!next_active) {
-            next_active.toggleClass('btn-outline-light');
-            next_active.toggleClass('btn-info');
+            if (mape_loop_active) {
+                next_active.toggleClass('btn-outline-light');
+                next_active.toggleClass('btn-info');
+            }
             next_active.toggleClass('active');
         }
     }
@@ -167,6 +173,40 @@
 
     socket.on('warn', (msg) => {
         console.warn(msg);
+    });
+
+    socket.on('adapt', () => {
+        mape_loop_active = true;
+        if (monitor_btn.hasClass('active')) {
+            monitor_btn.toggleClass('btn-outline-light');
+            monitor_btn.toggleClass('btn-info');
+        } else if (analyze_btn.hasClass('active')) {
+            analyze_btn.toggleClass('btn-outline-light');
+            analyze_btn.toggleClass('btn-info');
+        } else if (plan_btn.hasClass('active')) {
+            plan_btn.toggleClass('btn-outline-light');
+            plan_btn.toggleClass('btn-info');
+        } else if (execute_btn.hasClass('active')) {
+            execute_btn.toggleClass('btn-outline-light');
+            execute_btn.toggleClass('btn-info');
+        }
+    });
+
+    socket.on('stable', () => {
+        mape_loop_active = false;
+        if (monitor_btn.hasClass('active')) {
+            monitor_btn.toggleClass('btn-outline-light');
+            monitor_btn.toggleClass('btn-info');
+        } else if (analyze_btn.hasClass('active')) {
+            analyze_btn.toggleClass('btn-outline-light');
+            analyze_btn.toggleClass('btn-info');
+        } else if (plan_btn.hasClass('active')) {
+            plan_btn.toggleClass('btn-outline-light');
+            plan_btn.toggleClass('btn-info');
+        } else if (execute_btn.hasClass('active')) {
+            execute_btn.toggleClass('btn-outline-light');
+            execute_btn.toggleClass('btn-info');
+        }
     });
 
     function hitPlay() {
