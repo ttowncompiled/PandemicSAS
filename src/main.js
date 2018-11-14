@@ -19,7 +19,8 @@ const config_filepath = process.argv[4];
 let rep = null;
 
 app.post('/outbreak', (req, res) => {
-    console.log(req.body);
+    manager.outbreak(req.body.location, req.body.disease, rep);
+    res.sendStatus(200);
 });
 
 app.get('/start', (req, res) => {

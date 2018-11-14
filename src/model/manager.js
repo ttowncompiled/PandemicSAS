@@ -34,6 +34,21 @@ module.exports = {
         }
     },
 
+    outbreak: (location, disease, reporter) => {
+        let city = model.cities()[location];
+        let status = model.status()[location][disease];
+        for (let i = status; i < 3; i++) {
+            increaseInfection(city, disease, reporter);
+        }
+        let did_outbreak = increaseInfection(city, disease, reporter);
+        if (gameHasBeenLost()) {
+            reporter.reportGameLoss();
+        } else if (did_outbreak) {
+            reporter.reportAdapt();
+            is_adapting = true;
+        }
+    },
+
     dealPlayerCard: (is_start) => {
         let card = model.drawPlayerCard();
         if (is_start) {
@@ -106,8 +121,8 @@ function increaseInfection(city, disease, reporter, ignore={}) {
         return false;
     } else {
         model.increaseOutbreaks();
-        reporter.reportOutbreak(city);
-        outbreak(city, disease, ignore);
+        reporter.reportOutbreak(city, disease);
+        outbreak(city, disease, reporter, ignore);
         return true;
     }
 };
