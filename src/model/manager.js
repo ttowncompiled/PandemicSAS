@@ -2,6 +2,7 @@ const model = require('./model.js');
 const adapter = require('./adapter.js');
 
 let model_adapter = adapter.adapt(model);
+let is_adapting = false;
 
 module.exports = {
     start: (config) => {
@@ -29,6 +30,7 @@ module.exports = {
             reporter.reportGameLoss();
         } else if (did_outbreak) {
             reporter.reportAdapt();
+            is_adapting = true;
         }
     },
 
@@ -84,8 +86,12 @@ module.exports = {
         }
     },
 
-    sysYield: () => {
+    sysYield: (reporter) => {
         model.nextPlayer();
+        if (is_adapting) {
+            reporter.reportStable();
+            is_adapting = false;
+        }
     },
 };
 
