@@ -25,7 +25,9 @@ module.exports = {
         let card = model.peekInfectPile();
         let city = model.cities()[card.name];
         increaseInfection(city, city.color, reporter);
-        hasGameBeenLost();
+        if (gameHasBeenLost()) {
+            reporter.reportGameLoss();
+        }
     },
 
     dealPlayerCard: (is_start) => {
@@ -65,7 +67,7 @@ module.exports = {
         model.movePawnTo(pawn, city);
     },
 
-    treatDisease: (location) => {
+    treatDisease: (location, reporter) => {
         let best_disease = '';
         for (let disease in model.status()[location]) {
             if (best_disease === '' || model.status()[location][best_disease] < model.status()[location][disease]) {
@@ -74,6 +76,10 @@ module.exports = {
         }
         let city = model.cities()[location];
         model.treatDisease(city, best_disease);
+        reporter.reportTreatInfection(city, best_disease);
+        if (model.status()[city.name][best_disease] === 0) {
+            reporter.reportInfectionCleared(city, best_disease);
+        }
     },
 
     sysYield: () => {
@@ -88,9 +94,10 @@ function increaseInfection(city, disease, reporter, ignore={}) {
     ignore[city.name] = true;
     if (model.status()[city.name][disease] < 3) {
         model.infectCity(city, disease);
+        reporter.reportInfect(city, disease);
     } else {
         model.increaseOutbreaks();
-        reporter.reportOutbreak();
+        reporter.reportOutbreak(city);
         outbreak(city, disease, ignore);
     }
 };
@@ -102,7 +109,7 @@ function outbreak(city, disease, reporter, ignore) {
     }
 };
 
-function hasGameBeenLost() {
+function gameHasBeenLost() {
     if (model.outbreaks() > model.maxOutbreaks()) {
         return true;
     }
