@@ -1,7 +1,7 @@
 // const axios, io, nodes, edges;
 // gameInit, gameUpdate, gameClear
 // treeInit, treeUpdate, treeClear
-// infoInit, infoUpdate
+// infoInit, infoUpdate, infoClear
 (() => {
 
     const socket                = io();
@@ -97,6 +97,7 @@
                 .then((response) => {
                     gameClear();
                     actionClear();
+                    infoClear();
                     resolve(true);
                 })
                 .catch((e) => {

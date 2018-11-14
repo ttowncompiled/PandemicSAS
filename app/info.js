@@ -1,7 +1,15 @@
 let infoInit = null;
 let infoUpdate = null;
+let infoClear = null;
 
 (() => {
+
+    let pawn_1_hand_btn = $('#pawn-1-hand-btn');
+    let pawn_2_hand_btn = $('#pawn-2-hand-btn');
+    let game_info_hand_btn = $('#game-info-btn');
+    let city_info_hand_btn = $('#city-info-btn');
+    let infect_discard_pile_btn = $('#infect-discard-pile-btn');
+    let player_discard_pile_btn = $('#player-discard-pile-btn');
 
     let cure_black = $('#cure-black');
     let cure_blue = $('#cure-blue');
@@ -29,11 +37,25 @@ let infoUpdate = null;
         console.log(data);
         setStaticInfo(data);
         updateDynamicInfo(data);
+        toggleButtons();
     };
 
     infoUpdate = (data) => {
         console.log(data);
         updateDynamicInfo(data);
+    };
+
+    infoClear = () => {
+        toggleButtons();
+    };
+
+    function toggleButtons() {
+        pawn_1_hand_btn.prop('disabled', (_, val) => !val);
+        pawn_2_hand_btn.prop('disabled', (_, val) => !val);
+        game_info_hand_btn.prop('disabled', (_, val) => !val);
+        city_info_hand_btn.prop('disabled', (_, val) => !val);
+        infect_discard_pile_btn.prop('disabled', (_, val) => !val);
+        player_discard_pile_btn.prop('disabled', (_, val) => !val);
     };
 
     function setStaticInfo(data) {
