@@ -6,7 +6,7 @@ exports.analysis = (probe) => {
         name: 'root',
         links: [],
     };
-    branchOut(probe, tree.root);
+    selectStrategyAndBranchOut(probe, tree.root);
     return tree;
 };
 
@@ -20,7 +20,7 @@ function initLookup() {
     };
 };
 
-function branchOut(probe, root) {
+function selectStrategyAndBranchOut(probe, root) {
     let state = {
         location: probe.pawns[probe.pawn-1].location.name,
         hand: probe.pawns[probe.pawn-1].hand.map((card) => card.name),
@@ -30,10 +30,10 @@ function branchOut(probe, root) {
     let filter = {};
     filter[state.location] = true;
 
-    branchOutToTreatInfection(probe, state, root, 0, filter);
-}
+    IOnlyNeedToDriveToTreatInfection(probe, state, root, 0, filter);
+};
 
-function branchOutToTreatInfection(probe, state, root, depth, filter) {
+function IOnlyNeedToDriveToTreatInfection(probe, state, root, depth, filter) {
     if (depth >= 4) {
         let [action, ok] = branchYield();
         root.links.push(action);
@@ -51,7 +51,8 @@ function branchOutToTreatInfection(probe, state, root, depth, filter) {
         .map((key) => status[key])
         .filter((count) => count > 0);
     if (infections.length > 0) {
-        let [action, ok] = branchTreatInfection(probe, state, depth, filter, branchOutToTreatInfection);
+        let [action, ok] = branchTreatInfection(probe, state,
+            depth, filter, IOnlyNeedToDriveToTreatInfection);
         root.links.push(action);
         keep_branch = true;
     }
@@ -62,7 +63,8 @@ function branchOutToTreatInfection(probe, state, root, depth, filter) {
         if (neighbor in filter) {
             continue;
         }
-        let [action, ok] = branchDrive(probe, state, neighbor, depth, filter, branchOutToTreatInfection);
+        let [action, ok] = branchDrive(probe, state, neighbor,
+                depth, filter, IOnlyNeedToDriveToTreatInfection);
         if (ok) {
             root.links.push(action);
             keep_branch = true;
@@ -79,10 +81,10 @@ function branchDrive(probe, state, location, depth, filter, cb) {
         links: [],
     };
 
-    state = JSON.parse(JSON.stringify(state));
+    state = Object.assign({}, state);
     state.location = location;
 
-    filter = JSON.parse(JSON.stringify(filter));
+    filter = Object.assign({}, filter);
     filter[location] = true;
 
     return cb(probe, state, action, depth+1, filter);
@@ -97,11 +99,12 @@ function branchTreatInfection(probe, state, depth, filter, cb) {
         links: [],
     };
 
-    state = JSON.parse(JSON.stringify(state));
-
+    state = Object.assign({}, state);
+    state.cities = Object.assign({}, state.cities);
     if (! (location in state.cities)) {
-        state.cities[location] = JSON.parse(JSON.stringify(probe.cities[location].status));;
+        state.cities[location] = probe.cities[location].status;
     }
+    state.cities[location] = Object.assign({}, state.cities[location]);
 
     let max_key = '';
     for (let key in state.cities[location]) {
