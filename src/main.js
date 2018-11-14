@@ -10,12 +10,13 @@ const yaml = require('js-yaml');
 
 const mape = require('./mape/mape.js');
 
-const port = parseInt(process.argv[2]);
-const config_filepath = process.argv[3];
+const main_port = parseInt(process.argv[2]);
+const app_port = parseInt(process.argv[3]);
+const config_filepath = process.argv[4];
 
 app.get('/start', (req, res) => {
     let config = yaml.safeLoad(fs.readFileSync(config_filepath, 'utf8'));
-    mape.start(config).then((result) => {
+    mape.start(app_port, config).then((result) => {
         res.send(result);
     })
     .catch((reason) => {
@@ -74,6 +75,6 @@ app.get('/stop', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log('listening on localhost:' + port);
+app.listen(main_port, () => {
+    console.log('listening on localhost:' + main_port);
 });

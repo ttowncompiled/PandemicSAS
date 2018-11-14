@@ -19,10 +19,15 @@ io.on('connection', (socket) => {
     });
 });
 
+app.get('/outbreak', (req, res) => {
+    console.log(`>>> outbreak in ${req.query.location}`);
+    io.emit('info', `>>> outbreak in ${req.query.location}`);
+    res.sendStatus(200);
+});
+
 app.get('/start', (_, res) => {
     axios.get(`http://localhost:${main_port}/start`)
         .then((response) => {
-            console.log(response.data);
             res.send(response.data);
         })
         .catch((reason) => {
@@ -34,7 +39,6 @@ app.get('/start', (_, res) => {
 app.get('/monitor', (_, res) => {
     axios.get(`http://localhost:${main_port}/monitor`)
         .then((response) => {
-            console.log(response.data);
             res.send(response.data);
         })
         .catch((reason) => {
@@ -46,7 +50,6 @@ app.get('/monitor', (_, res) => {
 app.get('/analyze', (_, res) => {
     axios.get(`http://localhost:${main_port}/analyze`)
         .then((response) => {
-            console.log(response.data);
             res.send(response.data);
         })
         .catch((reason) => {
@@ -58,7 +61,6 @@ app.get('/analyze', (_, res) => {
 app.get('/plan', (_, res) => {
     axios.get(`http://localhost:${main_port}/plan`)
         .then((response) => {
-            console.log(response.data);
             res.send(response.data);
         })
         .catch((reason) => {
@@ -70,7 +72,6 @@ app.get('/plan', (_, res) => {
 app.get('/execute', (_, res) => {
     axios.get(`http://localhost:${main_port}/execute`)
         .then((response) => {
-            console.log(response.data);
             res.send(response.data);
         })
         .catch((reason) => {
@@ -82,7 +83,6 @@ app.get('/execute', (_, res) => {
 app.get('/stop', (_, res) => {
     axios.get(`http://localhost:${main_port}/stop`)
         .then((response) => {
-            console.log(response.data);
             res.send(response.data);
         })
         .catch((reason) => {

@@ -21,10 +21,10 @@ module.exports = {
         model.discardInfectCard(card);
     },
 
-    infectCity: () => {
+    infectCity: (reporter) => {
         let card = model.peekInfectPile();
         let city = model.cities()[card.name];
-        increaseInfection(city, city.color);
+        increaseInfection(city, city.color, reporter);
         hasGameBeenLost();
     },
 
@@ -81,7 +81,7 @@ module.exports = {
     },
 };
 
-function increaseInfection(city, disease, ignore={}) {
+function increaseInfection(city, disease, reporter, ignore={}) {
     if (city.name in ignore) {
         return;
     }
@@ -90,14 +90,15 @@ function increaseInfection(city, disease, ignore={}) {
         model.infectCity(city, disease);
     } else {
         model.increaseOutbreaks();
+        reporter.reportOutbreak();
         outbreak(city, disease, ignore);
     }
 };
 
-function outbreak(city, disease, ignore) {
+function outbreak(city, disease, reporter, ignore) {
     for (let i = 0; i < city.neighbors.length; i++) {
         let neighbor = model.cities()[city.neighbors[i]];
-        increaseInfection(neighbor, disease, ignore);
+        increaseInfection(neighbor, disease, reporter, ignore);
     }
 };
 
