@@ -21,7 +21,7 @@ let gameClear = null;
     }
 
     gameUpdate = (game) => {
-        console.log(game);
+
     }
 
     gameClear = () => {

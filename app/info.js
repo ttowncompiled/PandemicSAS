@@ -47,14 +47,12 @@ let infoClear = null;
     let infection_rate = $('#infection-rate');
 
     infoInit = (data) => {
-        console.log(data);
         setStaticInfo(data);
         updateDynamicInfo(data);
         toggleButtons();
     };
 
     infoUpdate = (data) => {
-        console.log(data);
         updateDynamicInfo(data);
     };
 

@@ -23,6 +23,7 @@
         return new Promise((resolve) => {
             axios.get('/start')
                 .then((response) => {
+                    console.log(response.data);
                     gameInit(response.data);
                     infoInit(response.data);
                     resolve(true);
@@ -38,6 +39,7 @@
         return new Promise((resolve) => {
             axios.get('/monitor')
                 .then((response) => {
+                    console.log(response.data);
                     gameUpdate(response.data);
                     infoUpdate(response.data);
                     resolve(true);
@@ -53,6 +55,7 @@
         return new Promise((resolve) => {
             axios.get('/analyze')
                 .then((response) => {
+                    console.log(response.data);
                     actionInit(response.data);
                     resolve(true);
                 })
@@ -67,6 +70,7 @@
         return new Promise((resolve) => {
             axios.get('/plan')
                 .then((response) => {
+                    console.log(response.data);
                     actionUpdate(response.data);
                     resolve(true);
                 })
@@ -81,6 +85,7 @@
         return new Promise((resolve) => {
             axios.get('/execute')
                 .then((response) => {
+                    console.log(response.data);
                     gameUpdate(response.data);
                     resolve(true);
                 })

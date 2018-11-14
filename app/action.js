@@ -15,14 +15,12 @@ let actionClear = null;
     };
 
     actionInit = (tree) => {
-        console.log(tree);
         initLookup();
         actionClear();
         initTree(tree.root);
     }
 
     actionUpdate = (tree) => {
-        console.log(tree);
         updateTree(tree.root);
     }
 
