@@ -24,9 +24,11 @@ module.exports = {
     infectCity: (reporter) => {
         let card = model.peekInfectPile();
         let city = model.cities()[card.name];
-        increaseInfection(city, city.color, reporter);
+        let did_outbreak = increaseInfection(city, city.color, reporter);
         if (gameHasBeenLost()) {
             reporter.reportGameLoss();
+        } else if (did_outbreak) {
+            reporter.reportAdapt();
         }
     },
 
@@ -95,10 +97,12 @@ function increaseInfection(city, disease, reporter, ignore={}) {
     if (model.status()[city.name][disease] < 3) {
         model.infectCity(city, disease);
         reporter.reportInfect(city, disease);
+        return false;
     } else {
         model.increaseOutbreaks();
         reporter.reportOutbreak(city);
         outbreak(city, disease, ignore);
+        return true;
     }
 };
 

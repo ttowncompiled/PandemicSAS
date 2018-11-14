@@ -30,7 +30,22 @@ app.post('/warn', (req, res) => {
     let msg = req.body.msg;
     console.warn(`>>> ${msg}`);
     io.emit('warn', `>>> ${msg}`);
+    res.sendStatus(200);
+});
+
+app.post('/adapt', (req, res) => {
+    let msg = req.body.msg;
+    console.warn(`>>> ${msg}`);
+    io.emit('warn', `>>> ${msg}`);
     io.emit('adapt');
+    res.sendStatus(200);
+});
+
+app.post('/stable', (req, res) => {
+    let msg = req.body.msg;
+    console.warn(`>>> ${msg}`);
+    io.emit('warn', `>>> ${msg}`);
+    io.emit('stable');
     res.sendStatus(200);
 });
 
