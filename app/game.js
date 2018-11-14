@@ -15,7 +15,6 @@ let gameClear = null;
     };
 
     gameInit = (game) => {
-        console.log(game);
         initLookup();
         initCities(game.cities);
         initPawns(game.pawns);
@@ -81,17 +80,7 @@ let gameClear = null;
 
     function initPawns(pawns) {
         for (let i = 0; i < pawns.length; i++) {
-            let pawn = pawns[i];
-            pawn.name = `${i}`;
-            if (i === 0) {
-                pawn.color = 'orange';
-            } else {
-                pawn.color = 'green';
-            }
-            pawn.location = {
-                name: pawn.location,
-            };
-            addPawn(pawn);
+            addPawn(pawns[i]);
         }
     }
 

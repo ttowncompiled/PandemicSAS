@@ -13,7 +13,7 @@ exports.singletonGameFactory = (config) => {
     model.pawns = loadPawns(config);
     model.hands = loadHands(config);
     model.player = 'env';
-    model.pawn = 0;
+    model.pawn = 1;
     model.infection_rate_track = loadInfectionTrack(config);
     model.infection_rate = loadInfectionRate(config);
     model.max_outbreaks = loadMaxOutbreaks(config);
@@ -114,9 +114,16 @@ function loadPawns(config) {
     let pawns = [];
     for (let i = 0; i < config.init_pawns; i++) {
         let pawn = {};
+        pawn.name = `${i+1}`;
         pawn.role = config.pawn_init_roles[i];
-        pawn.location = config.pawn_init_locations[i];
+        pawn.location = {
+            name: config.pawn_init_locations[i],
+        };
         pawns.push(pawn);
+    }
+    let colors = ['orange', 'green', 'purple', 'pink'];
+    for (let i = 0; i < pawns.length; i++) {
+        pawns[i].color = colors[i];
     }
     return pawns;
 };

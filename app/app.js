@@ -1,6 +1,7 @@
 // const axios, io, nodes, edges;
 // gameInit, gameUpdate, gameClear
 // treeInit, treeUpdate, treeClear
+// infoInit, infoUpdate
 (() => {
 
     const socket                = io();
@@ -23,6 +24,7 @@
             axios.get('/start')
                 .then((response) => {
                     gameInit(response.data);
+                    infoInit(response.data);
                     resolve(true);
                 })
                 .catch((e) => {
@@ -37,6 +39,7 @@
             axios.get('/monitor')
                 .then((response) => {
                     gameUpdate(response.data);
+                    infoUpdate(response.data);
                     resolve(true);
                 })
                 .catch((e) => {
