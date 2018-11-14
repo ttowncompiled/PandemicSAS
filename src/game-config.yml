@@ -692,6 +692,11 @@ min_player_deck_size:           0
 # must be none, riffle, or pile
 player_deck_empty_do:           none
 
+# The maximum number of rounds
+# must be a positive Integer
+# 0 is the start round
+max_rounds:                     15
+
 ### PLAYER DECK CONF - END ###
 #==============================================================================#
 
