@@ -303,18 +303,22 @@
         <script id="research-station-template" type="x-tmpl-mustache">
             <hr>
             <div class="row">
-                <div class="col text-center">Research Stations</div>
+                <div class="col text-center"><b>Research Stations</b></div>
             </div>
             {{#stations}}
                 <hr>
                 <div class="row">
-                    <div class="col">{{location}}</div>
+                    <div class="col">{{.}}</div>
                 </div>
             {{/stations}}
             <hr>
         </script>
 
         <script id="city-info-template" type="x-tmpl-mustache">
+            <hr>
+            <div class="row">
+                <div class="col text-center"><b>Infect Status</b></div>
+            </div>
             {{#cities}}
                 <hr>
                 <div class="row">

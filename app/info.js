@@ -90,6 +90,7 @@ let infoClear = null;
         updatePawn2HandList(data);
         updateInfectDiscardList(data);
         updatePlayerDiscardList(data);
+        updateResearchStationList(data);
         updateCityInfo(data);
     };
 
@@ -167,6 +168,11 @@ let infoClear = null;
         });
         Mustache.parse(card_list_template);
         ele.html($(Mustache.render(card_list_template, {cards: cards})));
+    };
+
+    function updateResearchStationList(data) {
+        Mustache.parse(research_station_template);
+        research_station_list.html($(Mustache.render(research_station_template, {stations: data.research_stations})));
     };
 
     function updateCityInfo(data) {
