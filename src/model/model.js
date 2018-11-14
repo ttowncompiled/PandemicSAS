@@ -125,6 +125,7 @@ module.exports = {
             return null;
         }
         model.status[city.name][disease]++;
+        model.cubes[disease.toLowerCase()]--;
         return model.status[city.name];
     },
 

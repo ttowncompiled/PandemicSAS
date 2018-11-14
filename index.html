@@ -293,10 +293,41 @@
             {{#cards}}
                 <hr>
                 <div class="row">
-                    <div class="col-md-6">{{name}}</div>
-                    <div class="col-md-6">{{color}}</div>
+                    <div class="col-md-6"><b>{{name}}</b></div>
+                    <div class="col-md-6"><font color={{font}}>{{color}}</font></div>
                 </div>
             {{/cards}}
+            <hr>
+        </script>
+
+        <script id="research-station-template" type="x-tmpl-mustache">
+            <hr>
+            <div class="row">
+                <div class="col text-center">Research Stations</div>
+            </div>
+            {{#stations}}
+                <hr>
+                <div class="row">
+                    <div class="col">{{location}}</div>
+                </div>
+            {{/stations}}
+            <hr>
+        </script>
+
+        <script id="city-info-template" type="x-tmpl-mustache">
+            {{#cities}}
+                <hr>
+                <div class="row">
+                    <div class="col text-center"><b>{{name}}</b></div>
+                </div>
+                <hr>
+                <div class="row justify-content-center">
+                    {{#black}}<div class="col text-center">Black : {{black-count}}</div>{{/black}}
+                    {{#blue}}<div class="col text-center">Blue : {{blue-count}}</div>{{/blue}}
+                    {{#red}}<div class="col text-center">Red : {{red-count}}</div>{{/red}}
+                    {{#yellow}}<div class="col text-center">Yellow : {{yellow-count}}</div>{{/yellow}}
+                </div>
+            {{/cities}}
             <hr>
         </script>
 

@@ -56,11 +56,6 @@ function loadCities(config) {
     let cities = {};
     for (let i = 0; i < config.cities.length; i++) {
         let city = config.cities[i];
-        let status = {};
-        for (let j = 0; j < config.diseases.length; j++) {
-            status[config.diseases[j]] = 0;
-        }
-        city.status = status;
         cities[city.name] = city;
     }
     return cities;

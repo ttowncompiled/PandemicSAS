@@ -6,11 +6,11 @@ exports.monitor = (model) => {
     probe.eradicated_diseases = model.eradicatedDiseases();
     probe.cubes = model.cubes();
     probe.cities = model.cities();
-    for (let i = 0; i < probe.cities.length; i++) {
-        let city = probe.cities[i];
-        let status = model.status()[city.name];
-        probe.cities[i].status = status;
-    }
+    Object.keys(probe.cities)
+        .map((key) => probe.cities[key])
+        .forEach((city) => {
+            city.status = model.status()[city.name];
+        });
     probe.pawns = model.pawns();
     for (let i = 0; i < probe.pawns.length; i++) {
         let pawn = probe.pawns[i];

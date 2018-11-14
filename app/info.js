@@ -17,7 +17,12 @@ let infoClear = null;
     let infect_discard_list = $('#infect-discard-list');
     let player_discard_list = $('#player-discard-list');
 
+    let research_station_list = $('#research-station-list');
+    let city_info_list = $('#city-info-list');
+
     let card_list_template = $('#card-list-template').html();
+    let research_station_template = $('#research-station-template').html();
+    let city_info_template = $('#city-info-template').html();
 
     let cure_black = $('#cure-black');
     let cure_blue = $('#cure-blue');
@@ -87,6 +92,7 @@ let infoClear = null;
         updatePawn2HandList(data);
         updateInfectDiscardList(data);
         updatePlayerDiscardList(data);
+        updateCityInfo(data);
     };
 
     function updateCuralbeDiseases(data) {
@@ -152,8 +158,49 @@ let infoClear = null;
     };
 
     function updateCardList(ele, cards) {
+        cards.forEach((card) => {
+            if (card.color === 'Blank') {
+                card.font = 'white';
+            } else if (card.color === 'Yellow') {
+                card.font = 'gold';
+            } else {
+                card.font = card.color.toLowerCase();
+            }
+        });
         Mustache.parse(card_list_template);
         ele.html($(Mustache.render(card_list_template, {cards: cards})));
+    };
+
+    function updateCityInfo(data) {
+        let cities = Object.keys(data.cities)
+            .map((key) => data.cities[key])
+            .map((city) => {
+                return {
+                    name: city.name,
+                    status: Object.keys(city.status)
+                        .filter((key) => city.status[key] > 0)
+                        .map((key) => {
+                            return {
+                                color: key,
+                                count: city.status[key],
+                            };
+                        }),
+                };
+            })
+            .filter((city) => city.status.length > 0)
+            .map((city) => {
+                let c = {};
+                c.name = city.name;
+                for (let i = 0; i < city.status.length; i++) {
+                    let status = city.status[i];
+                    let color = status.color.toLowerCase();
+                    c[color] = true;
+                    c[`${color}-count`] = status.count;
+                }
+                return c;
+            });
+        Mustache.parse(city_info_template);
+        city_info_list.html($(Mustache.render(city_info_template, {cities: cities})));
     };
 
 })();

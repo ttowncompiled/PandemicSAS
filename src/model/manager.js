@@ -1,13 +1,15 @@
 const model = require('./model.js');
 const adapter = require('./adapter.js');
 
+let model_adapter = adapter.adapt(model);
+
 module.exports = {
     start: (config) => {
         return model.start(config);
     },
 
     view: () => {
-        return adapter.adapt(model);
+        return model_adapter;
     },
 
     stop: () => {
