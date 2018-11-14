@@ -2,6 +2,8 @@
 // gameInit, gameUpdate, gameClear
 // treeInit, treeUpdate, treeClear
 // infoInit, infoUpdate, infoClear
+let causeOutbreak = null;
+
 (() => {
 
     const socket                = io();
@@ -174,6 +176,13 @@
     socket.on('warn', (msg) => {
         console.warn(msg);
     });
+
+    causeOutbreak = (location, disease) => {
+        socket.emit('/outbreak', {
+            location: location,
+            disease: disease,
+        });
+    };
 
     socket.on('adapt', () => {
         mape_loop_active = true;

@@ -17,6 +17,17 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('>>> disconnected!');
     });
+
+    socket.on('/outbreak', (params) => {
+        axios.post(`http://localhost:${main_port}/outbreak`, params)
+            .then((response) => {
+                res.send(response.data);
+            })
+            .catch((reason) => {
+                console.log(reason);
+                res.sendStatus(500);
+            });
+    });
 });
 
 app.post('/info', (req, res) => {

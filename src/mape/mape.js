@@ -1,6 +1,3 @@
-const manager = require('../model/manager.js');
-const reporter = require('./utils/reporter.js');
-
 const monitor_module = require('./monitor.js');
 const analyze_module = require('./analyze.js');
 const plan_module = require('./plan.js');
@@ -11,18 +8,15 @@ let analyze_state = null;
 let plan_state = null;
 let execute_state = null;
 
-let rep = null;
+let manager = null;
+let reporter = null;
 
 module.exports = {
-    start: (app_port, config) => {
+    start: (m, r) => {
+        manager = m;
+        reporter = r;
         monitor_state = new Promise((resolve, reject) => {
-            if (manager.start(config)) {
-                rep = reporter.init(app_port);
-                rep.reportOutbreak({ name: 'Atlanta'}, 'Blue');
-                resolve(monitor_module.monitor(manager.view()));
-            } else {
-                reject(new Error('could not start model'));
-            }
+            resolve(monitor_module.monitor(manager.view()));
         });
         return monitor_state;
     },
@@ -61,7 +55,7 @@ module.exports = {
         execute_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 plan_state.then((plan) => {
-                    resolve(execute_module.execute(probe, plan, manager, rep));
+                    resolve(execute_module.execute(probe, plan, manager, reporter));
                 })
                 .catch((reason) => reject(reason));
             })

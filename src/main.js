@@ -9,20 +9,35 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 
 const mape = require('./mape/mape.js');
+const manager = require('./model/manager.js');
+const reporter = require('./utils/reporter.js');
 
 const main_port = parseInt(process.argv[2]);
 const app_port = parseInt(process.argv[3]);
 const config_filepath = process.argv[4];
 
+let rep = null;
+
+app.post('/outbreak', (req, res) => {
+    console.log(req.body);
+});
+
 app.get('/start', (req, res) => {
     let config = yaml.safeLoad(fs.readFileSync(config_filepath, 'utf8'));
-    mape.start(app_port, config).then((result) => {
-        res.send(result);
-    })
-    .catch((reason) => {
-        console.log(reason);
+    if (manager.start(config)) {
+        rep = reporter.init(app_port);
+        mape.start(manager, rep).then((result) => {
+                res.send(result);
+            })
+            .catch((reason) => {
+                console.error(reason);
+                res.sendStatus(500);
+            });
+    } else {
+        console.error(new Error('could not start model'));
         res.sendStatus(500);
-    });
+    }
+
 });
 
 app.get('/monitor', (req, res) => {
@@ -30,7 +45,7 @@ app.get('/monitor', (req, res) => {
         res.send(result);
     })
     .catch((reason) => {
-        console.log(reason);
+        console.error(reason);
         res.sendStatus(500);
     });
 });
@@ -40,7 +55,7 @@ app.get('/analyze', (req, res) => {
         res.send(result);
     })
     .catch((reason) => {
-        console.log(reason);
+        console.error(reason);
         res.sendStatus(500);
     });
 });
@@ -50,7 +65,7 @@ app.get('/plan', (req, res) => {
         res.send(result);
     })
     .catch((reason) => {
-        console.log(reason);
+        console.error(reason);
         res.sendStatus(500);
     });
 });
@@ -60,7 +75,7 @@ app.get('/execute', (req, res) => {
         res.send(result);
     })
     .catch((reason) => {
-        console.log(reason);
+        console.error(reason);
         res.sendStatus(500);
     });
 });
@@ -70,7 +85,7 @@ app.get('/stop', (req, res) => {
         res.send(result);
     })
     .catch((reason) => {
-        console.log(reason);
+        console.error(reason);
         res.sendStatus(500);
     });
 });
