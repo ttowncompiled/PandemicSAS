@@ -4,6 +4,7 @@ exports.monitor = (model) => {
     probe.cured_diseases = model.curedDiseases();
     probe.eradicable_diseases = model.eradicableDiseases();
     probe.eradicated_diseases = model.eradicatedDiseases();
+    probe.cubes = model.cubes();
     probe.cities = model.cities();
     for (let i = 0; i < probe.cities.length; i++) {
         let city = probe.cities[i];

@@ -13,6 +13,8 @@ module.exports = {
 
             uneradicatedDiseases: () => model.uneradicatedDiseases(),
 
+            cubes: () => model.cubes(),
+
             cities: () => model.cities(),
 
             status: () => model.status(),

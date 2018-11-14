@@ -87,6 +87,14 @@ module.exports = {
         return Object.keys(model.eradicable).filter((key) => model.eradicable[key]);
     },
 
+    cubes: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return model.cubes;
+    },
+
     cities: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));

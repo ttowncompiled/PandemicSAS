@@ -2,6 +2,7 @@ exports.singletonGameFactory = (config) => {
     let model = {};
     model.curable = loadCurableDiseases(config);
     model.eradicable = loadEradicableDiseases(config);
+    model.cubes = loadCubes(config);
     model.cities = loadCities(config);
     model.status = loadStatus(config);
     model.stations = loadResearchStations(config);
@@ -40,6 +41,15 @@ function loadEradicableDiseases(config) {
         eradicable[disease] = false;
     }
     return eradicable;
+};
+
+function loadCubes(config) {
+    let cubes = {};
+    for(let i = 0; i < config.disease_cubes.length; i++) {
+        let cube = config.disease_cubes[i];
+        cubes[cube.color.toLowerCase()] = cube.count;
+    }
+    return cubes;
 };
 
 function loadCities(config) {
