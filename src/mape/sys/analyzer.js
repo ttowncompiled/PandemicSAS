@@ -5,6 +5,7 @@ exports.analysis = (probe) => {
         id: lookup(),
         name: 'root',
         action: 'root',
+        location: '',
         links: [],
     };
     selectStrategyAndBranchOut(probe, tree.root);
@@ -80,6 +81,7 @@ function branchDrive(probe, state, location, depth, filter, cb) {
         id: lookup(),
         name: `Drive - ${location}`,
         action: 'Drive / Ferry',
+        location: location,
         links: [],
     };
 
@@ -99,6 +101,7 @@ function branchTreatInfection(probe, state, depth, filter, cb) {
         id: lookup(),
         name: `Treat - ${location}`,
         action: 'Treat Disease',
+        location: location,
         links: [],
     };
 
@@ -131,6 +134,7 @@ function branchYield() {
         id: lookup(),
         name: 'Yield',
         action: 'Yield',
+        location: '',
         links: [],
     };
     return [action, false];

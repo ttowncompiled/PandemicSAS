@@ -54,5 +54,26 @@ module.exports = {
             model.addEpidemicCards();
             model.shufflePlayerDeck();
         }
-    }
+    },
+
+    drivePawn: (location) => {
+        let pawn = model.activePawn();
+        let city = model.cities()[location];
+        model.movePawnTo(pawn, city);
+    },
+
+    treatDisease: (location) => {
+        let best_disease = '';
+        for (let disease in model.status()[location]) {
+            if (best_disease === '' || model.status()[location][best_disease] < model.status()[location][disease]) {
+                best_disease = disease;
+            }
+        }
+        let city = model.cities()[location];
+        model.treatDisease(city, best_disease);
+    },
+
+    sysYield: () => {
+        model.nextPlayer();
+    },
 };

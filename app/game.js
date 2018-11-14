@@ -18,19 +18,20 @@ let gameClear = null;
         initLookup();
         initCities(game.cities);
         initPawns(game.pawns);
-    }
+    };
 
     gameUpdate = (game) => {
-
-    }
+        updatePawns(game.pawns);
+    };
 
     gameClear = () => {
         nodes.clear();
         edges.clear();
         initLookup();
-    }
+    };
 
     let lookup = null;
+    let pawn_lookup = null;
 
     function initLookup() {
         let map = {};
@@ -42,11 +43,12 @@ let gameClear = null;
             }
             return map[lookup_id];
         };
-    }
+        pawn_lookup = {};
+    };
 
     function nodeId(node) {
         return node.name;
-    }
+    };
 
     function edgeId(from, to) {
         if (from.name <= to.name) {
@@ -54,7 +56,7 @@ let gameClear = null;
         } else {
             return `${nodeId(to)}:${nodeId(from)}`;
         }
-    }
+    };
 
     function initCities(cities) {
         let names = Object.keys(cities);
@@ -76,13 +78,19 @@ let gameClear = null;
                 connectCities(city, neighbor);
             }
         }
-    }
+    };
 
     function initPawns(pawns) {
         for (let i = 0; i < pawns.length; i++) {
             addPawn(pawns[i]);
         }
-    }
+    };
+
+    function updatePawns(pawns) {
+        for (let i = 0; i < pawns.length; i++) {
+            updatePawn(pawns[i]);
+        }
+    };
 
     function addCity(city) {
         setTimeout(() => {
@@ -95,7 +103,7 @@ let gameClear = null;
                 },
             });
         }, 0);
-    }
+    };
 
     function connectCities(from_city, to_city) {
         setTimeout(() => {
@@ -108,7 +116,7 @@ let gameClear = null;
                 },
             });
         }, 0);
-    }
+    };
 
     function addPawn(pawn) {
         setTimeout(() => {
@@ -128,8 +136,22 @@ let gameClear = null;
                     highlight: 'black',
                 },
             });
+            pawn_lookup[lookup(nodeId(pawn))] = lookup(edgeId(pawn, pawn.location));
         }, 0);
-    }
+    };
+
+    function updatePawn(pawn) {
+        setTimeout(() => {
+            edges.update({
+                id: pawn_lookup[lookup(nodeId(pawn))],
+                from: lookup(nodeId(pawn)),
+                to: lookup(nodeId(pawn.location)),
+                color: {
+                    highlight: 'black',
+                },
+            });
+        }, 0);
+    };
 
     let locales = {
         en: {
@@ -147,7 +169,7 @@ let gameClear = null;
             deleteClusterError: 'Clusters cannot be deleted.',
             editClusterError: 'Clusters cannot be edited.'
         }
-    }
+    };
 
     let options = {
         autoResize: true,

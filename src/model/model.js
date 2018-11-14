@@ -111,6 +111,24 @@ module.exports = {
         return model.status;
     },
 
+    treatDisease: (city, disease) => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        if (! (city.name in model.status)) {
+            console.error(new Error(`${city.name} has no status`));
+            return null;
+        }
+        if (! (disease in model.status[city.name])) {
+            console.error(new Error(`${city.name} has no status for ${disease}`));
+            return null;
+        }
+        model.status[city.name][disease]--;
+        model.cubes[disease.toLowerCase()]++;
+        return model.status[city.name];
+    },
+
     infectCity: (city, disease) => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
@@ -312,13 +330,15 @@ module.exports = {
         return model.pawns;
     },
 
-    movePawnTo: (pawn, location) => {
+    movePawnTo: (pawn, city) => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.pawns[pawn].location = location;
-        return model.pawns[pawn];
+        model.pawns[pawn-1].location = {
+            name : city.name,
+        };
+        return model.pawns[pawn-1];
     },
 
     hands: () => {
@@ -334,8 +354,8 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.hands[pawn].push(card);
-        return model.hands[pawn];
+        model.hands[pawn-1].push(card);
+        return model.hands[pawn-1];
     },
 
     discardCardFrom: (card, pawn) => {
@@ -343,9 +363,9 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.hands[pawn].splice(model.hands[pawn].map((card) => card.name).indexOf(card.name), 1);
+        model.hands[pawn-1].splice(model.hands[pawn-1].map((card) => card.name).indexOf(card.name), 1);
         model.player_discards.push(card);
-        return model.hands[pawn];
+        return model.hands[pawn-1];
     },
 
     activePlayer: () => {
@@ -382,7 +402,7 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.pawn = (model.pawn + 1) % model.pawns.length;
+        model.pawn = (model.pawn % model.pawns.length) + 1;
         return model.pawn;
     },
 

@@ -3,7 +3,7 @@ const sys = require('./sys/sys.js');
 
 exports.execute = (probe, plan, manager) => {
     if (probe.player === 'sys') {
-        return sys.execute();
+        return sys.execute(plan, manager);
     } else {
         return env.execute(plan, manager);
     }

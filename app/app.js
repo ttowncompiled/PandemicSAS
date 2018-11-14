@@ -87,7 +87,6 @@
             axios.get('/execute')
                 .then((response) => {
                     console.log(response.data);
-                    gameUpdate(response.data);
                     resolve(true);
                 })
                 .catch((e) => {
