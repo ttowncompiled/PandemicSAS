@@ -335,10 +335,10 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.pawns[pawn-1].location = {
+        model.pawns[pawn.id-1].location = {
             name : city.name,
         };
-        return model.pawns[pawn-1];
+        return model.pawns[pawn.id-1];
     },
 
     hands: () => {
@@ -354,8 +354,8 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.hands[pawn-1].push(card);
-        return model.hands[pawn-1];
+        model.hands[pawn.id-1].push(card);
+        return model.hands[pawn.id-1];
     },
 
     discardCardFrom: (card, pawn) => {
@@ -363,9 +363,9 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.hands[pawn-1].splice(model.hands[pawn-1].map((card) => card.name).indexOf(card.name), 1);
+        model.hands[pawn.id-1].splice(model.hands[pawn.id-1].map((card) => card.name).indexOf(card.name), 1);
         model.player_discards.push(card);
-        return model.hands[pawn-1];
+        return model.hands[pawn.id-1];
     },
 
     activePlayer: () => {
@@ -402,7 +402,7 @@ module.exports = {
             console.error(new Error('uninstantiated model'));
             return null;
         }
-        model.pawn = (model.pawn % model.pawns.length) + 1;
+        model.pawn = model.pawns[model.pawn.id % model.pawns.length];
         return model.pawn;
     },
 

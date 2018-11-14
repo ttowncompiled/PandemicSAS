@@ -22,12 +22,14 @@ function initLookup() {
 };
 
 function branchActions(probe, root) {
-    if (probe.round <= 1) {
+    if (probe.round < 1) {
         branchStartAction(probe, root);
+    } else {
+        branchOut(probe, root);
     }
 };
 
-function branchStartAction(probe, root) {
+function branchStartAction(_probe, root) {
     let action = {
         id: lookup(),
         name: 'Start',
@@ -36,29 +38,40 @@ function branchStartAction(probe, root) {
     };
     root.links.push(action);
     for (let i = 0; i < 3; i++) {
-        action = branchDrawInfectCard(probe, action);
+        action = branchDrawInfectCard(action);
         for (let j = 0; j < 3; j++) {
-            action = branchInfectCity(probe, action);
+            action = branchInfectCity(action);
         }
     }
     for (let i = 0; i < 3; i++) {
-        action = branchDrawInfectCard(probe, action);
+        action = branchDrawInfectCard(action);
         for (let j = 0; j < 2; j++) {
-            action = branchInfectCity(probe, action);
+            action = branchInfectCity(action);
         }
     }
     for (let i = 0; i < 3; i++) {
-        action = branchDrawInfectCard(probe, action);
-        action = branchInfectCity(probe, action);
+        action = branchDrawInfectCard(action);
+        action = branchInfectCity(action);
     }
     for (let i = 0; i < 8; i++) {
-        action = branchDealPlayerCard(probe, action);
+        action = branchDealPlayerCard(action);
     }
-    action = branchYield(probe, action);
+    action = branchYield(action);
     return action;
 };
 
-function branchDrawInfectCard(_, root) {
+function branchOut(probe, root) {
+    let action = branchDealPlayerCard(root);
+    action = branchDealPlayerCard(action);
+    for (let i = 0; i < probe.infection_rate; i++) {
+        action = branchDrawInfectCard(action);
+        action = branchInfectCity(action);
+    }
+    action = branchYield(action);
+    return action;
+};
+
+function branchDrawInfectCard(root) {
     let action = {
         id: lookup(),
         name: 'Draw Infect Card',
@@ -69,7 +82,7 @@ function branchDrawInfectCard(_, root) {
     return action;
 };
 
-function branchInfectCity(_, root) {
+function branchInfectCity(root) {
     let action = {
         id: lookup(),
         name: 'Infect City',
@@ -80,7 +93,7 @@ function branchInfectCity(_, root) {
     return action;
 };
 
-function branchDealPlayerCard(_, root) {
+function branchDealPlayerCard(root) {
     let action = {
         id: lookup(),
         name: 'Deal Player Card',
@@ -91,7 +104,7 @@ function branchDealPlayerCard(_, root) {
     return action;
 };
 
-function branchYield(_, root) {
+function branchYield(root) {
     let action = {
         id: lookup(),
         name: 'Yield',

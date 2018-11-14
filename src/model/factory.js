@@ -14,13 +14,13 @@ exports.singletonGameFactory = (config) => {
     model.pawns = loadPawns(config);
     model.hands = loadHands(config);
     model.player = 'env';
-    model.pawn = 1;
+    model.pawn = model.pawns[0];
     model.infection_rate_track = loadInfectionTrack(config);
     model.infection_rate = loadInfectionRate(config);
     model.max_outbreaks = loadMaxOutbreaks(config);
     model.outbreaks = loadInitOutbreaks(config);
     model.max_rounds = 30;
-    model.round = 1;
+    model.round = 0;
     model.turn = 1;
     return model;
 };
@@ -118,18 +118,18 @@ function loadEpidemicCards(_config) {
 
 function loadPawns(config) {
     let pawns = [];
+    let colors = ['orange', 'green', 'purple', 'pink'];
     for (let i = 0; i < config.init_pawns; i++) {
-        let pawn = {};
-        pawn.name = `${i+1}`;
-        pawn.role = config.pawn_init_roles[i];
-        pawn.location = {
-            name: config.pawn_init_locations[i],
+        let pawn = {
+            id: i+1,
+            name: `${i+1}`,
+            role: config.pawn_init_roles[i],
+            location: {
+                name: config.pawn_init_locations[i],
+            },
+            color: colors[i],
         };
         pawns.push(pawn);
-    }
-    let colors = ['orange', 'green', 'purple', 'pink'];
-    for (let i = 0; i < pawns.length; i++) {
-        pawns[i].color = colors[i];
     }
     return pawns;
 };

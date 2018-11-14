@@ -21,7 +21,7 @@ exports.monitor = (model) => {
     probe.infect_discards = model.infectPile();
     probe.player_discards = model.playerPile();
     probe.player = model.activePlayer();
-    probe.pawn = model.activePawn();
+    probe.pawn = model.activePawn().id;
     probe.infection_rate = model.infectionRate();
     probe.max_outbreaks = model.maxOutbreaks();
     probe.outbreaks = model.outbreaks();

@@ -32,13 +32,13 @@ module.exports = {
         if (is_start) {
             for (let i = 0; i < model.pawns().length-1; i++) {
                 if (model.hands()[i].length > model.hands()[i+1].length) {
-                    model.hands()[i+1].push(card);
+                    model.dealCardTo(card, model.pawns()[i+1]);
                     return;
                 }
             }
-            model.hands()[0].push(card);
+            model.dealCardTo(card, model.pawns()[0]);
         } else {
-            model.hands()[model.activePawn()].push(card);
+            model.dealCardTo(card, model.activePawn());
         }
     },
 
@@ -47,12 +47,13 @@ module.exports = {
         if (! is_start) {
             model.nextPawn();
             model.nextTurn();
-            if (model.activePawn() === 0) {
+            if (model.activePawn().id === 0) {
                 model.nextRound();
             }
         } else {
             model.addEpidemicCards();
             model.shufflePlayerDeck();
+            model.nextRound();
         }
     },
 
