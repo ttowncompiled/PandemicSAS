@@ -19,9 +19,10 @@ io.on('connection', (socket) => {
     });
 });
 
-app.get('/outbreak', (req, res) => {
-    console.log(`>>> outbreak in ${req.query.location}`);
-    io.emit('info', `>>> outbreak in ${req.query.location}`);
+app.post('/info', (req, res) => {
+    let msg = req.body.msg;
+    console.log(`>>> ${msg}`);
+    io.emit('info', `>>> ${msg}`);
     res.sendStatus(200);
 });
 

@@ -7,7 +7,9 @@ module.exports = {
             return {
                 reportOutbreak: (city) => {
                     return new Promise((resolve, reject) => {
-                        axios.get(`http://localhost:${port}/outbreak?location=${city.name}`)
+                        axios.post(`http://localhost:${port}/info`, {
+                                msg: `outbreak in ${city.name}`,
+                            })
                             .then((response) => {
                                 resolve(response.data);
                             })
