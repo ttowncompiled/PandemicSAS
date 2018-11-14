@@ -18,6 +18,7 @@ exports.singletonGameFactory = (config) => {
     model.infection_rate = loadInfectionRate(config);
     model.max_outbreaks = loadMaxOutbreaks(config);
     model.outbreaks = loadInitOutbreaks(config);
+    model.max_rounds = 30;
     model.round = 1;
     model.turn = 1;
     return model;

@@ -429,6 +429,14 @@ module.exports = {
         return model.outbreaks;
     },
 
+    maxRounds: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return model.max_rounds;
+    },
+
     round: () => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));

@@ -1,7 +1,7 @@
 module.exports = {
     adapt: (model) => {
         return {
-            curableDiseases: () => model.curable(),
+            curableDiseases: () => model.curableDiseases(),
 
             curedDiseases: () => model.curedDiseases(),
 
@@ -50,6 +50,8 @@ module.exports = {
             maxOutbreaks: () => model.maxOutbreaks(),
 
             outbreaks: () => model.outbreaks(),
+
+            maxRounds: () => model.maxRounds(),
 
             round: () => model.round(),
 
