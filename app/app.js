@@ -173,12 +173,8 @@
                 if (! monitor_btn.hasClass('active')) {
                     switch_active(null, monitor_btn);
                 }
-                if (stop_btn.hasClass('disabled')) {
-                    stop_btn.removeClass('disabled');
-                }
-                if (forward_btn.hasClass('disabled')) {
-                    forward_btn.toggleClass('disabled');
-                }
+                stop_btn.prop('disabled', () => false);
+                forward_btn.prop('disabled', () => false);
                 stopped = false;
                 play();
             });
@@ -220,12 +216,8 @@
             } else if (execute_btn.hasClass('active')) {
                 switch_active(execute_btn, null);
             }
-            if (! stop_btn.hasClass('disabled')) {
-                stop_btn.toggleClass('disabled');
-            }
-            if (! forward_btn.hasClass('disabled')) {
-                forward_btn.toggleClass('disabled');
-            }
+            stop_btn.prop('disabled', () => true);
+            forward_btn.prop('disabled', () => true);
             step = 0;
             paused = false;
             stopped = true;
