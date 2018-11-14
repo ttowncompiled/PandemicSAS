@@ -17,7 +17,7 @@
         <nav class="navbar navbar-expand-md navbar-fixed-top navbar-dark bg-dark">
             <div class="container justify-content-center">
                 <ul class="nav navbar-nav flex-fill w-100 flex-nowrap">
-                    <span class="navbar-brand"><span class="oi oi-project"></span>&nbsp;{{title}} - {{author}}</span>
+                    <li class="nav-item navbar-brand"><span class="oi oi-project"></span>&nbsp;{{title}} - {{author}}</li>
                 </ul>
                 <ul class="nav navbar-nav flex-fill w-100 justify-content-center">
                     <li class="nav-item">
@@ -48,7 +48,7 @@
         </nav>
     </head>
     <body style="height:90%;">
-        <div class="container-fluid h-100 py-3">
+        <div class="container-fluid py-3" style="height:95%;">
             <div class="row h-100">
                 <div class="col h-100">
                     <div id="board" class="container h-100 shadow"></div>
@@ -58,6 +58,238 @@
                 </div>
             </div>
         </div>
+        <footer class="footer bg-dark fixed-bottom py-3">
+            <nav class="navbar navbar-expand-md navbar-fixed-top navbar-dark bg-dark">
+                <div class="container justify-content-center">
+                    <ul class="nav navbar-nav flex-fill w-100 flex-nowrap">
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-info mx-2 my-2 my-sm-0" data-toggle="modal" data-target="#pawn-1-hand">
+                                Pawn 1 Hand
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-info mx-2 my-2 my-sm-0" data-toggle="modal" data-target="#pawn-2-hand">
+                                Pawn 2 Hand
+                            </button>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav flex-fill w-100 flex-nowrap justify-content-center">
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-warning mx-2 my-2 my-sm-0" data-toggle="modal" data-target="#game-info">
+                                Game Info
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-warning mx-2 my-2 my-sm-0" data-toggle="modal" data-target="#city-info">
+                                City Info
+                            </button>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav flex-fill w-100 flex-nowrap justify-content-end">
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-info mx-2 my-2 my-sm-0" data-toggle="modal" data-target="#infect-discard-pile">
+                                Infect Discard Pile
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-info mx-2 my-2 my-sm-0" data-toggle="modal" data-target="#player-discard-pile">
+                                Player Discard Pile
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </footer>
+        <div class="modal fade" id="pawn-1-hand" tabindex="-1" role="dialog" aria-labelledby="pawn-1-hand-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pawn-1-hand-title">Pawn 1 Hand</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="pawn-1-hand-list" class="container-fluid"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="pawn-2-hand" tabindex="-1" role="dialog" aria-labelledby="pawn-2-hand-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pawn-2-hand-title">Pawn 2 Hand</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="pawn-2-hand-list" class="container-fluid"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="game-info" tabindex="-1" role="dialog" aria-labelledby="game-info-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="game-info-title">Game Info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <hr>
+                            <div class="row">
+                                <div class="col text-center">Curable Diseases</div>
+                            </div>
+                            <hr>
+                            <div class="row justify-content-center">
+                                <div id="cure-black" class="col text-center">Black</div>
+                                <div id="cure-blue" class="col text-center">Blue</div>
+                                <div id="cure-red" class="col text-center">Red</div>
+                                <div id="cure-yellow" class="col text-center">Yellow</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col text-center">Eradicable Diseases</div>
+                            </div>
+                            <hr>
+                            <div class="row justify-content-center">
+                                <div id="eradicate-black" class="col text-center">Black</div>
+                                <div id="eradicate-blue" class="col text-center">Blue</div>
+                                <div id="eradicate-red" class="col text-center">Red</div>
+                                <div id="eradicate-yellow" class="col text-center">Yellow</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Active Player:</div>
+                                <div id="active-player" class="col-md-6">env</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Active Pawn:</div>
+                                <div id="active-pawn" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Round:</div>
+                                <div id="round" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Max Rounds:</div>
+                                <div id="max-rounds" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Outbreaks:</div>
+                                <div id="outbreaks" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Max Outbreaks:</div>
+                                <div id="max-outbreaks" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Black Cubes Remaining:</div>
+                                <div id="black-cubes" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Blue Cubes Remaining:</div>
+                                <div id="blue-cubes" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Red Cubes Remaining:</div>
+                                <div id="red-cubes" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Yellow Cubes Remaining:</div>
+                                <div id="yellow-cubes" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">Infection Rate:</div>
+                                <div id="infection-rate" class="col-md-6">0</div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="city-info" tabindex="-1" role="dialog" aria-labelledby="city-info-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="city-info-title">City Info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="research-station-list" class="container-fluid"></div>
+                        <div id="city-info-list" class="container-fluid"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="infect-discard-pile" tabindex="-1" role="dialog" aria-labelledby="infect-discard-pile-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infect-discard-pile-title">Infect Discard Pile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="infect-discard-list" class="container-fluid"></div>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="player-discard-pile" tabindex="-1" role="dialog" aria-labelledby="player-discard-pile-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="player-discard-pile-title">Player Discard Pile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="player-discard-list" class="container-fluid"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="/lib/js/jquery.min.js"></script>
         <script src="/lib/js/popper.min.js"></script>
         <script src="/lib/js/bootstrap.bundle.min.js"></script>
