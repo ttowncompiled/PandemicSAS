@@ -76,7 +76,7 @@ let infoClear = null;
 
     function updateDynamicInfo(data) {
         active_player.html(data.player);
-        active_pawn.html(data.pawn);
+        active_pawn.html(data.pawn.id);
         round.html(data.round);
         outbreaks.html(data.outbreaks);
         black_cubes.html(data.cubes['black']);

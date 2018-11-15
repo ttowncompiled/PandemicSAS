@@ -364,7 +364,7 @@ module.exports = {
             return null;
         }
         model.hands[pawn.id-1].splice(model.hands[pawn.id-1].map((card) => card.name).indexOf(card.name), 1);
-        model.player_discards.push(card);
+        model.player_pile.push(card);
         return model.hands[pawn.id-1];
     },
 
@@ -449,12 +449,21 @@ module.exports = {
         return model.outbreaks;
     },
 
-    increaseOutbreaks: () => {
+    outbreakLocations: () => {
+        if (model === null) {
+            console.error(new Error('uninstantiated model'));
+            return null;
+        }
+        return model.outbreak_locations;
+    },
+
+    increaseOutbreaks: (city) => {
         if (model === null) {
             console.error(new Error('uninstantiated model'));
             return null;
         }
         model.outbreaks++;
+        model.outbreak_locations.push(city.name);
         return model.outbreaks;
     },
 

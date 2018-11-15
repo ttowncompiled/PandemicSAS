@@ -1,4 +1,11 @@
-exports.plan = (analysis) => {
+exports.plan = (probe, analysis) => {
+    let status = {};
+    Object.keys(probe.cities)
+        .map((key) => probe.cities[key])
+        .forEach((city) => {
+            status[city.name] = Object.assign({}, city.status);
+        });
+
     let best_weight = -1;
     let best_path = [];
 
@@ -13,7 +20,12 @@ exports.plan = (analysis) => {
             let weight = 0;
             for (let i = 0; i < stack.length; i++) {
                 if (stack[i].action === 'Treat Disease') {
-                    weight++;
+                    let max_infection = Math.max(...Object.keys(status[stack[i].location]).map((key) => status[stack[i].location][key]));
+                    if (max_infection === 3) {
+                        weight += 2;
+                    } else {
+                        weight += 1;
+                    }
                 }
             }
             if (best_weight < weight) {

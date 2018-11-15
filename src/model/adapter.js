@@ -53,6 +53,8 @@ module.exports = {
 
             outbreaks: () => model.outbreaks(),
 
+            outbreakLocations: () => model.outbreakLocations(),
+
             maxRounds: () => model.maxRounds(),
 
             round: () => model.round(),

@@ -86,6 +86,15 @@ module.exports = {
         model.movePawnTo(pawn, city);
     },
 
+    directlyFlyPawn: (location) => {
+        let pawn = model.activePawn();
+        let city = model.cities()[location];
+        let hand = model.hands()[model.activePawn().id-1];
+        let card = hand[hand.map((card) => card.name).indexOf(location)];
+        model.discardCardFrom(card, pawn);
+        model.movePawnTo(pawn, city);
+    },
+
     treatDisease: (location, reporter) => {
         let best_disease = '';
         for (let disease in model.status()[location]) {
@@ -120,7 +129,7 @@ function increaseInfection(city, disease, reporter, ignore={}) {
         reporter.reportInfect(city, disease);
         return false;
     } else {
-        model.increaseOutbreaks();
+        model.increaseOutbreaks(city);
         reporter.reportOutbreak(city, disease);
         outbreak(city, disease, reporter, ignore);
         return true;

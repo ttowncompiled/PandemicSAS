@@ -3,6 +3,8 @@ exports.execute = (plan, manager, reporter) => {
     while (root) {
         if (root.action === 'Drive / Ferry') {
             manager.drivePawn(root.location, reporter);
+        } else if (root.action === 'Direct Flight') {
+            manager.directlyFlyPawn(root.location, reporter);
         } else if (root.action === 'Treat Disease') {
             manager.treatDisease(root.location, reporter);
         } else if (root.action === 'Yield') {

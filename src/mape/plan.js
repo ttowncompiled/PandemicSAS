@@ -3,7 +3,7 @@ const sys = require('./sys/sys.js');
 
 exports.plan = (probe, analysis) => {
     if (probe.player === 'sys') {
-        return sys.plan(analysis);
+        return sys.plan(probe, analysis);
     } else {
         return env.plan(analysis);
     }
