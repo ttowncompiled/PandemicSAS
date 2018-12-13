@@ -23,7 +23,6 @@ exports.analysis = (probe, adapting) => {
             }
             root = root.links[0];
         }
-        console.log(needs_to_fly);
         return [ tree, true ];
     }
 };

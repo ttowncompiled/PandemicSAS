@@ -62,7 +62,12 @@ module.exports = {
         execute_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 plan_state.then((plan) => {
-                    resolve(execute_module.execute(probe, plan, manager, reporter));
+                    let ok = execute_module.execute(probe, plan, manager, reporter);
+                    if (ok && mape_loop_active) {
+                        reporter.reportStable();
+                        mape_loop_active = false;
+                    }
+                    resolve(ok);
                 })
                 .catch((reason) => reject(reason));
             })
