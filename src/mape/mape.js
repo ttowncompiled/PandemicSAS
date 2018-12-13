@@ -11,6 +11,8 @@ let execute_state = null;
 let manager = null;
 let reporter = null;
 
+let mape_loop_active = false;
+
 module.exports = {
     start: (m, r) => {
         manager = m;
@@ -31,7 +33,12 @@ module.exports = {
     analyze: () => {
         analyze_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
-                resolve(analyze_module.analyze(probe));
+                let [ tree, ok ] = analyze_module.analyze(probe, mape_loop_active);
+                if (! ok && ! mape_loop_active) {
+                    reporter.reportAdapt();
+                    mape_loop_active = true;
+                }
+                resolve(tree);
             })
             .catch((reason) => reject(reason));
         });

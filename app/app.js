@@ -185,20 +185,25 @@ let causeOutbreak = null;
     };
 
     socket.on('adapt', () => {
-        mape_loop_active = true;
-        if (monitor_btn.hasClass('active')) {
-            monitor_btn.toggleClass('btn-outline-light');
-            monitor_btn.toggleClass('btn-info');
-        } else if (analyze_btn.hasClass('active')) {
-            analyze_btn.toggleClass('btn-outline-light');
-            analyze_btn.toggleClass('btn-info');
-        } else if (plan_btn.hasClass('active')) {
-            plan_btn.toggleClass('btn-outline-light');
-            plan_btn.toggleClass('btn-info');
-        } else if (execute_btn.hasClass('active')) {
-            execute_btn.toggleClass('btn-outline-light');
-            execute_btn.toggleClass('btn-info');
+        if (! mape_loop_active) {
+            if (monitor_btn.hasClass('active')) {
+                monitor_btn.toggleClass('btn-outline-light');
+                monitor_btn.toggleClass('btn-info');
+            } else if (analyze_btn.hasClass('active')) {
+                switch_active(analyze_btn, monitor_btn);
+                monitor_btn.toggleClass('btn-outline-light');
+                monitor_btn.toggleClass('btn-info');
+            } else if (plan_btn.hasClass('active')) {
+                switch_active(plan_btn, monitor_btn);
+                monitor_btn.toggleClass('btn-outline-light');
+                monitor_btn.toggleClass('btn-info');
+            } else if (execute_btn.hasClass('active')) {
+                switch_active(execute_btn, monitor_btn);
+                monitor_btn.toggleClass('btn-outline-light');
+                monitor_btn.toggleClass('btn-info');
+            }
         }
+        mape_loop_active = true;
     });
 
     socket.on('stable', () => {

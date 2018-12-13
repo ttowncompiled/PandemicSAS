@@ -1,4 +1,4 @@
-exports.analysis = (probe) => {
+exports.analysis = (probe, adapting) => {
     initLookup();
     let tree = {};
     tree.root = {
@@ -8,8 +8,12 @@ exports.analysis = (probe) => {
         location: '',
         links: [],
     };
-    selectStrategyAndBranchOut(probe, tree.root);
-    return tree;
+    selectStrategyAndBranchOut(probe, tree.root, adapting);
+    if (tree.root.links.length === 0) {
+        return [ tree, false ];
+    } else {
+        return [ tree, true ];
+    }
 };
 
 let lookup = null;
@@ -22,7 +26,9 @@ function initLookup() {
     };
 };
 
-function selectStrategyAndBranchOut(probe, root) {
+let needs_to_fly = false;
+
+function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel=false) {
     let state = {
         location: probe.pawns[probe.pawn.id-1].location.name,
         hand: probe.pawns[probe.pawn.id-1].hand.map((card) => card.name),
@@ -31,8 +37,6 @@ function selectStrategyAndBranchOut(probe, root) {
 
     let filter = {};
     filter[state.location] = true;
-
-    let needs_to_adapt_travel = false;
 
     if (probe.outbreaks > 0) {
         for (let i = 0; i < probe.outbreaks; i++) {
@@ -45,7 +49,7 @@ function selectStrategyAndBranchOut(probe, root) {
         }
     }
 
-    if (needs_to_adapt_travel) {
+    if (needs_to_adapt_travel || needs_to_fly) {
         INeedToTreatInfections(probe, state, root, 0, filter);
     } else {
         IOnlyNeedToDriveToTreatInfection(probe, state, root, 0, filter);
