@@ -16,5 +16,5 @@ exports.execute = (plan, manager, reporter) => {
             root = null;
         }
     }
-    return true;
+    return [ false, false ];
 };

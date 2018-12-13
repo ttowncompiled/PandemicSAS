@@ -62,12 +62,17 @@ module.exports = {
         execute_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 plan_state.then((plan) => {
-                    let ok = execute_module.execute(probe, plan, manager, reporter);
-                    if (ok && mape_loop_active) {
+                    let [ not_ok, done ] = execute_module.execute(probe, plan, manager, reporter);
+                    if (done) {
+                        reporter.reportGameLoss();
+                    } else if (not_ok && ! mape_loop_active) {
+                        reporter.reportAdapt();
+                        mape_loop_active = true;
+                    } else if (! not_ok && mape_loop_active) {
                         reporter.reportStable();
                         mape_loop_active = false;
                     }
-                    resolve(ok);
+                    resolve({});
                 })
                 .catch((reason) => reject(reason));
             })

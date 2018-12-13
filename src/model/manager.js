@@ -26,12 +26,7 @@ module.exports = {
         let card = model.peekInfectPile();
         let city = model.cities()[card.name];
         let did_outbreak = increaseInfection(city, city.color, reporter);
-        if (gameHasBeenLost()) {
-            reporter.reportGameLoss();
-        } else if (did_outbreak) {
-            reporter.reportAdapt();
-            is_adapting = true;
-        }
+        return [ did_outbreak, gameHasBeenLost() ];
     },
 
     outbreak: (location, disease, reporter) => {
@@ -62,6 +57,7 @@ module.exports = {
         } else {
             model.dealCardTo(card, model.activePawn());
         }
+        return model.playerDeck().length > 0;
     },
 
     envYield: (is_start) => {
