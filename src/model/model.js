@@ -4,10 +4,9 @@ const singletonGameFactory = require('./factory.js').singletonGameFactory;
 let model = null;
 
 module.exports = {
-    start: (config) => {
+    start: (config, scenario) => {
         try {
             if (validator.validate(config)) {
-                let scenario = 1;
                 model = singletonGameFactory(config, scenario);
                 if (scenario === 1) {
                     console.log('>>> scenario 1');

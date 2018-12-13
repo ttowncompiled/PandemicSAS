@@ -5,8 +5,8 @@ let model_adapter = adapter.adapt(model);
 let is_adapting = false;
 
 module.exports = {
-    start: (config) => {
-        return model.start(config);
+    start: (config, scenario) => {
+        return model.start(config, scenario);
     },
 
     view: () => {

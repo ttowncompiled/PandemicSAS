@@ -15,6 +15,7 @@ const reporter = require('./utils/reporter.js');
 const main_port = parseInt(process.argv[2]);
 const app_port = parseInt(process.argv[3]);
 const config_filepath = process.argv[4];
+const scenario = parseInt(process.argv[5]);
 
 let rep = null;
 
@@ -25,7 +26,7 @@ app.post('/outbreak', (req, res) => {
 
 app.get('/start', (req, res) => {
     let config = yaml.safeLoad(fs.readFileSync(config_filepath, 'utf8'));
-    if (manager.start(config)) {
+    if (manager.start(config, scenario)) {
         rep = reporter.init(app_port);
         mape.start(manager, rep).then((result) => {
                 res.send(result);

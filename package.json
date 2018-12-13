@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js 5000 8080",
-    "main": "node src/main.js 8080 5000 ./src/game-config.yml",
+    "main": "node src/main.js 8080 5000 ./src/game-config.yml 0",
+    "scene1": "node src/main.js 8080 5000 ./src/game-config.yml 1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
