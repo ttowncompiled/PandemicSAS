@@ -117,6 +117,7 @@ function loadPlayerDeckNoEpidemics(config, scenario) {
 
     if (scenario === 1) {
         deck.push({ name: 'Paris', color: 'Blue' ,});
+        deck.push({ name: 'Istanbul', color: 'Black' ,});
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < 8; i++) {
             deck.push({
