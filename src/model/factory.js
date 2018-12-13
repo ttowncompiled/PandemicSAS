@@ -8,7 +8,7 @@ exports.singletonGameFactory = (config, scenario) => {
     model.stations = loadResearchStations(config);
     model.infect_deck = loadInfectDeck(config, scenario);
     model.infect_pile = [];
-    model.player_deck = loadPlayerDeckNoEpidemics(config);
+    model.player_deck = loadPlayerDeckNoEpidemics(config, scenario);
     model.player_pile = [];
     model.epidemic_cards = loadEpidemicCards(config);
     model.pawns = loadPawns(config);
@@ -81,15 +81,15 @@ function loadResearchStations(config) {
 function loadInfectDeck(config, scenario) {
     let deck = [];
     if (scenario === 1) {
-        deck.push({ name: 'Paris', color: '' ,});
-        deck.push({ name: 'Istanbul', color: '' ,});
-        deck.push({ name: 'Khartoum', color: '' ,});
-        deck.push({ name: 'Milan', color: '' ,});
-        deck.push({ name: 'Karachi', color: '' ,});
-        deck.push({ name: 'Kinshasa', color: '' ,});
-        deck.push({ name: 'Essen', color: '' ,});
-        deck.push({ name: 'Delhi', color: '' ,});
-        deck.push({ name: 'Johannesburg', color: '' ,});
+        deck.push({ name: 'Paris', color: 'Blue' ,});
+        deck.push({ name: 'Istanbul', color: 'Black' ,});
+        deck.push({ name: 'Khartoum', color: 'Yellow' ,});
+        deck.push({ name: 'Milan', color: 'Blue' ,});
+        deck.push({ name: 'Karachi', color: 'Black' ,});
+        deck.push({ name: 'Kinshasa', color: 'Yellow' ,});
+        deck.push({ name: 'Essen', color: 'Blue' ,});
+        deck.push({ name: 'Delhi', color: 'Black' ,});
+        deck.push({ name: 'Johannesburg', color: 'Yellow' ,});
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < config.cities.length; i++) {
             if (rigged.includes(config.cities[i].name)) {
@@ -112,19 +112,41 @@ function loadInfectDeck(config, scenario) {
     return deck;
 };
 
-function loadPlayerDeckNoEpidemics(config) {
+function loadPlayerDeckNoEpidemics(config, scenario) {
     let deck = [];
-    for (let i = 0; i < config.cities.length; i++) {
-        deck.push({
-            name: config.cities[i].name,
-            color: config.cities[i].color
-        });
-    }
-    for (let i = 0; i < 8; i++) {
-        deck.push({
-            name: 'Blank',
-            color: 'Blank',
-        });
+
+    if (scenario === 1) {
+        deck.push({ name: 'Paris', color: 'Blue' ,});
+        let rigged = deck.map((card) => card.name);
+        for (let i = 0; i < 8; i++) {
+            deck.push({
+                name: 'Blank',
+                color: 'Blank',
+            });
+        }
+        for (let i = 0; i < config.cities.length; i++) {
+            if (rigged.includes(config.cities[i].name)) {
+                continue;
+            }
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color,
+            });
+        }
+        deck = deck.reverse();
+    } else {
+        for (let i = 0; i < config.cities.length; i++) {
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color
+            });
+        }
+        for (let i = 0; i < 8; i++) {
+            deck.push({
+                name: 'Blank',
+                color: 'Blank',
+            });
+        }
     }
     return deck;
 };

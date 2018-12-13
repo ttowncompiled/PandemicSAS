@@ -12,6 +12,18 @@ exports.analysis = (probe, adapting) => {
     if (tree.root.links.length === 0) {
         return [ tree, false ];
     } else {
+        let root = tree.root;
+        while (root !== null) {
+            if (root.links.length === 0) {
+                root = null;
+                continue;
+            }
+            if (root.action === 'Direct Flight') {
+                needs_to_fly = true;
+            }
+            root = root.links[0];
+        }
+        console.log(needs_to_fly);
         return [ tree, true ];
     }
 };

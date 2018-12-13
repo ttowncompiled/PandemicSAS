@@ -10,7 +10,7 @@ module.exports = {
                 let scenario = 1;
                 model = singletonGameFactory(config, scenario);
                 if (scenario === 1) {
-                    module.exports.shufflePlayerDeck();
+                    console.log('>>> scenario 1');
                 } else {
                     module.exports.shuffleInfectDeck();
                     module.exports.shufflePlayerDeck();
