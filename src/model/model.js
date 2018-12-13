@@ -7,9 +7,14 @@ module.exports = {
     start: (config) => {
         try {
             if (validator.validate(config)) {
-                model = singletonGameFactory(config);
-                module.exports.shuffleInfectDeck();
-                module.exports.shufflePlayerDeck();
+                let scenario = 1;
+                model = singletonGameFactory(config, scenario);
+                if (scenario === 1) {
+                    module.exports.shufflePlayerDeck();
+                } else {
+                    module.exports.shuffleInfectDeck();
+                    module.exports.shufflePlayerDeck();
+                }
                 return true;
             } else {
                 console.error(new Error('validation error'));
