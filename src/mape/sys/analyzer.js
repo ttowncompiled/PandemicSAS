@@ -8,11 +8,11 @@ exports.analysis = (probe, adapting=false, needs_to_fly=false, wait_to_cure=fals
         location: '',
         links: [],
     };
-    selectStrategyAndBranchOut(probe, tree.root, adapting, needs_to_fly, wait_to_cure);
+    let can_cure = selectStrategyAndBranchOut(probe, tree.root, adapting, needs_to_fly, wait_to_cure);
     if (tree.root.links.length === 0) {
-        return [ tree, false ];
+        return [ tree, false, can_cure ];
     } else {
-        return [ tree, true ];
+        return [ tree, true, can_cure ];
     }
 };
 
@@ -57,7 +57,7 @@ function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to
 
     if (can_cure && ! wait_to_cure) {
         IMustCureDisease(probe, state, curable_disease, root, 0, filter);
-        return;
+        return true;
     }
 
     if (probe.outbreaks > 0) {
@@ -76,6 +76,8 @@ function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to
     } else {
         IOnlyNeedToDriveToTreatInfection(probe, state, root, 0, filter);
     }
+
+    return false;
 };
 
 function IOnlyNeedToDriveToTreatInfection(probe, state, root, depth, filter) {

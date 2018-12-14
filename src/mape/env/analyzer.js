@@ -8,7 +8,7 @@ exports.analysis = (probe) => {
         links: [],
     };
     branchActions(probe, tree.root);
-    return [ tree, true ];
+    return [ tree, true, false ];
 };
 
 let lookup = null;
