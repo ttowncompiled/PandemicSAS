@@ -11,7 +11,7 @@ exports.singletonGameFactory = (config, scenario) => {
     model.player_deck = loadPlayerDeckNoEpidemics(config, scenario);
     model.player_pile = [];
     model.epidemic_cards = loadEpidemicCards(config);
-    model.pawns = loadPawns(config);
+    model.pawns = loadPawns(config, scenario);
     model.hands = loadHands(config);
     model.player = 'env';
     model.pawn = model.pawns[0];
@@ -81,15 +81,15 @@ function loadResearchStations(config) {
 function loadInfectDeck(config, scenario) {
     let deck = [];
     if (scenario === 1) {
-        deck.push({ name: 'Paris', color: 'Blue' ,});
-        deck.push({ name: 'Istanbul', color: 'Black' ,});
-        deck.push({ name: 'Khartoum', color: 'Yellow' ,});
-        deck.push({ name: 'Milan', color: 'Blue' ,});
-        deck.push({ name: 'Karachi', color: 'Black' ,});
-        deck.push({ name: 'Kinshasa', color: 'Yellow' ,});
-        deck.push({ name: 'Essen', color: 'Blue' ,});
-        deck.push({ name: 'Delhi', color: 'Black' ,});
-        deck.push({ name: 'Johannesburg', color: 'Yellow' ,});
+        deck.push({ name: 'Paris', color: 'Blue', });
+        deck.push({ name: 'Istanbul', color: 'Black', });
+        deck.push({ name: 'Khartoum', color: 'Yellow', });
+        deck.push({ name: 'Milan', color: 'Blue', });
+        deck.push({ name: 'Karachi', color: 'Black', });
+        deck.push({ name: 'Kinshasa', color: 'Yellow', });
+        deck.push({ name: 'Essen', color: 'Blue', });
+        deck.push({ name: 'Delhi', color: 'Black', });
+        deck.push({ name: 'Johannesburg', color: 'Yellow', });
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < config.cities.length; i++) {
             if (rigged.includes(config.cities[i].name)) {
@@ -102,16 +102,29 @@ function loadInfectDeck(config, scenario) {
         }
         deck = deck.reverse();
     } else if (scenario === 2) {
-        deck.push({ name: 'Paris', color: 'Blue' ,});
-        deck.push({ name: 'Istanbul', color: 'Black' ,});
-        deck.push({ name: 'Khartoum', color: 'Yellow' ,});
-        deck.push({ name: 'Montreal', color: 'Blue' ,});
-        deck.push({ name: 'Karachi', color: 'Black' ,});
-        deck.push({ name: 'Mexico City', color: 'Yellow' ,});
-        deck.push({ name: 'Washington', color: 'Blue' ,});
-        deck.push({ name: 'Delhi', color: 'Black' ,});
-        deck.push({ name: 'Miami', color: 'Yellow' ,});
-        deck.push({ name: 'Paris', color: 'Blue' ,});
+        deck.push({ name: 'Paris', color: 'Blue', });
+        deck.push({ name: 'Istanbul', color: 'Black', });
+        deck.push({ name: 'Khartoum', color: 'Yellow', });
+        deck.push({ name: 'Montreal', color: 'Blue', });
+        deck.push({ name: 'Karachi', color: 'Black', });
+        deck.push({ name: 'Mexico City', color: 'Yellow', });
+        deck.push({ name: 'Washington', color: 'Blue', });
+        deck.push({ name: 'Delhi', color: 'Black', });
+        deck.push({ name: 'Miami', color: 'Yellow', });
+        deck.push({ name: 'Paris', color: 'Blue', });
+        let rigged = deck.map((card) => card.name);
+        for (let i = 0; i < config.cities.length; i++) {
+            if (rigged.includes(config.cities[i].name)) {
+                continue;
+            }
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color,
+            });
+        }
+        deck = deck.reverse();
+    } else if (scenario === 3) {
+        deck.push({ name: 'Chicago', color: 'Blue', });
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < config.cities.length; i++) {
             if (rigged.includes(config.cities[i].name)) {
@@ -138,8 +151,8 @@ function loadPlayerDeckNoEpidemics(config, scenario) {
     let deck = [];
 
     if (scenario === 1) {
-        deck.push({ name: 'Paris', color: 'Blue' ,});
-        deck.push({ name: 'Istanbul', color: 'Black' ,});
+        deck.push({ name: 'Paris', color: 'Blue', });
+        deck.push({ name: 'Istanbul', color: 'Black', });
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < 8; i++) {
             deck.push({
@@ -158,11 +171,37 @@ function loadPlayerDeckNoEpidemics(config, scenario) {
         }
         deck = deck.reverse();
     } else if (scenario === 2) {
-        deck.push({ name: 'Paris', color: 'Blue' ,});
-        deck.push({ name: 'Essen', color: 'Blue' ,});
-        deck.push({ name: 'Khartoum', color: 'Yellow' ,});
+        deck.push({ name: 'Paris', color: 'Blue', });
+        deck.push({ name: 'Essen', color: 'Blue', });
+        deck.push({ name: 'Khartoum', color: 'Yellow', });
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < 8; i++) {
+            deck.push({
+                name: 'Blank',
+                color: 'Blank',
+            });
+        }
+        for (let i = 0; i < config.cities.length; i++) {
+            if (rigged.includes(config.cities[i].name)) {
+                continue;
+            }
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color,
+            });
+        }
+        deck = deck.reverse();
+    } else if (scenario === 3 || scenario === 4) {
+        deck.push({ name: 'Istanbul', color: 'Black', });
+        deck.push({ name: 'Blank', color: 'Blank', });
+        deck.push({ name: 'Karachi', color: 'Black', });
+        deck.push({ name: 'Blank', color: 'Blank', });
+        deck.push({ name: 'Delhi', color: 'Black', });
+        deck.push({ name: 'Blank', color: 'Blank', });
+        deck.push({ name: 'Cairo', color: 'Black', });
+        deck.push({ name: 'Blank', color: 'Blank', });
+        let rigged = deck.map((card) => card.name);
+        for (let i = 0; i < 4; i++) {
             deck.push({
                 name: 'Blank',
                 color: 'Blank',
@@ -206,7 +245,7 @@ function loadEpidemicCards(_config) {
     return cards;
 };
 
-function loadPawns(config) {
+function loadPawns(config, scenario) {
     let pawns = [];
     let colors = ['orange', 'green', 'purple', 'pink'];
     for (let i = 0; i < config.init_pawns; i++) {
@@ -220,6 +259,9 @@ function loadPawns(config) {
             color: colors[i],
         };
         pawns.push(pawn);
+    }
+    if (scenario === 3 || scenario === 4) {
+        pawns[0].location.name = 'London';
     }
     return pawns;
 };

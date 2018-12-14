@@ -1,4 +1,4 @@
-exports.analysis = (probe, adapting=false, needs_to_fly=false) => {
+exports.analysis = (probe, adapting=false, needs_to_fly=false, wait_to_cure=false) => {
     initLookup();
     let tree = {};
     tree.root = {
@@ -8,7 +8,7 @@ exports.analysis = (probe, adapting=false, needs_to_fly=false) => {
         location: '',
         links: [],
     };
-    selectStrategyAndBranchOut(probe, tree.root, adapting, needs_to_fly);
+    selectStrategyAndBranchOut(probe, tree.root, adapting, needs_to_fly, wait_to_cure);
     if (tree.root.links.length === 0) {
         return [ tree, false ];
     } else {
@@ -26,7 +26,7 @@ function initLookup() {
     };
 };
 
-function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to_fly) {
+function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to_fly, wait_to_cure) {
     let state = {
         location: probe.pawns[probe.pawn.id-1].location.name,
         hand: probe.pawns[probe.pawn.id-1].hand.map((card) => card.name),
@@ -35,6 +35,30 @@ function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to
 
     let filter = {};
     filter[state.location] = true;
+
+    let can_cure = false;
+    let curable_disease = '';
+
+    let colors = {};
+    probe.pawns[probe.pawn.id-1].hand.forEach((card) => {
+        if (! (card.color in colors)) {
+            colors[card.color] = 1;
+        } else {
+            colors[card.color] += 1;
+        }
+    });
+    Object.keys(colors).forEach((key) => {
+        let count = colors[key];
+        if (count >= 4) {
+            can_cure = true;
+            curable_disease = key;
+        }
+    });
+
+    if (can_cure && ! wait_to_cure) {
+        IMustCureDisease(probe, state, curable_disease, root, 0, filter);
+        return;
+    }
 
     if (probe.outbreaks > 0) {
         for (let i = 0; i < probe.outbreaks; i++) {
@@ -150,6 +174,36 @@ function INeedToTreatInfections(probe, state, root, depth, filter) {
     return [root, keep_branch];
 };
 
+function IMustCureDisease(probe, state, color, root, depth, filter) {
+    let cb = null;
+    cb = (probe, state, root, depth, filter) => {
+        if (depth >= 4) {
+            let [action, ok] = branchYield();
+            root.links.push(action);
+            return [root, false];
+        }
+        if (probe.research_stations.includes(state.location)) {
+            let [action, _] = branchCureDisease(color);
+            root.links.push(action);
+            let [yield, ok] = branchYield();
+            action.links.push(yield);
+            return [root, true];
+        }
+        let close_neighbors = probe.cities[state.location].neighbors;
+        for (let i = 0; i < close_neighbors.length; i++) {
+            let neighbor = close_neighbors[i];
+            if (neighbor in filter) {
+                continue;
+            }
+            let [action, ok] = branchDrive(probe, state, neighbor,
+                    depth, filter, cb);
+            root.links.push(action);
+        }
+        return [root, true];
+    };
+    return cb(probe, state, root, depth, filter);
+};
+
 function branchDrive(probe, state, location, depth, filter, cb) {
     let action = {
         id: lookup(),
@@ -198,6 +252,7 @@ function branchTreatInfection(probe, state, depth, filter, cb) {
         location: location,
         links: [],
     };
+    let ok = true;
 
     state = Object.assign({}, state);
     state.cities = Object.assign({}, state.cities);
@@ -220,6 +275,18 @@ function branchTreatInfection(probe, state, depth, filter, cb) {
         action.links.push(link);
     }
 
+    return [action, true];
+};
+
+function branchCureDisease(color) {
+    let action = {
+        id: lookup(),
+        name: `Cure Disease - ${color}`,
+        action: 'Cure Disease',
+        location: '',
+        color: color,
+        links: [],
+    };
     return [action, true];
 };
 
