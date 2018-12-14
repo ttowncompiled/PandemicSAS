@@ -138,6 +138,8 @@ let causeOutbreak = null;
             switch_active(plan_btn, execute_btn);
         } else if (execute_btn.hasClass('active')) {
             switch_active(execute_btn, monitor_btn);
+        } else if (mape_loop_active) {
+            switch_active(null, monitor_btn);
         }
     }
 
@@ -149,6 +151,8 @@ let causeOutbreak = null;
         } else if (plan_btn.hasClass('active')) {
             return execute();
         } else if (execute_btn.hasClass('active')) {
+            return monitor();
+        } else if (mape_loop_active) {
             return monitor();
         } else {
             return new Promise((resolve) => resolve(false));
@@ -187,20 +191,13 @@ let causeOutbreak = null;
     socket.on('adapt', () => {
         if (! mape_loop_active) {
             if (monitor_btn.hasClass('active')) {
-                monitor_btn.toggleClass('btn-outline-light');
-                monitor_btn.toggleClass('btn-info');
+                monitor_btn.toggleClass('active');
             } else if (analyze_btn.hasClass('active')) {
-                switch_active(analyze_btn, monitor_btn);
-                monitor_btn.toggleClass('btn-outline-light');
-                monitor_btn.toggleClass('btn-info');
+                analyze_btn.toggleClass('active');
             } else if (plan_btn.hasClass('active')) {
-                switch_active(plan_btn, monitor_btn);
-                monitor_btn.toggleClass('btn-outline-light');
-                monitor_btn.toggleClass('btn-info');
+                plan_btn.toggleClass('active');
             } else if (execute_btn.hasClass('active')) {
-                switch_active(execute_btn, monitor_btn);
-                monitor_btn.toggleClass('btn-outline-light');
-                monitor_btn.toggleClass('btn-info');
+                execute_btn.toggleClass('active');
             }
         }
         mape_loop_active = true;

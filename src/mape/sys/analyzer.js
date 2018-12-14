@@ -1,4 +1,4 @@
-exports.analysis = (probe, adapting) => {
+exports.analysis = (probe, adapting=false, needs_to_fly=false) => {
     initLookup();
     let tree = {};
     tree.root = {
@@ -8,21 +8,10 @@ exports.analysis = (probe, adapting) => {
         location: '',
         links: [],
     };
-    selectStrategyAndBranchOut(probe, tree.root, adapting);
+    selectStrategyAndBranchOut(probe, tree.root, adapting, needs_to_fly);
     if (tree.root.links.length === 0) {
         return [ tree, false ];
     } else {
-        let root = tree.root;
-        while (root !== null) {
-            if (root.links.length === 0) {
-                root = null;
-                continue;
-            }
-            if (root.action === 'Direct Flight') {
-                needs_to_fly = true;
-            }
-            root = root.links[0];
-        }
         return [ tree, true ];
     }
 };
@@ -37,9 +26,7 @@ function initLookup() {
     };
 };
 
-let needs_to_fly = false;
-
-function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel=false) {
+function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to_fly) {
     let state = {
         location: probe.pawns[probe.pawn.id-1].location.name,
         hand: probe.pawns[probe.pawn.id-1].hand.map((card) => card.name),

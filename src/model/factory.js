@@ -101,6 +101,28 @@ function loadInfectDeck(config, scenario) {
             });
         }
         deck = deck.reverse();
+    } else if (scenario === 2) {
+        deck.push({ name: 'Paris', color: 'Blue' ,});
+        deck.push({ name: 'Istanbul', color: 'Black' ,});
+        deck.push({ name: 'Khartoum', color: 'Yellow' ,});
+        deck.push({ name: 'Montreal', color: 'Blue' ,});
+        deck.push({ name: 'Karachi', color: 'Black' ,});
+        deck.push({ name: 'Mexico City', color: 'Yellow' ,});
+        deck.push({ name: 'Washington', color: 'Blue' ,});
+        deck.push({ name: 'Delhi', color: 'Black' ,});
+        deck.push({ name: 'Miami', color: 'Yellow' ,});
+        deck.push({ name: 'Paris', color: 'Blue' ,});
+        let rigged = deck.map((card) => card.name);
+        for (let i = 0; i < config.cities.length; i++) {
+            if (rigged.includes(config.cities[i].name)) {
+                continue;
+            }
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color,
+            });
+        }
+        deck = deck.reverse();
     } else {
         for (let i = 0; i < config.cities.length; i++) {
             deck.push({
@@ -118,6 +140,27 @@ function loadPlayerDeckNoEpidemics(config, scenario) {
     if (scenario === 1) {
         deck.push({ name: 'Paris', color: 'Blue' ,});
         deck.push({ name: 'Istanbul', color: 'Black' ,});
+        let rigged = deck.map((card) => card.name);
+        for (let i = 0; i < 8; i++) {
+            deck.push({
+                name: 'Blank',
+                color: 'Blank',
+            });
+        }
+        for (let i = 0; i < config.cities.length; i++) {
+            if (rigged.includes(config.cities[i].name)) {
+                continue;
+            }
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color,
+            });
+        }
+        deck = deck.reverse();
+    } else if (scenario === 2) {
+        deck.push({ name: 'Paris', color: 'Blue' ,});
+        deck.push({ name: 'Essen', color: 'Blue' ,});
+        deck.push({ name: 'Khartoum', color: 'Yellow' ,});
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < 8; i++) {
             deck.push({

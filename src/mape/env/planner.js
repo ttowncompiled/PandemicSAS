@@ -1,3 +1,3 @@
 exports.plan = (analysis) => {
-    return analysis;
+    return [ analysis, false] ;
 };

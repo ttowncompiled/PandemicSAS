@@ -1,4 +1,4 @@
-exports.plan = (probe, analysis) => {
+exports.plan = (probe, analysis, adapting=false) => {
     let status = {};
     Object.keys(probe.cities)
         .map((key) => probe.cities[key])
@@ -62,5 +62,21 @@ exports.plan = (probe, analysis) => {
     let tree = {};
     tree.root = best_path[0];
 
-    return tree;
+    let needs_to_fly = false;
+
+    if (adapting) {
+        let root = tree.root;
+        while (root !== null) {
+            if (root.action === 'Direct Flight') {
+                needs_to_fly = true;
+            }
+            if (root.links.length === 0) {
+                root = null;
+                continue;
+            }
+            root = root.links[0];
+        }
+    }
+
+    return [ tree, needs_to_fly ];
 };

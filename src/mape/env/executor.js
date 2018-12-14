@@ -16,10 +16,7 @@ exports.execute = (plan, manager, reporter) => {
                 game_lost = true;
             }
         } else if (root.action === 'Deal Player Card') {
-            let rv = manager.dealPlayerCard(is_start, reporter);
-            if (rv) {
-                game_lost = true;
-            }
+            manager.dealPlayerCard(is_start, reporter);
         } else if (root.action === 'Yield') {
             manager.envYield(is_start, reporter);
         }
