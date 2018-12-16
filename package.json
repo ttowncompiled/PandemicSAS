@@ -9,7 +9,7 @@
     "scene1": "node src/main.js 8080 5000 ./src/game-config.yml 1",
     "scene2": "node src/main.js 8080 5000 ./src/game-config.yml 2",
     "scene3": "node src/main.js 8080 5000 ./src/game-config.yml 3",
-    "scene3-2": "node src/main.js 8080 5000 ./src/game-config.yml 4",
+    "scene4": "node src/main.js 8080 5000 ./src/game-config.yml 4",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

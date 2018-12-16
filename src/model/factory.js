@@ -17,7 +17,7 @@ exports.singletonGameFactory = (config, scenario) => {
     model.pawn = model.pawns[0];
     model.infection_rate_track = loadInfectionTrack(config);
     model.infection_rate = loadInfectionRate(config);
-    model.max_outbreaks = loadMaxOutbreaks(config);
+    model.max_outbreaks = loadMaxOutbreaks(config, scenario);
     model.outbreaks = loadInitOutbreaks(config);
     model.outbreak_locations = [];
     model.max_rounds = loadMaxRounds(config);
@@ -136,6 +136,28 @@ function loadInfectDeck(config, scenario) {
             });
         }
         deck = deck.reverse();
+    } else if (scenario === 4) {
+        deck.push({ name: 'Paris', color: 'Blue', });
+        deck.push({ name: 'Istanbul', color: 'Black', });
+        deck.push({ name: 'Khartoum', color: 'Yellow', });
+        deck.push({ name: 'Montreal', color: 'Blue', });
+        deck.push({ name: 'Karachi', color: 'Black', });
+        deck.push({ name: 'Mexico City', color: 'Yellow', });
+        deck.push({ name: 'Washington', color: 'Blue', });
+        deck.push({ name: 'Delhi', color: 'Black', });
+        deck.push({ name: 'Miami', color: 'Yellow', });
+        deck.push({ name: 'Paris', color: 'Blue', });
+        let rigged = deck.map((card) => card.name);
+        for (let i = 0; i < config.cities.length; i++) {
+            if (rigged.includes(config.cities[i].name)) {
+                continue;
+            }
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color,
+            });
+        }
+        deck = deck.reverse();
     } else {
         for (let i = 0; i < config.cities.length; i++) {
             deck.push({
@@ -149,7 +171,6 @@ function loadInfectDeck(config, scenario) {
 
 function loadPlayerDeckNoEpidemics(config, scenario) {
     let deck = [];
-
     if (scenario === 1) {
         deck.push({ name: 'Paris', color: 'Blue', });
         deck.push({ name: 'Istanbul', color: 'Black', });
@@ -191,7 +212,7 @@ function loadPlayerDeckNoEpidemics(config, scenario) {
             });
         }
         deck = deck.reverse();
-    } else if (scenario === 3 || scenario === 4) {
+    } else if (scenario === 3) {
         deck.push({ name: 'Istanbul', color: 'Black', });
         deck.push({ name: 'Blank', color: 'Blank', });
         deck.push({ name: 'Karachi', color: 'Black', });
@@ -200,6 +221,32 @@ function loadPlayerDeckNoEpidemics(config, scenario) {
         deck.push({ name: 'Blank', color: 'Blank', });
         deck.push({ name: 'Cairo', color: 'Black', });
         deck.push({ name: 'Blank', color: 'Blank', });
+        let rigged = deck.map((card) => card.name);
+        for (let i = 0; i < 4; i++) {
+            deck.push({
+                name: 'Blank',
+                color: 'Blank',
+            });
+        }
+        for (let i = 0; i < config.cities.length; i++) {
+            if (rigged.includes(config.cities[i].name)) {
+                continue;
+            }
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color,
+            });
+        }
+        deck = deck.reverse();
+    } else if (scenario === 4) {
+        deck.push({ name: 'Blank', color: 'Blank', });
+        deck.push({ name: 'Istanbul', color: 'Black', });
+        deck.push({ name: 'Blank', color: 'Blank', });
+        deck.push({ name: 'Karachi', color: 'Black', });
+        deck.push({ name: 'Blank', color: 'Blank', });
+        deck.push({ name: 'Delhi', color: 'Black', });
+        deck.push({ name: 'Blank', color: 'Blank', });
+        deck.push({ name: 'Cairo', color: 'Black', });
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < 4; i++) {
             deck.push({
@@ -260,8 +307,10 @@ function loadPawns(config, scenario) {
         };
         pawns.push(pawn);
     }
-    if (scenario === 3 || scenario === 4) {
+    if (scenario === 3) {
         pawns[0].location.name = 'London';
+    } else if (scenario === 4) {
+        pawns[1].location.name = 'London';
     }
     return pawns;
 };
@@ -282,8 +331,12 @@ function loadInfectionRate(config) {
     return config.init_infection_rate;
 };
 
-function loadMaxOutbreaks(config) {
-    return config.max_outbreaks;
+function loadMaxOutbreaks(config, scenario) {
+    if (scenario === 4) {
+        return 1;
+    } else {
+        return config.max_outbreaks;
+    }
 };
 
 function loadInitOutbreaks(config) {

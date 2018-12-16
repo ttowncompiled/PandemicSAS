@@ -26,7 +26,7 @@ function initLookup() {
     };
 };
 
-function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to_fly, wait_to_cure) {
+function selectStrategyAndBranchOut(probe, root, adapting, needs_to_fly, wait_to_cure) {
     let state = {
         location: probe.pawns[probe.pawn.id-1].location.name,
         hand: probe.pawns[probe.pawn.id-1].hand.map((card) => card.name),
@@ -41,6 +41,9 @@ function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to
 
     let colors = {};
     probe.pawns[probe.pawn.id-1].hand.forEach((card) => {
+        if (card.color === 'Blank') {
+            return;
+        }
         if (! (card.color in colors)) {
             colors[card.color] = 1;
         } else {
@@ -55,29 +58,20 @@ function selectStrategyAndBranchOut(probe, root, needs_to_adapt_travel, needs_to
         }
     });
 
-    if (can_cure && ! wait_to_cure) {
+    if (can_cure) {
         IMustCureDisease(probe, state, curable_disease, root, 0, filter);
-        return true;
-    }
-
-    if (probe.outbreaks > 0) {
-        for (let i = 0; i < probe.outbreaks; i++) {
-            let city = probe.cities[probe.outbreak_locations[i]];
-            for (let key in city.status) {
-                if (city.status[key] === 3) {
-                    needs_to_adapt_travel = true;
-                }
-            }
+        if (! adapting && ! wait_to_cure) {
+            return can_cure;
         }
     }
 
-    if (needs_to_adapt_travel || needs_to_fly) {
+    if (adapting || needs_to_fly) {
         INeedToTreatInfections(probe, state, root, 0, filter);
     } else {
         IOnlyNeedToDriveToTreatInfection(probe, state, root, 0, filter);
     }
 
-    return false;
+    return can_cure;
 };
 
 function IOnlyNeedToDriveToTreatInfection(probe, state, root, depth, filter) {
