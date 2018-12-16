@@ -286,7 +286,7 @@ function branchCureDisease(color) {
         name: `Cure Disease - ${color}`,
         action: 'Cure Disease',
         location: '',
-        color: color,
+        disease: color,
         links: [],
     };
     return [action, true];

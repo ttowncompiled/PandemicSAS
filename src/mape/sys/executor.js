@@ -7,6 +7,8 @@ exports.execute = (plan, manager, reporter) => {
             manager.directlyFlyPawn(root.location, reporter);
         } else if (root.action === 'Treat Disease') {
             manager.treatDisease(root.location, reporter);
+        } else if (root.action === 'Cure Disease') {
+            manager.cureDisease(root.disease, reporter);
         } else if (root.action === 'Yield') {
             manager.sysYield(reporter);
         }

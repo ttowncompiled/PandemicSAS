@@ -13,6 +13,8 @@ module.exports = {
 
                 reportInfectionCleared: (city, disease) => postInfo(port, `${disease} infection cleared in ${city.name}`),
 
+                reportCureDisease: (disease) => postInfo(port, `${disease} has been cured`),
+
                 reportGameWin: () => postInfo(port, 'the game has been won'),
 
                 reportGameLoss: () => postWarn(port, 'the game has been lost'),

@@ -85,7 +85,7 @@ module.exports = {
     directlyFlyPawn: (location) => {
         let pawn = model.activePawn();
         let city = model.cities()[location];
-        let hand = model.hands()[model.activePawn().id-1];
+        let hand = model.hands()[pawn.id-1];
         let card = hand[hand.map((card) => card.name).indexOf(location)];
         model.discardCardFrom(card, pawn);
         model.movePawnTo(pawn, city);
@@ -104,6 +104,20 @@ module.exports = {
         if (model.status()[city.name][best_disease] === 0) {
             reporter.reportInfectionCleared(city, best_disease);
         }
+    },
+
+    cureDisease: (disease, reporter) => {
+        let pawn = model.activePawn();
+        let hand = model.hands()[pawn.id-1];
+        let cards = hand.filter((card) => card.color === disease);
+        if (cards.length < 4) {
+            return;
+        }
+        for (let i = 0; i < 4; i++) {
+            model.discardCardFrom(cards[i], pawn);
+        }
+        model.cureDisease(disease);
+        reporter.reportCureDisease(disease);
     },
 
     sysYield: (reporter) => {
