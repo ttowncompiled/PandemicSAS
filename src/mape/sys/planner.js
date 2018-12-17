@@ -151,7 +151,11 @@ function planBestCurePath(probe, analysis) {
         if (node.links.length === 0) {
             let weight = -100;
             if (stack[stack.length - 2].action === 'Cure Disease') {
-                weight = 10;
+                if (probe.cured_diseases.length === probe.curable_diseases.length-1) {
+                    weight = 100;
+                } else {
+                    weight = 10;
+                }
             } else {
                 weight = weights[stack[stack.length - 2].location];
             }
