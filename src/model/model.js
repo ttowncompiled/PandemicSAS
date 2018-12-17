@@ -16,6 +16,8 @@ module.exports = {
                     console.log('>>> scenario 3');
                 } else if (scenario === 4) {
                     console.log('>>> scenario 4');
+                } else if (scenario === 5) {
+                    console.log('>>> scenario 5');
                 } else {
                     module.exports.shuffleInfectDeck();
                     module.exports.shufflePlayerDeck();

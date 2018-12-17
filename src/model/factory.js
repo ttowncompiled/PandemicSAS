@@ -1,6 +1,6 @@
 exports.singletonGameFactory = (config, scenario) => {
     let model = {};
-    model.curable = loadCurableDiseases(config);
+    model.curable = loadCurableDiseases(config, scenario);
     model.eradicable = loadEradicableDiseases(config);
     model.cubes = loadCubes(config);
     model.cities = loadCities(config);
@@ -26,11 +26,16 @@ exports.singletonGameFactory = (config, scenario) => {
     return model;
 };
 
-function loadCurableDiseases(config) {
+function loadCurableDiseases(config, scenario) {
     let curable = {};
     for (let i = 0; i < config.curable.length; i++) {
         let disease = config.curable[i];
         curable[disease] = false;
+    }
+    if (scenario === 5) {
+        curable['Red'] = true;
+        curable['Blue'] = true;
+        curable['Yellow'] = true;
     }
     return curable;
 };
@@ -136,7 +141,7 @@ function loadInfectDeck(config, scenario) {
             });
         }
         deck = deck.reverse();
-    } else if (scenario === 4) {
+    } else if (scenario === 4 || scenario === 5) {
         deck.push({ name: 'Paris', color: 'Blue', });
         deck.push({ name: 'Hong Kong', color: 'Red', });
         deck.push({ name: 'Kinshasa', color: 'Yellow', });
@@ -238,7 +243,7 @@ function loadPlayerDeckNoEpidemics(config, scenario) {
             });
         }
         deck = deck.reverse();
-    } else if (scenario === 4) {
+    } else if (scenario === 4 || scenario === 5) {
         deck.push({ name: 'Blank', color: 'Blank', });
         deck.push({ name: 'Istanbul', color: 'Black', });
         deck.push({ name: 'Blank', color: 'Blank', });
@@ -309,7 +314,7 @@ function loadPawns(config, scenario) {
     }
     if (scenario === 3) {
         pawns[0].location.name = 'London';
-    } else if (scenario === 4) {
+    } else if (scenario === 4 || scenario === 5) {
         pawns[1].location.name = 'London';
     }
     return pawns;

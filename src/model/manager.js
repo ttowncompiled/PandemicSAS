@@ -118,6 +118,9 @@ module.exports = {
         }
         model.cureDisease(disease);
         reporter.reportCureDisease(disease);
+        if (model.curedDiseases().length === 4) {
+            reporter.reportGameWin();
+        }
     },
 
     sysYield: (reporter) => {
