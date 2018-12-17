@@ -14,6 +14,7 @@ let reporter = null;
 let mape_loop_active = false;
 
 let needs_to_fly = false;
+let wait_to_cure = false;
 let can_cure = false;
 
 module.exports = {
@@ -37,7 +38,7 @@ module.exports = {
         analyze_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 let [ tree, ok, cure_avail ] = analyze_module.analyze(probe,
-                        mape_loop_active, needs_to_fly);
+                        mape_loop_active, needs_to_fly, wait_to_cure);
                 if (! ok && ! mape_loop_active) {
                     reporter.reportAdapt();
                     mape_loop_active = true;
@@ -54,11 +55,12 @@ module.exports = {
         plan_state = new Promise((resolve, reject) => {
             monitor_state.then((probe) => {
                 analyze_state.then((analysis) => {
-                    let [ tree, should_fly ] = plan_module.plan(probe, analysis,
+                    let [ tree, should_fly, should_wait ] = plan_module.plan(probe, analysis,
                             can_cure, mape_loop_active);
                     if (should_fly) {
                         needs_to_fly = true;
                     }
+                    wait_to_cure = should_wait;
                     resolve(tree);
                 })
                 .catch((reason) => reject(reason));

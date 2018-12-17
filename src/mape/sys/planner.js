@@ -7,12 +7,16 @@ exports.plan = (probe, analysis, can_cure, adapting=false) => {
     }
 
     let needs_to_fly = false;
+    let wait_to_cure = false;
 
     if (adapting) {
         let root = tree.root;
+        wait_to_cure = true;
         while (root !== null) {
             if (root.action === 'Direct Flight') {
                 needs_to_fly = true;
+            } else if (root.action === 'Cure Disease') {
+                wait_to_cure = false;
             }
             if (root.links.length === 0) {
                 root = null;
@@ -22,7 +26,7 @@ exports.plan = (probe, analysis, can_cure, adapting=false) => {
         }
     }
 
-    return [ tree, needs_to_fly ];
+    return [ tree, needs_to_fly, wait_to_cure ];
 };
 
 function planBestTreatPath(probe, analysis) {
