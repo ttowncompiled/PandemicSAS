@@ -60,7 +60,9 @@ module.exports = {
                     if (should_fly) {
                         needs_to_fly = true;
                     }
-                    wait_to_cure = should_wait;
+                    if (should_wait) {
+                        wait_to_cure = true;
+                    }
                     resolve(tree);
                 })
                 .catch((reason) => reject(reason));

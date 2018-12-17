@@ -143,12 +143,12 @@ function loadInfectDeck(config, scenario) {
         deck = deck.reverse();
     } else if (scenario === 4 || scenario === 5) {
         deck.push({ name: 'Paris', color: 'Blue', });
-        deck.push({ name: 'Hong Kong', color: 'Red', });
-        deck.push({ name: 'Kinshasa', color: 'Yellow', });
         deck.push({ name: 'Chicago', color: 'Blue', });
+        deck.push({ name: 'San Francisco', color: 'Blue', });
+        deck.push({ name: 'Hong Kong', color: 'Red', });
         deck.push({ name: 'Jakarta', color: 'Red', });
         deck.push({ name: 'Mexico City', color: 'Yellow', });
-        deck.push({ name: 'San Francisco', color: 'Blue', });
+        deck.push({ name: 'Kinshasa', color: 'Yellow', });
         deck.push({ name: 'Manila', color: 'Red', });
         deck.push({ name: 'Los Angeles', color: 'Yellow', });
         deck.push({ name: 'Paris', color: 'Blue', });
@@ -243,7 +243,30 @@ function loadPlayerDeckNoEpidemics(config, scenario) {
             });
         }
         deck = deck.reverse();
-    } else if (scenario === 4 || scenario === 5) {
+    } else if (scenario === 4) {
+        deck.push({ name: 'Blank', color: 'Blank', });
+        deck.push({ name: 'Istanbul', color: 'Black', });
+        deck.push({ name: 'Miami', color: 'Yellow', });
+        deck.push({ name: 'Karachi', color: 'Black', });
+        deck.push({ name: 'Los Angeles', color: 'Yellow', });
+        deck.push({ name: 'Delhi', color: 'Black', });
+        deck.push({ name: 'Mexico City', color: 'Yellow', });
+        deck.push({ name: 'Cairo', color: 'Black', });
+        let rigged = deck.map((card) => card.name);
+        for (let i = 0; i < config.cities.length; i++) {
+            if (rigged.includes(config.cities[i].name)) {
+                continue;
+            }
+            if (config.cities[i].color !== 'Yellow') {
+                continue;
+            }
+            deck.push({
+                name: config.cities[i].name,
+                color: config.cities[i].color,
+            });
+        }
+        deck = deck.reverse();
+    } else if (scenario === 5) {
         deck.push({ name: 'Blank', color: 'Blank', });
         deck.push({ name: 'Istanbul', color: 'Black', });
         deck.push({ name: 'Blank', color: 'Blank', });
