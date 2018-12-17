@@ -138,14 +138,14 @@ function loadInfectDeck(config, scenario) {
         deck = deck.reverse();
     } else if (scenario === 4) {
         deck.push({ name: 'Paris', color: 'Blue', });
-        deck.push({ name: 'Istanbul', color: 'Black', });
-        deck.push({ name: 'Khartoum', color: 'Yellow', });
-        deck.push({ name: 'Montreal', color: 'Blue', });
-        deck.push({ name: 'Karachi', color: 'Black', });
+        deck.push({ name: 'Hong Kong', color: 'Red', });
+        deck.push({ name: 'Kinshasa', color: 'Yellow', });
+        deck.push({ name: 'Chicago', color: 'Blue', });
+        deck.push({ name: 'Jakarta', color: 'Red', });
         deck.push({ name: 'Mexico City', color: 'Yellow', });
-        deck.push({ name: 'Washington', color: 'Blue', });
-        deck.push({ name: 'Delhi', color: 'Black', });
-        deck.push({ name: 'Miami', color: 'Yellow', });
+        deck.push({ name: 'San Francisco', color: 'Blue', });
+        deck.push({ name: 'Manila', color: 'Red', });
+        deck.push({ name: 'Los Angeles', color: 'Yellow', });
         deck.push({ name: 'Paris', color: 'Blue', });
         let rigged = deck.map((card) => card.name);
         for (let i = 0; i < config.cities.length; i++) {
