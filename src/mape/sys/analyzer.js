@@ -59,7 +59,10 @@ function selectStrategyAndBranchOut(probe, root, adapting, needs_to_fly, wait_to
     });
 
     if (can_cure) {
-        IMustCureDisease(probe, state, curable_disease, root, 0, filter);
+        let [ path, ok] = IMustCureDisease(probe, state, curable_disease, root, 0, filter);
+        if (! ok) {
+            IMustCureDiseaseOrDrive(probe, state, color, curable_disease, root, depth, filter);
+        }
         if (! adapting && ! wait_to_cure) {
             return can_cure;
         }
@@ -185,6 +188,41 @@ function IMustCureDisease(probe, state, color, root, depth, filter) {
             action.links.push(yield);
             return [root, true];
         }
+        let has_curable_path = false;
+        let close_neighbors = probe.cities[state.location].neighbors;
+        for (let i = 0; i < close_neighbors.length; i++) {
+            let neighbor = close_neighbors[i];
+            if (neighbor in filter) {
+                continue;
+            }
+            let [action, ok] = branchDrive(probe, state, neighbor,
+                    depth, filter, cb);
+            if (ok) {
+                root.links.push(action);
+                has_curable_path = true;
+            }
+        }
+        return [root, has_curable_path];
+    };
+    return cb(probe, state, root, depth, filter);
+};
+
+function IMustCureDiseaseOrDrive(probe, state, color, root, depth, filter) {
+    let cb = null;
+    cb = (probe, state, root, depth, filter) => {
+        if (depth >= 4) {
+            let [action, ok] = branchYield();
+            root.links.push(action);
+            return [root, false];
+        }
+        if (probe.research_stations.includes(state.location)) {
+            let [action, _] = branchCureDisease(color);
+            root.links.push(action);
+            let [yield, ok] = branchYield();
+            action.links.push(yield);
+            return [root, true];
+        }
+        let has_curable_path = false;
         let close_neighbors = probe.cities[state.location].neighbors;
         for (let i = 0; i < close_neighbors.length; i++) {
             let neighbor = close_neighbors[i];
@@ -194,8 +232,11 @@ function IMustCureDisease(probe, state, color, root, depth, filter) {
             let [action, ok] = branchDrive(probe, state, neighbor,
                     depth, filter, cb);
             root.links.push(action);
+            if (ok) {
+                has_curable_path = true;
+            }
         }
-        return [root, true];
+        return [root, has_curable_path];
     };
     return cb(probe, state, root, depth, filter);
 };
