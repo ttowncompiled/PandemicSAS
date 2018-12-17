@@ -1,9 +1,10 @@
 exports.plan = (probe, analysis, can_cure, adapting=false) => {
     let tree = null;
+    let weight = 0;
     if (can_cure) {
-        tree = planBestCurePath(probe, analysis);
+        [ tree, weight ] = planBestCombinedPath(probe, analysis);
     } else {
-        tree = planBestTreatPath(probe, analysis);
+        [ tree, weight ] = planBestTreatPath(probe, analysis);
     }
 
     let needs_to_fly = false;
@@ -53,7 +54,11 @@ function planBestTreatPath(probe, analysis) {
                 if (stack[i].action === 'Treat Disease') {
                     let max_infection = Math.max(...Object.keys(status[stack[i].location]).map((key) => status[stack[i].location][key]));
                     if (max_infection === 3) {
-                        weight += 2;
+                        if (probe.outbreaks === probe.max_outbreaks) {
+                            weight += 10;
+                        } else {
+                            weight += 2;
+                        }
                     } else {
                         weight += 1;
                     }
@@ -93,7 +98,7 @@ function planBestTreatPath(probe, analysis) {
     let tree = {};
     tree.root = best_path[0];
 
-    return tree;
+    return [ tree, best_weight ];
 };
 
 function planBestCurePath(probe, analysis) {
@@ -184,5 +189,14 @@ function planBestCurePath(probe, analysis) {
     let tree = {};
     tree.root = best_path[0];
 
-    return tree;
+    return [ tree, best_weight ];
+};
+
+function planBestCombinedPath(probe, analysis) {
+    let [ treat_tree, treat_weight ] = planBestTreatPath(probe, analysis);
+    let [ cure_tree, cure_weight ] = planBestCurePath(probe, analysis);
+    if (treat_weight >= cure_weight) {
+        return [ treat_tree, treat_weight];
+    }
+    return [ cure_tree, cure_weight ];
 };
